@@ -19,17 +19,15 @@ import shutil
 import logging
 from gettext import gettext as _
 
-from gi.repository import GLib
 from gi.repository import GConf
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import Pango
 
-from sugar3 import util
 from sugar3 import env
 from sugar3.graphics import style
-from sugar3.graphics.icon import Icon, CellRendererIcon
+from sugar3.graphics.icon import CellRendererIcon
 from sugar3.graphics.xocolor import XoColor
 
 from sugar3.activity import activity
@@ -72,8 +70,8 @@ class FontsActivity(activity.Activity):
 
         self.init_fonts()
 
-        font_list = FontsList(self._all_fonts, self._font_white_list)
-        self.set_canvas(font_list)
+        self.font_list = FontsList(self._all_fonts, self._font_white_list)
+        self.set_canvas(self.font_list)
         self.show_all()
 
     def init_fonts(self):
@@ -106,17 +104,19 @@ class FontsActivity(activity.Activity):
             gio_fonts_file = Gio.File.new_for_path(USER_FONTS_FILE_PATH)
             self.monitor = gio_fonts_file.monitor_file(
                 Gio.FileMonitorFlags.NONE, None)
-            self.monitor.set_rate_limit(5000)
             self.monitor.connect('changed', self._reload_fonts)
 
     def _reload_fonts(self, monitor, gio_file, other_file, event):
         if event != Gio.FileMonitorEvent.CHANGES_DONE_HINT:
             return
-        self._font_white_list = []
-        self._font_white_list.extend(DEFAULT_FONTS)
+        font_white_list = []
+        font_white_list.extend(DEFAULT_FONTS)
         fonts_file = open(USER_FONTS_FILE_PATH)
         for line in fonts_file:
-            self._font_white_list.append(line.strip())
+            font_name = line.strip()
+            if font_name not in font_white_list:
+                font_white_list.append(font_name)
+        logging.error('font list file updated %s', font_white_list)
 
 
 class FontsTreeView(Gtk.TreeView):
@@ -184,15 +184,18 @@ class FontsTreeView(Gtk.TreeView):
         self.set_enable_search(False)
 
     def __favorite_set_data_cb(self, column, cell, model, tree_iter, data):
-        favorite = model[tree_iter][ListModel.COLUMN_FAVORITE]
+        font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
+        favorite = font_name in model._favorites
         if favorite:
             cell.props.xo_color = self.xo_color
         else:
             cell.props.xo_color = None
 
     def __favorite_clicked_cb(self, cell, path):
-        row = self.get_model()[path]
-        # TODO
+        model = self.get_model()
+        row = model[path]
+        font_name = row[ListModel.COLUMN_FONT_NAME]
+        model.chage_favorite(font_name)
 
     def set_filter(self, query):
         """Set a new query and refilter the model, return the number
@@ -225,7 +228,7 @@ class ListModel(Gtk.TreeModelSort):
         self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
                                 Gtk.SortType.ASCENDING)
 
-        # load th model
+        # load the model
         self._all_fonts = all_fonts
         self._favorites = favorites
         for font_name in self._all_fonts:
@@ -239,6 +242,17 @@ class ListModel(Gtk.TreeModelSort):
 
     def refilter(self):
         self._model_filter.refilter()
+
+    def chage_favorite(self, font_name):
+        if font_name in self._favorites:
+            self._favorites.remove(font_name)
+        else:
+            self._favorites.append(font_name)
+
+        fonts_file = open(USER_FONTS_FILE_PATH, 'w')
+        for font_name in self._favorites:
+            fonts_file.write('%s\n' % font_name)
+        fonts_file.close()
 
 
 class CellRendererFavorite(CellRendererIcon):
