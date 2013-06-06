@@ -34,11 +34,8 @@ from sugar3.graphics.xocolor import XoColor
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import ActivityButton
-from sugar3.activity.widgets import TitleEntry
+from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.activity.widgets import StopButton
-from sugar3.activity.widgets import ShareButton
-from sugar3.activity.widgets import DescriptionItem
 
 
 DEFAULT_FONTS = ['Sans', 'Serif', 'Monospace']
@@ -56,21 +53,9 @@ class FontsActivity(activity.Activity):
 
         toolbar_box = ToolbarBox()
 
-        activity_button = ActivityButton(self)
+        activity_button = ActivityToolbarButton(self)
         toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
-
-        title_entry = TitleEntry(self)
-        toolbar_box.toolbar.insert(title_entry, -1)
-        title_entry.show()
-
-        description_item = DescriptionItem(self)
-        toolbar_box.toolbar.insert(description_item, -1)
-        description_item.show()
-
-        share_button = ShareButton(self)
-        toolbar_box.toolbar.insert(share_button, -1)
-        share_button.show()
         
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
