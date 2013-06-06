@@ -172,7 +172,11 @@ class FontsTreeView(Gtk.TreeView):
         column.props.expand = False
         column.set_sort_column_id(ListModel.COLUMN_FONT_NAME)
         column.pack_start(cell_text, True)
-        column.add_attribute(cell_text, 'markup', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'text', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'scale', ListModel.COLUMN_SCALE)
+        column.add_attribute(cell_text, 'scale-set',
+                             ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
 
         cell_text = Gtk.CellRendererText()
@@ -186,7 +190,11 @@ class FontsTreeView(Gtk.TreeView):
         column.props.expand = True
         column.set_sort_column_id(ListModel.COLUMN_TEST)
         column.pack_start(cell_text, True)
-        column.add_attribute(cell_text, 'markup', ListModel.COLUMN_TEST)
+        column.add_attribute(cell_text, 'text', ListModel.COLUMN_TEST)
+        column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'scale', ListModel.COLUMN_SCALE)
+        column.add_attribute(cell_text, 'scale-set',
+                             ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
 
         self.set_search_column(ListModel.COLUMN_FONT_NAME)
@@ -224,9 +232,11 @@ class ListModel(Gtk.TreeModelSort):
     COLUMN_FAVORITE = 0
     COLUMN_FONT_NAME = 1
     COLUMN_TEST = 2
+    COLUMN_SCALE = 3
+    COLUMN_SCALE_SET = 4
 
     def __init__(self, all_fonts, favorites):
-        self._model = Gtk.ListStore(bool, str, str)
+        self._model = Gtk.ListStore(bool, str, str, int, bool)
         self._model_filter = self._model.filter_new()
         Gtk.TreeModelSort.__init__(self, model=self._model_filter)
         self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
@@ -239,7 +249,7 @@ class ListModel(Gtk.TreeModelSort):
             favorite = font_name in self._favorites
             self._model.append([
                 favorite, font_name,
-                _('The quick brown fox jumps over the lazy dog.')])
+                _('The quick brown fox jumps over the lazy dog.'), 2, True])
 
     def set_visible_func(self, func):
         self._model_filter.set_visible_func(func)
