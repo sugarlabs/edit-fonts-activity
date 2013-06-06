@@ -56,7 +56,7 @@ class FontsActivity(activity.Activity):
         activity_button = ActivityToolbarButton(self)
         toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
-        
+
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
@@ -75,7 +75,6 @@ class FontsActivity(activity.Activity):
         font_list = FontsList(self._all_fonts, self._font_white_list)
         self.set_canvas(font_list)
         self.show_all()
-
 
     def init_fonts(self):
 
@@ -150,7 +149,6 @@ class FontsTreeView(Gtk.TreeView):
         self.append_column(column)
 
         cell_text = Gtk.CellRendererText()
-        cell_text.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         cell_text.props.ellipsize_set = False
         column = Gtk.TreeViewColumn()
         column.props.sizing = Gtk.TreeViewColumnSizing.GROW_ONLY
