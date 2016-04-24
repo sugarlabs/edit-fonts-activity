@@ -6,11 +6,11 @@ url:              https://sugarlabs.github.io/font-editor-activity
 
 # Owner/author information
 owner:
-  name:           Sugar Font Editor Activity Team
+  name:           Sugar Font Editor Activity Authors
   bio:            Google Summer of Code 2016 Student Yash Agarwal, Mentors Eli Heuer and Dave Crossland
   email:          sugar-devel@lists.sugarlabs.org
   twitter:        sugarlabs
-  github:         http://sugarlabs.github.io
+  github:         http://github.com/sugarlabs
   instagram:      sugarlabs
   location:       Worldwide
 
