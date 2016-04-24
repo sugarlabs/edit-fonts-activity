@@ -1,0 +1,61 @@
+title:            Sugar Font Editor Activity
+tagline:          Kids Make Fonts
+description:      Kids Make Fonts
+canonical:        https://sugarlabs.github.io/font-editor-activity
+url:              https://sugarlabs.github.io/font-editor-activity
+
+# Owner/author information
+owner:
+  name:           Sugar Font Editor Activity Team
+  bio:            Google Summer of Code 2016 Student Yash Agarwal, Mentors Eli Heuer and Dave Crossland
+  email:          sugar-devel@lists.sugarlabs.org
+  twitter:        sugarlabs
+  github:         http://sugarlabs.github.io
+  instagram:      sugarlabs
+  location:       Worldwide
+
+tools:
+  standards:      "HTML, SCSS, Jekyll"
+  software:       "git"
+
+# Links to include in top navigation
+# For external links add external: true
+links:
+  - title: About
+    url: /about
+  - title: Github
+    url: https://github.com/sugarlabs/font-editor-activity
+    external: true
+#  - title: Posts
+#    url: /articles/index
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    America/New_York
+future:      false
+highlighter: rouge
+markdown:    kramdown
+
+safe: true
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  use_coderay: false
+
+  coderay:
+    coderay_line_numbers:
+    coderay_line_numbers_start: 1
+    coderay_tab_width: 4
+    coderay_bold_every: 10
+    coderay_css: class
+
+sass:
+    style: :compressed
+
+# https://github.com/mojombo/jekyll/wiki/Permalinks
+permalink:   /:title
+
+include: [".htaccess"]
+exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "vendor"]
