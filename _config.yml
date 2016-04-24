@@ -3,6 +3,7 @@ tagline:          Kids Make Fonts
 description:      Kids Make Fonts
 canonical:        https://sugarlabs.github.io/font-editor-activity
 url:              https://sugarlabs.github.io/font-editor-activity
+baseurl:          /font-editor-activity
 
 # Owner/author information
 owner:
