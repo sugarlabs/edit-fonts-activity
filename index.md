@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Sugar Font Editor Activity
+title: Introduction
 category: homepage
 ---
 
