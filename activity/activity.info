@@ -1,8 +1,8 @@
 [Activity]
 name = Fonts
-activity_version = 1
+activity_version = 2
 bundle_id = org.sugarlabs.FontsSelection
 exec = sugar-activity activity.FontsActivity
 icon = activity-fonts
-license = GPLv2+
+license = GPLv3+
 summary = Select your favorite fonts to use in other activities.
