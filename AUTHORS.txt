@@ -5,4 +5,6 @@
 # Names should be added to this file as:
 # Name or Organization <email address>
 
+One Laptop per Child
+Simon Schampijer
 Understanding Limited <dave@understandinglimited.com>
