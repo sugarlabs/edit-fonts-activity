@@ -1,10 +1,10 @@
 /*******************************************************************************
-Slate Theme for GitHub Pages
-by Jason Costello, @jsncostello
+Derived from the Slate Theme
+made for GitHub Pages by Jason Costello @jsncostello
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Jason Costello
+Copyright (c) 2015 Jason Costello, The Sugar Font Editor Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -315,6 +315,10 @@ Full-Width Styles
   background: -ms-linear-gradient(top, #373737, #212121);
   background: -o-linear-gradient(top, #373737, #212121);
   background: linear-gradient(top, #373737, #212121);
+}
+
+#header_wrap a {
+  color: #fff;
 }
 
 #header_wrap .inner {
