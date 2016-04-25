@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [sugar-devel] Python or JavaScript?
+title: Python or JavaScript?
 category: article
 author: Dave Crossland
 ---
