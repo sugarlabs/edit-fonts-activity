@@ -2,7 +2,8 @@
 <div id="footer_wrap" class="outer">
   <footer class="inner">
     <p class="copyright">
-      Copyright &copy; 2016 
+      Copyright &copy; <span id="copy"></span>
+      
       <a href="https://github.com/sugarlabs/font-editor-activity/blob/gh-pages/AUTHORS.txt">
          The Sugar Font Editor Activity Authors
       </a>
@@ -31,3 +32,6 @@
     </p>
   </footer>
 </div>
+<script>
+        document.getElementById("copy").innerHTML=new Date().getFullYear();
+      </script>
