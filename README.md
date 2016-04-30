@@ -4,7 +4,7 @@ Live Site: <http://sugarlabs.github.io/font-editor-activity/>
 
 ## How To Add New Posts
 
-See Jeykll documentation at <https://jekyllrb.com/docs/frontmatter/> and <https://jekyllrb.com/docs/posts/>
+See Jekyll documentation at <https://jekyllrb.com/docs/frontmatter/> and <https://jekyllrb.com/docs/posts/>
 
 * Visit <https://github.com/sugarlabs/font-editor-activity/new/gh-pages/_posts>
 * Name the file `YYYY-MM-DD-short-page-url-name.md`
