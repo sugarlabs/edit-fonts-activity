@@ -59,11 +59,13 @@ ___I have divided the project into measurable Milestones :12 weeks, 40 hours a w
         2. Navbar 
         3. Work Space, etc.
     2. The entire activity will be made as a [SPA](https://en.wikipedia.org/wiki/Single-page_application) (single page web app) using [Angular.js](https://angularjs.org/) in the Sugarizer DE which gives us browser like playfield 
+    3. ![Image of Activity Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/2.PNG)
 2. Font Import/Export Library 
     1. The Activity will import .ufo.zip files using ufo playfieldJS, and as a stretch goal, .otf/.ttf type font file using  [opentype.js](https://github.com/nodebox/opentype.js)
     2. Convert to Postscript based bezier curve data
     3. The Activity will export .otf. This will be done using [opentype.js](https://github.com/nodebox/opentype.js)
     4. Build an interactive grid display for showing the loaded font data similar to the one displayed below from [Trufont](https://github.com/trufont/trufont/releases/tag/0.2.0) 
+    5. ![Image of Complete Font display](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/3.png)
 3. Font Manager Activity 
     1. The Activity will scan for and import all .otf/.ttf type font files from the font directory of the system  
     2. This will allow the user to add/delete font files from the system
@@ -73,6 +75,7 @@ ___I have divided the project into measurable Milestones :12 weeks, 40 hours a w
 1. Glyph Editor Basic Version
     1. Build the glyph class and the methods required for manipulating it 
     2. Implement PostScript bezier outline editing feature which will be similar to the Glyph editor currently found in [Trufont](https://github.com/trufont/trufont/releases/tag/0.2.0)
+![Image of Glyph Editing Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/4.png)
     3. d3.js will be used for visualising the nodes and connections for the bezier curves
 
 #### Milestone 3
