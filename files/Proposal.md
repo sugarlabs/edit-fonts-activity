@@ -30,15 +30,10 @@ You can check out the "Hello World" activity developed for both the frameworks [
 This Font editor will have the following features (planned as of now):	
 
 1. [Sugar Human Interface Guidelines](https://wiki.sugarlabs.org/go/Human_Interface_Guidelines) based UI	
-
 2. Font Manager Activity that will show all the available fonts found in the system font directory and allow the user to install/uninstall fonts [ref [#1](https://wiki.sugarlabs.org/go/The_Undiscoverable/Fonts),[#2](http://wiki.laptop.org/go/Font_considerations)]	
-
 3. A glyph editing interface similar to the one found in [glyphsapp.com](https://glyphsapp.com/), so that you are editing glyph outlines in the same window as you space them.	
-
 4. A Testing stage where we can show a textbox in which the written text is rendered in the loaded font to get a visual feedback of the font in question. This module will also contain predefined text templates eg. "the quick brown fox jumps over the lazy dog" and a export image button to save an image of the rendered font	
-
 5. All this will be accompanied with thorough documentation and commenting which will be done hand in hand with development as it clarity in the end goals	
-
 6. These 	are very broad descriptions of the major features and further details will be discussed with Dave Crossland
 
 The project if made using Sugarizer will use HTML5/CSS3 and will have lot of dependencies on major JavaScript libraries
@@ -46,13 +41,9 @@ The project if made using Sugarizer will use HTML5/CSS3 and will have lot of dep
 Dependencies:
 
 1. [jQuery.js](https://jquery.com/download/)
-
 2. [Angular.js](https://angularjs.org/)  &  [Angular-ui.js](https://angular-ui.github.io/)
-
 3. [UFO.js](http://lib.ufojs.org/)
-
 4. [opentype.js](https://github.com/nodebox/opentype.js)
-
 5. [d3.js](https://d3js.org/) 	 		
 
 ### *Timeline* 	 	
