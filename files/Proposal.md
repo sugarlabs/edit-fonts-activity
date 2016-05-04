@@ -20,7 +20,7 @@ This project's main goal is to develop an end to end font editor Activity, with 
 
 I started development by creating a "Hello World" activity for Sugarizer in my [gsoc_sugarLabs](https://github.com/YashAgarwal/gsoc_sugarLabs) repo. 
 
-![Screenshot](https://drive.google.com/file/d/0B8JA87tMmJ87Zk5IVVRjbTRhZVk/view?usp=sharing) 
+![Screenshot](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/screenshot.png) 
 
 Eli, Dave and I decided to move forwards with an Activity for the Sugar Desktop (in Python) because it has many more users today than Sugarizer. 
 Using Python allows me to take advantage of the libraries that [Trufont](https://github.com/trufont/trufont/) uses.
