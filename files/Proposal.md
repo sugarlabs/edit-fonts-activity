@@ -25,7 +25,7 @@ This project's main goal is to develop an end to end font editor activity for Su
 
 Sugar allows us 2 ways of making a Activity. I can use either Python/GTK+ 3 or Sugarizer (HTML/Js) to create the activity. I am very comfortable with both the frameworks and can go ahead with any of them if the people at sugar have some preferences regarding the development environment. Currently this proposal is made choosing Sugarizer as the development environment as I consider myself to be more comfortable with Web based system than GTK.
 
-You can check out the "Hello World" activity developed for both the frameworks [here](https://github.com/YashAgarwal/gsoc_sugarLabs) [a [sreenshot](https://drive.google.com/file/d/0B8JA87tMmJ87Zk5IVVRjbTRhZVk/view?usp=sharing) showing a sample web activity]. The font editor created in this will be very similar to [Trufont](https://github.com/trufont/trufont/releases/tag/0.2.0) plus/minus a few features explained below.
+You can check out the "Hello World" activity developed for both the frameworks [here](https://github.com/YashAgarwal/gsoc_sugarLabs) [a [sreenshot](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/screenshot.png) showing a sample web activity]. The font editor created in this will be very similar to [Trufont](https://github.com/trufont/trufont/releases/tag/0.2.0) plus/minus a few features explained below.
 
 This Font editor will have the following features (planned as of now):	
 
