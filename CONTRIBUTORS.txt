@@ -10,3 +10,4 @@
 # Name <email address>
 
 Dave Crossland <dave@lab6.com> https://github.com/davelab6
+Yash Agarwal <agrwal.ysh94@gmail.com> https://github.com/YashAgarwal
