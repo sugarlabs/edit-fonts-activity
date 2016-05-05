@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Current Feature List and the Timeline
+title: Refined Proposal and Timeline
 category: article
 author: Yash Agarwal
 ---
