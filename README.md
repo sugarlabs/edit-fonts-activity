@@ -6,6 +6,16 @@ Live Site: <http://sugarlabs.github.io/font-editor-activity/>
 
 See Jekyll documentation at <https://jekyllrb.com/docs/frontmatter/> and <https://jekyllrb.com/docs/posts/>
 
+### Local Editing
+
+Install Jekyll and then from the root directory run
+
+    jekyll serve  --incremental
+
+Then visit <http://127.0.0.1:4000/font-editor-activity/> and each time you save a file in the repo, the site will be rebuilt and you can hit refresh to see the results.
+
+### Live Editing
+
 * Visit <https://github.com/sugarlabs/font-editor-activity/new/gh-pages/_posts>
 * Name the file `YYYY-MM-DD-short-page-url-name.md`
 * Add a [frontmatter](https://jekyllrb.com/docs/frontmatter/) similar to:
@@ -20,6 +30,8 @@ author: Your Name
 ```
 
 * Author your content with markdown
+
+
 
 ## Licensing
 
