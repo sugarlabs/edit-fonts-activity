@@ -10,7 +10,7 @@ Using Python allows me to take advantage of the libraries that [Trufont](https:/
 
 This font editor Activity is planned to include the following features and follow the [Sugar Human Interface Guidelines](https://wiki.sugarlabs.org/go/Human_Interface_Guidelines):
 
-1: Font Manager
+#### 1: Font Manager
 
 * Show all the available fonts found in the system font directory
 * Allow the user to install/uninstall fonts,  make 'collections' within the library.
@@ -19,11 +19,13 @@ Related pages:
 <https://wiki.sugarlabs.org/go/The_Undiscoverable/Fonts>  
 <http://wiki.laptop.org/go/Font_considerations>
 
-2: A glyph drawing interface similar to the one found proposed by Mark Simonson and available in FontForge and Glyphs: edit several glyph outlines side by side, allowing to draw and space them in the same window.
+#### 2: A glyph drawing interface 
+
+Similar to the one found proposed by Mark Simonson and available in FontForge and Glyphs: edit several glyph outlines side by side, allowing to draw and space them in the same window.
 
 ![Image of Glyph Editing Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/1.png)
 
-3: A Testing interface
+### 3: A Testing interface
 
 * A textbox in which the text is rendered using the font, to get visual feedback. 
 * Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and 
@@ -77,14 +79,16 @@ Mock:
 
 3.4 This module will also contain predefined text templates eg. "the quick brown fox jumps over the lazy dog"  and a export image button to save a image of the rendered font  
 
-#### Milestone 4: Glyph Editor with Added Functionality 1
+#### Milestone 4: Glyph Editor with Added Functionality 1 + Packaging
 
 4.0 Implement spiro spline curve fitting as can be done with inkscape
+
+4.1 Get the code integrated in the main sugar distribution
 
 #### Milestone 5: Glyph Editor with Added Functionality 2
 
 5.0 Implement curve offsetting that will be used in skeleton based glyph design 
 
-#### Milestone 6: Packaging
+#### Milestone 6: Glyph Editor with Added Functionality 3
 
-6.0 Get the code integrated in the main sugar distribution
+6.0 To be decided
