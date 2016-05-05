@@ -12,6 +12,8 @@ Install Jekyll and then from the root directory run
 
     jekyll serve  --incremental
 
+If there are any errors with the Jeykll configuration, templates, etc, then you will read about them in the output. 
+
 Then visit <http://127.0.0.1:4000/font-editor-activity/> and each time you save a file in the repo, the site will be rebuilt and you can hit refresh to see the results.
 
 ### Live Editing
