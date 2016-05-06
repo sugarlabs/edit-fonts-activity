@@ -23,7 +23,7 @@ Related pages:
 
 Similar to the one found proposed by Mark Simonson and available in FontForge and Glyphs: edit several glyph outlines side by side, allowing to draw and space them in the same window.
 
-![Image of Glyph Editing Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/1.png)
+![Image of Glyph Editing Interface](files/img/1.png)
 
 ### 3: A Testing interface
 
@@ -43,7 +43,7 @@ I wll use the [Sugar Human Interface Guidelines](https://wiki.sugarlabs.org/go/H
 
 The entire activity will be made as a Sugar Activity in Python.
 
-![Image of Activity Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/2.PNG)
+![Image of Activity Interface](files/img/2.PNG)
 
 1.0 Activate/Deactivate: Build an interactive grid display for showing all fonts in the system, a button to activate/deactivate them, and allow the user to create 'collections' within the library (like playlists in a music player) 
 
@@ -55,7 +55,7 @@ The entire activity will be made as a Sugar Activity in Python.
 
 Mock:
 
-![Image of Complete Font display](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/3.png)
+![Image of Complete Font display](files/img/3.png)
 
 #### Milestone 2: Glyph Editor Basic Version
 
@@ -65,7 +65,7 @@ Mock:
 
 2.2 Implement PostScript bezier outline editing feature which will be similar to the Glyph editor currently found in [Trufont](https://github.com/trufont/trufont/releases/tag/0.2.0)
 
-![Image of Glyph Editing Interface](https://raw.githubusercontent.com/sugarlabs/font-editor-activity/gh-pages/files/img/4.png)
+![Image of Glyph Editing Interface](files/img/4.png)
 
 #### Milestone 3: Metrics Integrated Glyph Editing View
 

@@ -1,9 +1,9 @@
 title:            Sugar Font Editor Activity
 tagline:          Kids Make Fonts
 description:      Kids Make Fonts
-canonical:        https://sugarlabs.github.io/font-editor-activity
-url:              https://sugarlabs.github.io/font-editor-activity
-baseurl:          /font-editor-activity
+canonical:        https://sugarlabs.github.io/edit-fonts-activity
+url:              https://sugarlabs.github.io/edit-fonts-activity
+baseurl:          /edit-fonts-activity
 
 # Owner/author information
 owner:
@@ -25,7 +25,7 @@ links:
   - title: About
     url: /about
   - title: Github
-    url: https://github.com/sugarlabs/font-editor-activity
+    url: https://github.com/sugarlabs/edit-fonts-activity
     external: true
 #  - title: Posts
 #    url: /articles/index
