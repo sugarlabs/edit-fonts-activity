@@ -39,11 +39,13 @@ I have divided the project into measurable milestones, with 12 weeks at 40 hours
 
 #### Milestone 1: Font Manager
 
-I wll use the [Sugar Human Interface Guidelines](https://wiki.sugarlabs.org/go/Human_Interface_Guidelines) to build basic GUI functionality like Toolbar(s), Navbar , Work Space, etc.
+I will use the [Sugar Human Interface Guidelines](https://wiki.sugarlabs.org/go/Human_Interface_Guidelines) to build basic GUI functionality like Toolbar(s), Navbar , Work Space, etc.
 
 The entire activity will be made as a Sugar Activity in Python.
 
 ![Image of Activity Interface](files/img/2.PNG)
+
+([Image source](https://docs.google.com/drawings/d/1ITy-XqcV3nkGV743eGUTfC1zkbzDui15thdrJYUe_Ag/edit))
 
 1.0 Activate/Deactivate: Build an interactive grid display for showing all fonts in the system, a button to activate/deactivate them, and allow the user to create 'collections' within the library (like playlists in a music player) 
 
