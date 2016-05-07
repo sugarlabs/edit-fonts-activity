@@ -16,7 +16,7 @@ The HIG has some empty sections that need filling out, and also bringing up to d
 
 I made a updated Yash's [initial mock](https://docs.google.com/drawings/d/1ITy-XqcV3nkGV743eGUTfC1zkbzDui15thdrJYUe_Ag/edit):
 
-![Mock v1](files/img/2.png)
+![Mock v1](files/img/2.PNG)
 
 into a [simple mock using the HIG terms](https://docs.google.com/drawings/d/1Q9OzPnO9Oa8r7yHfzP2xKYTjNcQ04e2AG_ajPaHR_i4/edit):
 
