@@ -19,14 +19,14 @@ Beyond the OLPC/Sugar project, there are two drawing  programs I would like to l
 * MarioPaint (SNES)
 * Kid Pix (Mac Plus)
 
-Both programs use a UI design pattern I'll refer to as mode/toolset strategy. Software that uses this pattern will have two toolbars or sets of icons, usually at opposite ends of the screen. One toolbar sets the 'mode' and the other toolbar changes to only give you tools you need to accomplish the task at hand in the selected mode. This has many advantages, mainly:
+Both programs use a UI design pattern I'll refer to as mode/toolset strategy. Software that uses this pattern will have two toolbars or sets of icons, usually at opposite ends of the screen. One toolbar sets the mode and the other toolbar changes to only give you tools you need to accomplish the task at hand in the selected mode. This has many advantages, mainly:
 
 * New Users only see a small number of tools on screen and aren't overwhelmed by choice. 
 * The default mode can be carefully designed to get users seeing results right away. 
 * Because the tools on the screen only relate to the task at hand, the user will be less likely to select a tool that doesn't work and gives them no result.
 * By grouping tools into modes it's easier for the user to guess what a tool does. 
 
-Let's look at MarioPaint, note that the mode tool bar is on the bottom and the toolset toolbar is on the top. Also, some items on the mode toolbar are single purpose and only do one thing without having a toolset:
+Let's look at MarioPaint, note that the mode toolbar is on the bottom and the toolset toolbar is on the top. Also, some items on the mode toolbar are single purpose and only do one thing without having a toolset:
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/z99vk2qB-lo" frameborder="0" allowfullscreen></iframe>
 
