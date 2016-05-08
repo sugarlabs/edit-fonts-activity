@@ -14,7 +14,7 @@ There are some activities for Sugar that I feel succeed in the LF,NC goal, parti
 * Colors
 * TamTamJam
 
-Beyond the OLPC/Sugar project, there are two drawing programs I would like to look at and borrow UI patterns from because I feel are very LF,NC—they are:
+Beyond the OLPC/Sugar project, there are two drawing programs I would like to look at and borrow UI patterns from because I feel they are very LF,NC—they are:
 
 * MarioPaint (SNES)
 * Kid Pix (Mac Plus)
