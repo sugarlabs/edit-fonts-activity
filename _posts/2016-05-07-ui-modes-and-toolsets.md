@@ -12,19 +12,19 @@ Sugar activities are intended to be "low floor, no ceiling". The [HIG](http://wi
 There are some activities for Sugar that I feel succeed in the LF,NC goal, particularly I like:
 
 * Colors
-*TamTamJam
+* TamTamJam
 
 Beyond the OLPC/Sugar project, there are two drawing  programs I would like to look at and borrow UI patterns from, they are:
 
-*MarioPaint (SNES)
-*Kid Pix (Mac Plus)
+* MarioPaint (SNES)
+* Kid Pix (Mac Plus)
 
 Both programs use a UI design pattern I'll refer to as mode/toolset strategy. Software that uses this pattern will have two toolbars or sets of icons, usually at opposite ends of the screen. One toolbar sets the 'mode' and the other toolbar changes to only give you tools you need to accomplish the task at hand in the selected mode. This has many advantages, mainly:
 
 * New Users only see a small number of tools on screen and aren't overwhelmed by choice. 
-*The default mode can be carefully designed to get users seeing results right away. 
-*Because the tools on the screen only relate to the task at hand, the user will be less likely to select a tool that doesn't work and gives them no result.
-*By grouping tools into modes it's easier for the user to guess what a tool does. 
+* The default mode can be carefully designed to get users seeing results right away. 
+* Because the tools on the screen only relate to the task at hand, the user will be less likely to select a tool that doesn't work and gives them no result.
+* By grouping tools into modes it's easier for the user to guess what a tool does. 
 
 Let's look at MarioPaint, note that the mode tool bar is on the bottom and the toolset toolbar is on the top. Also, some items on the mode toolbar are single purpose and only do one thing without having a toolset:
 
