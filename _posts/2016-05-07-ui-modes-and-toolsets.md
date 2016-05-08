@@ -32,6 +32,8 @@ Let's look at MarioPaint, note that the mode tool bar is on the bottom and the t
 
 [Kid Pix](https://jamesfriend.com.au/pce-js/) is similar to MarioPaint but has the mode toolbar on the left and the toolset toolbar on the bottom of the screen. 
 
-So, here is a UI wireframe of what that could look like for a Sugar font editor activity. I'll expand on this Idea more in my next blog post. 
+![Kid Pix!](http://i.imgur.com/jF1CZJf.jpg)
+
+So, here is a UI wireframe of what that could look like for a Sugar font editor activity. I'll expand on this idea more in my next blog post. 
 
 ![wireframe of the 'Workspaces and Toolsets' UI concept ](files/img/wireframe_concept_01_basic.svg)
