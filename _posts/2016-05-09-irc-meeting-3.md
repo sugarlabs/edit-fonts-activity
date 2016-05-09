@@ -5,7 +5,7 @@ category: article
 author: Yash Agarwal
 ---
 
-Eli and I met on IRC today to discuss the further details. 
+Eli and I met on IRC today to discuss the further tasks. 
 Logs are available at [here](http://meeting.sugarlabs.org/sugar-meeting/2016-05-09)
 
 We discussed about the following UI mocks that Eli made
