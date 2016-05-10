@@ -6,8 +6,7 @@ author: Dave Crossland
 ---
 
 Responding to Eli's first wireframe, I knocked it about to make this mockup which I think follows more closely the Sugar HIG layout, with 
-
-![DC Wireframe: Sugar HIG Layout](wireframe_concept_02_hig.svg)
+![DC Wireframe: Sugar HIG Layout](files/img/wireframe_concept_02_hig.svg)
 
 Essentially I implied a few things:
 
