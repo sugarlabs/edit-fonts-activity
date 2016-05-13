@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IRC Meeting 4
+title: IRC Meeting 4, Kerning and Dave's 3 Key Widgets
 category: article
 author: Dave Crossland
 ---
