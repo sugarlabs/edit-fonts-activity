@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IRC Meeting 2
+title: IRC Meeting 2, Dave's Mocks
 category: article
 author: Dave Crossland
 ---

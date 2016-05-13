@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IRC Meeting 3
+title: IRC Meeting 3, Eli's Mocks + How To Make A Font Video
 category: article
 author: Yash Agarwal
 ---
