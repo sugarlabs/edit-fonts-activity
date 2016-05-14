@@ -47,6 +47,7 @@ Here is v2, with color and sound:
 <iframe width="420" height="315" src="https://www.youtube-nocookie.com/embed/bJnelIxC6gM" frameborder="0" allowfullscreen></iframe>
 
 Here is a UI wireframe of what mode/toolset could look like for a font editing Sugar Activity.
+This is made with Inkscape and is the source SVG if you want to make your own versions :) 
 I'll expand on this idea more in my next blog post. 
 
 ![wireframe of the 'Workspaces and Toolsets' UI concept ](files/img/wireframe_concept_01_basic.svg)
