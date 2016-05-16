@@ -1,42 +1,42 @@
-# Sugar Font Editor Activity
+# Sugar Activity: Edit Fonts
 
 Live Site: <http://sugarlabs.github.io/edit-fonts-activity/>
 
 ## How To Add New Posts
 
-See Jekyll documentation at <https://jekyllrb.com/docs/frontmatter/> and <https://jekyllrb.com/docs/posts/>
+<https://jekyllrb.com/docs/frontmatter/>
 
-### Local Editing
-
-Install Jekyll and then from the root directory run
-
-    jekyll serve  --incremental
-
-If there are any errors with the Jeykll configuration, templates, etc, then you will read about them in the output. 
-To be sure you can run
-
-    jekyll hyde
-
-Then visit <http://127.0.0.1:4000/edit-fonts-activity/> and each time you save a file in the repo, the site will be rebuilt and you can hit refresh to see the results.
+<https://jekyllrb.com/docs/posts/>
 
 ### Live Editing
 
-* Visit <https://github.com/sugarlabs/edit-fonts-activity/new/gh-pages/_posts>
+* Visit <https://github.com/sugarlabs/edit-fonts-activity/new/gh-pages/_posts> and click the `New File` button
 * Name the file `YYYY-MM-DD-short-page-url-name.md`
+* Author your content with markdown
 * Add a [frontmatter](https://jekyllrb.com/docs/frontmatter/) similar to:
 
-```
----
-layout: post
-title: Blog Post Title in Camel Case
-category: article
-author: Your Name
----
-```
+    ---
+    layout: post
+    title: Blog Post Title in Camel Case
+    category: article
+    author: Your Name
+    ---
 
-* Author your content with markdown
+### Local Editing
 
+Install Jekyll: <https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/>
 
+If there are any errors with the Jeykll configuration, templates, etc, then you will read about them in the output. 
+To be sure you can run the following commands to ensure all packages are updated, and then run jeykll's checker:
+
+    bundle update;
+    jekyll hyde;
+
+To run a local web server, from the root directory run:
+
+    bundle exec jekyll serve  --incremental
+
+Then visit <http://127.0.0.1:4000/edit-fonts-activity/> and each time you save a file in the repo, the site will be rebuilt and you can hit refresh to see the results.
 
 ## Licensing
 
