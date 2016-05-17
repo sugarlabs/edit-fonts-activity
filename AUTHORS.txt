@@ -3,8 +3,10 @@
 # See the latter for an explanation.
 # 
 # Names should be added to this file as:
-# Name or Organization <email address>
+# Name or Organization <email address> <github username url>
 
 One Laptop per Child
 Simon Schampijer
-Understanding Limited <dave@understandinglimited.com>
+Understanding Limited <dave@understandinglimited.com> <https://github.com/davelab6>
+Yash Agarwal <agrwal.ysh94@gmail.com> <https://github.com/YashAgarwal>
+Eli Heuer <eliheuer@gmail.com> <https://github.com/eliheuer>
