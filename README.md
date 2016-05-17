@@ -4,9 +4,8 @@ Live Site: <http://sugarlabs.github.io/edit-fonts-activity/>
 
 ## How To Add New Posts
 
-<https://jekyllrb.com/docs/frontmatter/>
-
-<https://jekyllrb.com/docs/posts/>
+* Introduction to Jekyll posts: <https://jekyllrb.com/docs/posts/>
+* Key concept: <https://jekyllrb.com/docs/frontmatter/>
 
 ### Live Editing
 
