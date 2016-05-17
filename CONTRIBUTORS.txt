@@ -7,8 +7,9 @@
 # name or J's organization's name should be added to AUTHORS.txt
 #
 # Names should be added to this file as:
-# Name <email address>
+# Name <email address>  <github username url>
 
-Dave Crossland <dave@lab6.com> https://github.com/davelab6
-Yash Agarwal <agrwal.ysh94@gmail.com> https://github.com/YashAgarwal
-Eli Heuer <eliheuer@gmail.com> https://github.com/eliheuer
+Gonzalo Odiard  <https://github.com/godiard>
+Dave Crossland <dave@lab6.com> <https://github.com/davelab6>
+Yash Agarwal <agrwal.ysh94@gmail.com> <https://github.com/YashAgarwal>
+Eli Heuer <eliheuer@gmail.com> <https://github.com/eliheuer>
