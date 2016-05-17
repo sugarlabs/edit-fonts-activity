@@ -15,12 +15,14 @@ Live Site: <http://sugarlabs.github.io/edit-fonts-activity/>
 * Author your content with markdown
 * Add a [frontmatter](https://jekyllrb.com/docs/frontmatter/) similar to:
 
-    ---
-    layout: post
-    title: Blog Post Title in Camel Case
-    category: article
-    author: Your Name
-    ---
+```yaml
+---
+layout: post
+title: Blog Post Title in Camel Case
+category: article
+author: Your Name
+---
+```
 
 ### Local Editing
 
