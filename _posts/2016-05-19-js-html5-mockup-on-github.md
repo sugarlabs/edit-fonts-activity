@@ -21,6 +21,10 @@ Then clone my mock-up into the Sugarizer activities folder:
 
 `git clone https://github.com/eliheuer/EditFontsMockUpJS.activity.git`
 
+Update the file activities.json of the Sugarizer directory: add a new line for your activity. Update id, name and directory values on this new line:
+
+`{"id": "org.sugarlabs.EditFontsMockUpJS", "name": "Edit Fonts Mock Up JS", "version": 1, "directory": "activities/EditFontsMockUpJS.activity", "icon": "activity/activity-icon.svg", "favorite": true, "activityId": null},`
+
 To run Sugarizer on your PC (GNU Linux/Mac OS/Windows), close any running instances of Chrome and re-launch it using the command line:
 
 `chrome --allow-file-access-from-files index.html`
