@@ -1,6 +1,6 @@
 ---
 layout: post
-title: My JS/HTML5 Mock-Up is on GitHub
+title: My JS/HTML5 Mock-up is on GitHub
 category: article
 author: Eli Heuer
 ---
