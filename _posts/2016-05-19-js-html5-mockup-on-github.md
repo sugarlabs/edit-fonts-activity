@@ -31,4 +31,6 @@ To run Sugarizer on your PC (GNU Linux/Mac OS/Windows), close any running instan
 
 In the below screenshot(GNU Nano on the right) I have set a bash alias so I just type `xo` from anywhere in the terminal to launch sugarizer:
 
+`alias xo="google-chrome --allow-file-access-from-files ~/gsoc/sugarizer/index.html"`
+
 ![Eli's bashrc setup](files/img/elis_sugarizer_setup.png)
