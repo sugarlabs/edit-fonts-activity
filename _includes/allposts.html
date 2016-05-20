@@ -4,9 +4,14 @@
   <span class="allposts-date">
     {{ post.date | date: "%Y-%m-%d" }}
   </span>
+  <span class="allposts-author">
+    {{ post.author }}
+  </span>
+  <span class="allposts-link">
   <a href="{{ site.baseurl }}{{ post.url }}">
     {{ post.title }}
   </a>
+  </span>
 </li>
 {% endfor %}
 </ul>

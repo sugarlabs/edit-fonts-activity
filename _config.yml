@@ -2,13 +2,12 @@ title:            Sugar Font Editor Activity
 tagline:          Kids Make Fonts
 description:      Kids Make Fonts
 canonical:        https://sugarlabs.github.io/edit-fonts-activity
-url:              https://sugarlabs.github.io/edit-fonts-activity
 baseurl:          /edit-fonts-activity
 
 # Owner/author information
 owner:
   name:           Sugar Font Editor Activity Authors
-  bio:            Google Summer of Code 2016 Student Yash Agarwal, Mentors Eli Heuer and Dave Crossland
+  bio:            "Google Summer of Code 2016 Student Yash Agarwal, Mentors Eli Heuer and Dave Crossland"
   email:          sugar-devel@lists.sugarlabs.org
   twitter:        sugarlabs
   github:         http://github.com/sugarlabs
@@ -60,3 +59,6 @@ permalink:   :title
 
 include: [".htaccess"]
 exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "vendor"]
+
+gems:
+  - jekyll-feed 
