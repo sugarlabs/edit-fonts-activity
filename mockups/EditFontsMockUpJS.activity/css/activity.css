@@ -1,0 +1,70 @@
+#main-toolbar #activity-button {
+  background-image: url(../activity/activity-icon.svg);
+}
+
+body {
+    font-size: 250%;
+    text-align: center;
+
+}
+
+h1 {
+    font-size: 800%;
+    color:   #212121;
+}
+
+h2 {
+    color:   #212121;
+}
+
+h3 {
+  margin-top: 18px;
+  color:   #212121;
+}
+
+.toolbar {
+  text-align: left;
+}
+
+#canvas {
+  background-color:  #546e7a;
+}
+
+.glyph-picker {
+  border: none;
+  background-color:  #b0bec5;
+  width:100%;
+  height: 105px;
+}
+
+.glyph {
+  display: inline-block;
+  margin: 15px 0%;
+  border: 2px solid black;
+	border-color: #212121;
+  background-color:  #cfd8dc;
+  width:75px;
+  height: 75px;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}
+
+.drawing-canvas {
+  display: inline-block;
+  background-color:  #78909c;
+  width:100%;
+  height: 60%;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}
+
+.type-preview {
+  display: inline-block;
+  background-color:  #546e7a;
+  width:100%;
+  height: 25%;
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center; /* align vertical */
+}
