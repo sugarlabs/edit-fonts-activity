@@ -1,8 +1,5 @@
-# toolbar.,py  The toolbars used by ReadEtextsActivity.
-#
-# Copyright (C) 2010, James Simmons.
-# Adapted from code Copyright (C) Red Hat Inc.
-# Copyright (C) 2012, Aneesh Dogra <lionaneesh@gmail.com>
+# -*- coding: utf-8 -*-
+# Copyright (C) 2016, Eli Heuer.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,12 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from gettext import gettext as _
-import re
-
 from gi.repository import Gtk
 from gi.repository import GObject
 
+from gettext import gettext as _
 from sugar3.graphics.toolbutton import ToolButton
 
 class ViewToolbar(Gtk.Toolbar):
