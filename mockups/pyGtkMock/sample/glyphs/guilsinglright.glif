@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="guilsinglright" format="2">
+  <advance width="359"/>
+  <unicode hex="203A"/>
+  <outline>
+    <contour>
+      <point x="319" y="231" type="line"/>
+      <point x="82" y="498" type="line"/>
+      <point x="65" y="480" type="line"/>
+      <point x="136" y="399"/>
+      <point x="209" y="315"/>
+      <point x="281" y="234" type="curve"/>
+      <point x="201" y="156"/>
+      <point x="121" y="77"/>
+      <point x="40" y="0" type="curve"/>
+      <point x="59" y="-20" type="line"/>
+      <point x="111" y="29"/>
+      <point x="162" y="79"/>
+      <point x="214" y="129" type="curve" smooth="yes"/>
+    </contour>
+  </outline>
+</glyph>
