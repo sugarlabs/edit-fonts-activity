@@ -21,6 +21,6 @@ Working as a bike messenger eventually brought me to NYC where I did freelance g
 
 In 2015, I attended the Libre Graphics meeting in Toronto where I briefly meet Dave but spent lots of time talking to Peter Sikking who was working on the Metapolator project. In early 2016 I was doing animation with Python and DrawBot and connected with dave over Twitter and eventually got involved with building this font editor. 
 
-I have a type specimen of all the Libre-typeface I have designed [here](https://github.com/eliheuer/type-specimens/blob/master/Eli_Heuer_Type_Specimen.pdf). most of these typefaces are avaiable on [my github page](https://github.com/eliheuer).  
+I have a type specimen of all the libre-typefaces I have designed [here](https://github.com/eliheuer/type-specimens/blob/master/Eli_Heuer_Type_Specimen.pdf). most of these typefaces are avaiable on [my github page](https://github.com/eliheuer).  
 
 I'm looking forward getting more involved with free software in the future and I'm fascinated by the ways open-source in general is reshaping the global economy. 
