@@ -1,4 +1,4 @@
-# Copyright 2009 Simon Schampijer
+# Copyright 2009 Eli Heuer
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 
 from gi.repository import Gtk
 import logging
@@ -34,6 +33,7 @@ class EditFontsUIMock(activity.Activity):
     def __init__(self, handle):
         """Set up the EditFontsUIMock activity."""
         activity.Activity.__init__(self, handle)
+        self.set_title('Edit Fonts UI Mock-up')
 
         # we do not have collaboration features
         # make the share option insensitive
@@ -57,7 +57,7 @@ class EditFontsUIMock(activity.Activity):
         share_button = ShareButton(self)
         toolbar_box.toolbar.insert(share_button, -1)
         share_button.show()
-        
+
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
