@@ -5,7 +5,7 @@ category: profile
 author: Eli Heuer
 ---
 
-![Photo by Levi Mandel](../gh-pages/files/img/eli.jpg)
+![Photo by Levi Mandel](../files/img/eli.jpg)
 
 _Photo by [Levi Mandel](http://levimandel.com/)_
 
