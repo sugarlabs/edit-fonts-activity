@@ -5,7 +5,7 @@ category: article
 author: Eli Heuer
 ---
 
-The JS/HTML5 mock-up I'm working on is now [on GitHub here,](https://github.com/eliheuer/EditFontsMockUpJS.activity) screenshot of my GNOME/Fedora development workspace below:
+The JS/HTML5 mock-up I'm working on is now [live on GitHub here,](https://sugarlabs.github.io/edit-fonts-activity/mockups/EditFontsMockUpJS.activity/) screenshot of my GNOME/Fedora development workspace below:
 
 ![Eli's JS Mockup WIP 001](files/img/elis_js_mockup_wip_001.png)
 
