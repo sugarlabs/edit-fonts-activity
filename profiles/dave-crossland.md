@@ -1,5 +1,5 @@
 ---
-layout: homepage
+layout: profile
 title: "Profile: Dave Crossland"
 category: profile
 author: Dave Crossland
@@ -7,7 +7,7 @@ author: Dave Crossland
 
 ![Rob Savoye and Dave Crossland at FOSDEM 2007](../files/img/2007-02-dc-in-fosdem.jpg)
 
-_February 28, 2007, Rob Savoye, holding his XO-B1 laptop (one of the 400 prototypes made at the time) with Dave Crossland in Brussels at the FOSDEM._
+_February 28, 2007, Rob Savoye (left) and Dave Crossland (right) holding Rob's XO-B1 laptop, one of the 400 prototypes made at the time, in Brussels at the FOSDEM._
 
 # Profile: Dave Crossland
 
