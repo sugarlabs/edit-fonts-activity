@@ -21,13 +21,13 @@ The activity will be following the mode/toolbar UX design as summarized by Dave 
 * Show all the available fonts found in the system font directory
 * Allow the user to install/uninstall fonts
 * Allow to user to make 'collections' within the library
-* * **TODO:** a bit more discussion is required on this front in defining what unistalling/installing fonts and making the 'collections' mean*
+**a bit more discussion is required on this front in defining what unistalling/installing fonts and making the 'collections' mean**
 
 #### 2: A glyph editing interface together with text preview
 
 * a canvas where the user can insert glyphs in the editing workspace by selecting the glyphs from a character tool bar, here is a UI mockup for it made by Dave and Eli
-* ![UI Mockup](files/img/wireframe_concept_01_basic_icons.svg)
-* * **TODO:** The features/functionality of the glyph editing interface have to discussed upon in greater detail keeping the mind the scope and the target audience of this project*
+![UI Mockup](files/img/wireframe_concept_01_basic_icons.svg)
+**The features/functionality of the glyph editing interface have to discussed upon in greater detail keeping the mind the scope and the target audience of this project**
 * as it can be seen in the Mock-UI(above) this window will also contain a live preview box for live testing the font. 
 
 #### 3: A Testing interface
@@ -36,8 +36,8 @@ The activity will be following the mode/toolbar UX design as summarized by Dave 
 * A textbox in which the text is rendered using the font, to get visual feedback. 
 * Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and 
 * Export image button, to save an image of the rendered textbox
-* *All this will be accompanied with thorough documentation, and...*
-* *code commenting, which will be done hand in hand with development as we develope a better idea of the end goals*
+**All this will be accompanied with thorough documentation, and...**
+**code commenting, which will be done hand in hand with development as we develope a better idea of the end goals**
 
 ### Timeline
 
@@ -60,7 +60,6 @@ Here a few more Mock-UI for the different screens/workspaces
 
 1.3 Complete documentation and organising code if needed according to sugar labs Activity Teams mentioned specification 
 
-_**TODO:** Make a Mock-UI for this mode_
 #### Milestone 2: Glyph Editor Basic Version
 
 2.0 Build the glyph picker class, to select which glyphs to edit
@@ -71,7 +70,7 @@ _**TODO:** Make a Mock-UI for this mode_
 
 ![Image of Glyph Editing Interface](files/img/4.png)
 
-*Time for mid way evaluation: I will finish the above 2 mentioned Milestones before the midway evaluation deadline 27th June. I may be requiring 4-5 days off(weekends are considered as regular working days) in between due to some unavoidable Academic Work during that period. This will not in anyway affect the project completion and the lost time will be compensated for in the weeks after it.* 
+**Time for mid way evaluation: I will finish the above 2 mentioned Milestones before the midway evaluation deadline 27th June. I may be requiring 4-5 days off in between due to some unavoidable Academic Work during that period. This will not in anyway affect the project completion and the lost time will be compensated for in the weeks after it.** 
 
 #### Milestone 3: The Multi Glyph editing screen together with an live preview feature (also an detailed testing mode)
 
@@ -100,3 +99,6 @@ here is [link](https://pomax.github.io/bezierinfo/#offsetting) describing this
 #### Milestone 6: Packing up things/Catching up with Backlogs/Detailed Documentation 
 
 6.0 This period will act as a buffer time to manage any spillovers from the previous Milestones and for more detailed documentation.
+
+
+
