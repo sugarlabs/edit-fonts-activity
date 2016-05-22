@@ -1,7 +1,0 @@
-[Activity]
-name = Edit Fonts UI Mock
-bundle_id = org.sugarlabs.EditFontsUIMock
-icon = edit-fonts-ui-mock
-exec = sugar-activity EditFontsUIMock.EditFontsUIMock
-activity_version = 1
-license = GPLv3+
