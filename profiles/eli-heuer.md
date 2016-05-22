@@ -13,7 +13,7 @@ _Photo by [Levi Mandel](http://levimandel.com/)_
 
 I started my career as a UI and type designer working in the game industry. We regularly needed to add missing glyphs and alternate styles to our internal bitmap font collection and I would usually take on those projects. I've been hooked on designing typefaces ever since, I find it to be an extremely enjoyable activity. 
 
-I left the game industry for a short career as a bike messenger and delivery cyclist, this allowed me to do design work I found interesting like creating fliers and imagery for my musician friends in the Seattle independent music scene. My time spent as a scrappy part-time freelancer brought me to be interested in free software and libre-fonts. I wanted to do cutting edge design work on old e-waste computers using free software and libre typefaces.
+I left the game industry for a short career as a bike messenger and delivery cyclist, this allowed me to do design work I found interesting like creating fliers and imagery for my musician friends in the Seattle independent music scene. My time spent as a scrappy part-time freelancer brought me to be interested in free software and libre-fonts. I wanted to do cutting edge design work on old e-waste computers using only free software.
 
 Without enrolling I just started showing up at every event I could at the University of Washington visual communication department. Here I was given a USB thumb drive that contained a massive collection of high-quality typefaces with wonderful OpenType features I hadn't seen before with my previous collection of pirated fonts I had downloaded through BitTorrent. 
 
