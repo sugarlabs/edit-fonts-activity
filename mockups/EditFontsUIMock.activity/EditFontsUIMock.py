@@ -1,8 +1,4 @@
-#
-# ReadEtextsActivity2.py  A version of ReadEtextsActivity with better
-# toolbars and other refinements.
-# Copyright (C) 2010  James D. Simmons
-# Copyright (C) 2012  Aneesh Dogra <lionaneesh@gmail.com>
+# Copyright 2009 Simon Schampijer
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,43 +10,68 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os
-import zipfile
-import re
+
 from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Pango
-from sugar3.activity import activity
-from sugar3.graphics import style
-from sugar3.graphics.toolbutton import ToolButton
-from sugar3.graphics.toolbarbox import ToolbarButton
-from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import StopButton
-from sugar3.activity.widgets import EditToolbar
-from sugar3.activity.widgets import ActivityToolbar
-from sugar3.activity.widgets import _create_activity_icon
-from toolbar import ViewToolbar
+import logging
+
 from gettext import gettext as _
 
+from sugar3.activity import activity
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityButton
+from sugar3.activity.widgets import TitleEntry
+from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ShareButton
+from sugar3.activity.widgets import DescriptionItem
 
-class CustomActivityToolbarButton(ToolbarButton):
-    """
-        Custom Activity Toolbar button, adds the functionality to disable or
-        enable the share button.
-    """
-    def __init__(self, activity, shared=False, **kwargs):
-        toolbar = ActivityToolbar(activity, orientation_left=True)
+class EditFontsUIMock(activity.Activity):
+    """EditFontsUIMock class as specified in activity.info"""
 
-        if not shared:
-            toolbar.share.props.visible = False
+    def __init__(self, handle):
+        """Set up the EditFontsUIMock activity."""
+        activity.Activity.__init__(self, handle)
 
-        ToolbarButton.__init__(self, page=toolbar, **kwargs)
+        # we do not have collaboration features
+        # make the share option insensitive
+        self.max_participants = 1
 
-        icon = _create_activity_icon(activity.metadata)
-        self.set_icon_widget(icon)
-        icon.show()
+        # toolbar with the new toolbar redesign
+        toolbar_box = ToolbarBox()
 
+        activity_button = ActivityButton(self)
+        toolbar_box.toolbar.insert(activity_button, 0)
+        activity_button.show()
+
+        title_entry = TitleEntry(self)
+        toolbar_box.toolbar.insert(title_entry, -1)
+        title_entry.show()
+
+        description_item = DescriptionItem(self)
+        toolbar_box.toolbar.insert(description_item, -1)
+        description_item.show()
+
+        share_button = ShareButton(self)
+        toolbar_box.toolbar.insert(share_button, -1)
+        share_button.show()
+        
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbar_box.toolbar.insert(separator, -1)
+        separator.show()
+
+        stop_button = StopButton(self)
+        toolbar_box.toolbar.insert(stop_button, -1)
+        stop_button.show()
+
+        self.set_toolbar_box(toolbar_box)
+        toolbar_box.show()
+
+        # label with the text, make the string translatable
+        label = Gtk.Label(_("Edit Fonts!"))
+        self.set_canvas(label)
+        label.show()
