@@ -14,21 +14,49 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+from gi.repository import Gdk
 from gi.repository import Gtk
-import logging
+from gi.repository import GObject
+import subprocess
+import cairo
+import os
+import time
+
+from sugar3.activity import activity
+from sugar3 import profile
+from sugar3.datastore import datastore
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
+
+from sugar3.graphics.alert import Alert
+
+from toolbar_utils import button_factory, label_factory, separator_factory
+from utils import json_load, json_dump, play_audio_from_file
+from grecord import Grecord
+
+import telepathy
+import dbus
+from dbus.service import signal
+from dbus.gobject_service import ExportedGObject
+from sugar3.presence import presenceservice
+from sugar3.presence.tubeconn import TubeConnection
 
 from gettext import gettext as _
 
-from sugar3.activity import activity
-from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import ActivityButton
-from sugar3.activity.widgets import TitleEntry
-from sugar3.activity.widgets import StopButton
-from sugar3.activity.widgets import ShareButton
-from sugar3.activity.widgets import DescriptionItem
+from game import Game
+
+import logging
+_logger = logging.getLogger('story-activity')
+
+
+SERVICE = 'org.sugarlabs.EditFonts'
+IFACE = SERVICE
+
+
 
 class EditFonts(activity.Activity):
-    """EditFonts class as specified in activity.info"""
+    """Edit Fonts"""
 
     def __init__(self, handle):
         """Set up the EditFonts activity."""
