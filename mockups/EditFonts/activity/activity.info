@@ -1,0 +1,7 @@
+[Activity]
+name = Edit Fonts
+bundle_id = org.sugarlabs.EditFonts
+icon = edit-fonts
+exec = sugar-activity EditFonts.EditFonts
+activity_version = 1
+license = GPLv3+
