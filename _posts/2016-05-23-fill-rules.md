@@ -90,6 +90,7 @@ def draw(output, evenodd=False):
 draw("2016-05-23-fill-example-1.png")
 draw("2016-05-23-fill-example-2.png", evenodd=True)
 ```
+
 Here is 2016-05-23-fill-example-1.png:
 
 ![cairo default fill](files/img/2016-05-23-fill-example-1.png)
