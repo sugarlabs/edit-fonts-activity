@@ -90,6 +90,7 @@ def draw(output, evenodd=False):
 draw("2016-05-23-fill-example-1.png")
 draw("2016-05-23-fill-example-2.png", evenodd=True)
 ```
+
 Here is 2016-05-23-fill-example-1.png:
 
 ![cairo default fill](files/img/2016-05-23-fill-example-1.png)
@@ -97,3 +98,5 @@ Here is 2016-05-23-fill-example-1.png:
 And here is 2016-05-23-fill-example-2.png with the "evenodd" fill rule set:
 
 ![cairo evenodd fill](files/img/2016-05-23-fill-example-2.png)
+=======
+While FILL_RULE_WINDING is the rule used for PostScript, a simplified editor for kids should use FILL_RULE_EVEN_ODD and a 'correct directions' method should be auto-applied, so that kids don't have to think about winding directions.
