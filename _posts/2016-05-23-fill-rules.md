@@ -7,11 +7,11 @@ author: Dave Crossland
 
 Yash has already got glyph rendering going!
 
-![contour](files/img/2016-05-23-0.png)
+![contour strokes](files/img/2016-05-23-0.png)
 
 However, when filling the glyph, it isn't rendering the "counter" or white-shape:
 
-![contour](files/img/2016-05-23-1.png)
+![contour filled without counterform](files/img/2016-05-23-1.png)
 
 The reason is that the default "fill rule" is using the "winding directions" of the contours. 
 The pycairo documentation explains,
@@ -98,3 +98,7 @@ Here is 2016-05-23-fill-example-1.png:
 And here is 2016-05-23-fill-example-2.png with the "evenodd" fill rule set:
 
 ![cairo evenodd fill](files/img/2016-05-23-fill-example-2.png)
+
+And with [d959d38](https://github.com/sugarlabs/edit-fonts-activity/commit/d959d38156b95ef19efeec2c9ce5d4e001911c7f) Yash has cracked it!
+
+![contour filled with counterform](files/img/2016-05-23-3.png)
