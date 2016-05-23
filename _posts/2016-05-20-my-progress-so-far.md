@@ -37,7 +37,7 @@ As a history dump it contains some less-relevant and not-project-specific links 
 * <http://wiki.laptop.org/go/Sugar_Activity_Tutorial>
 * <http://en.flossmanuals.net/make-your-own-sugar-activities/>
 * <https://wiki.sugarlabs.org/go/Development_Team/Almanac>
-* <http://www.tortall.net/mu/wiki/CairoTutorial ----imp>
+* <http://www.tortall.net/mu/wiki/CairoTutorial>
 * <https://wiki.sugarlabs.org/go/Activity_Team/Creating_a_New_Activity>
 * <https://wiki.sugarlabs.org/go/Activity_Team/Modifing_an_Activity>
 * <http://activities.sugarlabs.org/en-US/sugar/addon/4050>
