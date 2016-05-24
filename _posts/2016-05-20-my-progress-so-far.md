@@ -56,6 +56,6 @@ This is what I have made so far:
 
 Here is a screenshot for it:
 
-![screenshot of pyGtkMokc](mockups/pic.png)
+![screenshot of pyGtkMokc](mockups/pyGtkMock/pic.png)
 
 In the last IRC meeting we discussed the platform issue, and figured out the right way to move forward is with Sugar Desktop.
