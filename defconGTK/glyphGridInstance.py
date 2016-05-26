@@ -59,6 +59,7 @@ class glyphGridInstance(Gtk.Box):
         for glyphName in self.glyphList:
             
             box= Gtk.Box()
+            print(glyphName)
             glyphBox = renderGlyph(self.font[glyphName], self._GRID_BOX_SIZE, self._GRID_BOX_SIZE)     
             box.add(glyphBox)
             self.grid.attach(box, i, j, 1, 1)

@@ -131,12 +131,12 @@ class EditFonts(activity.Activity):
 
         elementsInGrid = 14*7
 
-        glyphList= completeGlyphList[0:50] 
+        glyphList= completeGlyphList[0:60] 
         
         print(len(glyphList))
 
         #Not Working
-        glyphGrid= glyphGridInstance(font, glyphList)
+        glyphGrid= glyphGridInstance(font, glyphList, 15, 60)
         """
         grid = Gtk.Grid()
         GRID_WIDTH = 14;  #number of columns  
