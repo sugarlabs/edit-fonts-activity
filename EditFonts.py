@@ -104,6 +104,7 @@ class EditFonts(activity.Activity):
         glyph = font['A']
         print(glyph.name)
 
+
         #Starting the Main Canvas Design
 
         #Outermost invisible box  
@@ -131,54 +132,13 @@ class EditFonts(activity.Activity):
 
         elementsInGrid = 14*7
 
-        glyphList= completeGlyphList[0:60] 
+        glyphList= completeGlyphList[0:100] 
         
         print(len(glyphList))
 
         #Not Working
         glyphGrid= glyphGridInstance(font, glyphList, 15, 60)
-        """
-        grid = Gtk.Grid()
-        GRID_WIDTH = 14;  #number of columns  
-        GRID_HEIGHT= len(glyphList)/GRID_WIDTH;  #number of rows
-        GRID_BOX_SIZE = 80;
-        GRID_ROW_SPACING = 10;
-        GRID_COLUMN_SPACING = GRID_ROW_SPACING;
-        
-        grid.set_row_spacing(GRID_ROW_SPACING)
-        grid.set_column_spacing(GRID_COLUMN_SPACING)
-
-        # The alignment keeps the grid center aligned
-        align = Gtk.Alignment(xalign=0.5,
-                              yalign=0.5,
-                              xscale=0,
-                              yscale=0)
-        align.add(grid)
-        #self.set_orientation(Gtk.Orientation.VERTICAL)
-        #print("yay1")
-        #self.add(align)
-        
-        i=0
-        j=0
-        
-        print(glyphList)
-
-        for glyphName in glyphList:
-
-            if(i >= GRID_WIDTH):
-                i=0
-                j+=1
-            box= Gtk.Box()
-            glyphBox = renderGlyph(font[glyphName], GRID_BOX_SIZE, GRID_BOX_SIZE)     
-            box.add(glyphBox)
-            grid.attach(box, i, j, 1, 1)
-            print(str(i) + "," + str(j) + glyphName)
-            i+=1
-
-        print("Done Printing")
-        vbox.pack_start(align, True, True, 0)
-        """
-
+    
         vbox.pack_start(glyphGrid, True, True, 0)
         
         self.set_canvas(vbox)

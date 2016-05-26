@@ -46,11 +46,18 @@ class glyphGridInstance(Gtk.Box):
         self.pack_start(align, True, True, 0)
         
         self.glyphList = glyphList
-        self.font = font  #NOT a good way to do this....
-        
+     
+        self.font =font
+
+        self.h= font.info.ascender - font.info.descender 
+
+        self.b= -font.info.descender
+ 
         self.init_ui()
         print("yay")
 
+
+    
     def init_ui(self):
 
         i=0
@@ -60,7 +67,7 @@ class glyphGridInstance(Gtk.Box):
             
             box= Gtk.Box()
             print(glyphName)
-            glyphBox = renderGlyph(self.font[glyphName], self._GRID_BOX_SIZE, self._GRID_BOX_SIZE)     
+            glyphBox = renderGlyph(self.font[glyphName], self._GRID_BOX_SIZE, self._GRID_BOX_SIZE, self.h, self.b)     
             box.add(glyphBox)
             self.grid.attach(box, i, j, 1, 1)
             print(str(i) + "," + str(j))

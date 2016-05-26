@@ -5,33 +5,41 @@ from defcon import Font
  
 class renderGlyph(Gtk.Box):
 
-    _boxWidth = 100
-    _boxHeight= 100
-
-    def __init__(self, glyph, boxHeight=100, boxWidth=100):
+    def __init__(self, glyph, boxWidth=100, boxHeight=100, fontHeight=500, fontBaselineHeight=300):
         super(renderGlyph, self).__init__()
-        self._boxHeight = boxHeight
-        self._boxWidth = boxWidth
+        self.boxHeight = boxHeight
+        self.boxWidth = boxWidth
+        
+        #bounds = self.glyph.bounds;
+        #self.glyphHeight = bounds[3] - bounds[1]
+        
         self.glyph = glyph
+
+        #The advance width of the glyph
+        self.w  = self.glyph.width;
+        
+        #The difference in the ascender and the descender values
+        self.h= fontHeight
+        
+        #the distance between the baseline and the descender
+        self.b= fontBaselineHeight
+
         self.init_ui()
         
     def init_ui(self):    
         self.da = Gtk.DrawingArea()
         self.da.connect("draw", self.drawGlyph)
-        self.da.set_size_request(self._boxWidth, self._boxHeight)
+        self.da.set_size_request(self.boxWidth, self.boxHeight)
         self.add(self.da)             
         
         #find the bounds of the glyph to normalise the points later
-        bounds = self.glyph.bounds;
-        self.glyphWidth  = bounds[2] - bounds[0]
-        self.glyphHeight = bounds[3] - bounds[1]
 
         self.show_all()
 
     def drawGlyph(self, widget, cr):
         
         # Normalizing the canvas
-        cr.scale(self._boxWidth, self._boxHeight) 
+        cr.scale(self.boxWidth, self.boxHeight) 
         cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
 
         cr.rectangle (0, 0, 1, 1) # Rectangle(x0, y0, x1, y1)
@@ -68,10 +76,14 @@ class renderGlyph(Gtk.Box):
         cr.fill();             
         cr.stroke()
     
+    #define the transformations for the points here
+    
     def X (self, x):
-        t=float(x - self.glyph.bounds[0])/self.glyphWidth
+        t= 0.5 - float(self.w)/(2*self.h) + float(x)/self.h
+        print("X=" + str(t))
         return t
 
     def Y (self, y):
-        t=float(y - self.glyph.bounds[1])/self.glyphHeight
-        return 1-t
+        t= 1- float(self.b)/(self.h) - float(y)/self.h
+        print("Y=" + str(t))
+        return t
