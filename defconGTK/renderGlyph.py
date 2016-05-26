@@ -80,10 +80,10 @@ class renderGlyph(Gtk.Box):
     
     def X (self, x):
         t= 0.5 - float(self.w)/(2*self.h) + float(x)/self.h
-        print("X=" + str(t))
+        #print("X=" + str(t))
         return t
 
     def Y (self, y):
         t= 1- float(self.b)/(self.h) - float(y)/self.h
-        print("Y=" + str(t))
+        #print("Y=" + str(t))
         return t

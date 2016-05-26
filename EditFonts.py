@@ -49,6 +49,7 @@ from defcon import Font
 #This has all the custom made widgets required for this library
 from defconGTK.renderGlyph import renderGlyph
 from defconGTK.glyphGridInstance import glyphGridInstance
+from defconGTK.characterMap import characterMap
 
 
 class EditFonts(activity.Activity):
@@ -128,18 +129,9 @@ class EditFonts(activity.Activity):
         
         vbox.pack_start(alignHeading, False, False, 30)
 
-        completeGlyphList = font.keys()
-
-        elementsInGrid = 14*7
-
-        glyphList= completeGlyphList[0:100] 
+        CharacterMap = characterMap(font, 10, 1, 'Button')
         
-        print(len(glyphList))
-
-        #Not Working
-        glyphGrid= glyphGridInstance(font, glyphList, 15, 60)
-    
-        vbox.pack_start(glyphGrid, True, True, 0)
+        vbox.pack_start(CharacterMap, False, False, 0)
         
         self.set_canvas(vbox)
         self.show_all()
