@@ -129,9 +129,16 @@ class EditFonts(activity.Activity):
         
         vbox.pack_start(alignHeading, False, False, 30)
 
-        CharacterMap = characterMap(font, 10, 1, 'Button')
+        #using scroll view
+        #CharacterMap = characterMap(font, 15, 10, 'SCROLL')
         
-        vbox.pack_start(CharacterMap, False, False, 0)
+        #using button view
+        #CharacterMap = characterMap(font, 15, 10, 'BUTTON')
+
+        #single line character map for Eli's Layout
+        CharacterMap = characterMap(font, 15, 1, 'BUTTON')
+       
+        vbox.pack_start(CharacterMap, True, True, 0)
         
         self.set_canvas(vbox)
         self.show_all()
