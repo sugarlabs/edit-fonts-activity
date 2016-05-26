@@ -1,4 +1,4 @@
-# Copyright 2016 Eli Heuer
+# Copyright 2016 Yash Agarwal
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,6 +46,11 @@ import cairo
 import math
 from defcon import Font
 
+#This has all the custom made widgets required for this library
+from defconGTK.renderGlyph import renderGlyph
+from defconGTK.glyphGridInstance import glyphGridInstance
+
+
 class EditFonts(activity.Activity):
     """Edit Fonts"""
 
@@ -56,6 +61,8 @@ class EditFonts(activity.Activity):
         # we do not have collaboration features
         # make the share option insensitive
         self.max_participants = 1
+
+        "Toolbar ******starts********"
 
         # toolbar with the new toolbar redesign
         toolbar_box = ToolbarBox()
@@ -89,6 +96,8 @@ class EditFonts(activity.Activity):
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
 
+        "Toolbar ******ends********"
+
         #testing defcon 
         path = "sample"
         font = Font(path)
@@ -108,24 +117,34 @@ class EditFonts(activity.Activity):
 
         pageHeading = Gtk.Label()
         pageHeading.set_markup(HEADING_STRING)
-        
         headingBox.add(pageHeading)
+
         alignHeading = Gtk.Alignment(xalign=0.5,
                               yalign=0.5,
                               xscale=0,
                               yscale=0)
         alignHeading.add(headingBox)
+        
         vbox.pack_start(alignHeading, False, False, 30)
 
-        #Grid Parameters
-        GRID_HEIGHT= 7;   #number of rows
+        completeGlyphList = font.keys()
+
+        elementsInGrid = 14*7
+
+        glyphList= completeGlyphList[0:50] 
+        
+        print(len(glyphList))
+
+        #Not Working
+        glyphGrid= glyphGridInstance(font, glyphList)
+        """
+        grid = Gtk.Grid()
         GRID_WIDTH = 14;  #number of columns  
+        GRID_HEIGHT= len(glyphList)/GRID_WIDTH;  #number of rows
         GRID_BOX_SIZE = 80;
         GRID_ROW_SPACING = 10;
         GRID_COLUMN_SPACING = GRID_ROW_SPACING;
-        GRID_ELEMENT_NUMBER = 100;
-
-        grid = Gtk.Grid()
+        
         grid.set_row_spacing(GRID_ROW_SPACING)
         grid.set_column_spacing(GRID_COLUMN_SPACING)
 
@@ -135,95 +154,33 @@ class EditFonts(activity.Activity):
                               xscale=0,
                               yscale=0)
         align.add(grid)
+        #self.set_orientation(Gtk.Orientation.VERTICAL)
+        #print("yay1")
+        #self.add(align)
+        
+        i=0
+        j=0
+        
+        print(glyphList)
+
+        for glyphName in glyphList:
+
+            if(i >= GRID_WIDTH):
+                i=0
+                j+=1
+            box= Gtk.Box()
+            glyphBox = renderGlyph(font[glyphName], GRID_BOX_SIZE, GRID_BOX_SIZE)     
+            box.add(glyphBox)
+            grid.attach(box, i, j, 1, 1)
+            print(str(i) + "," + str(j) + glyphName)
+            i+=1
+
+        print("Done Printing")
         vbox.pack_start(align, True, True, 0)
+        """
 
-        for j in range(0,GRID_HEIGHT): 
-            for i in range(0,GRID_WIDTH):     
-                da = Gtk.DrawingArea()
-                da.set_size_request(GRID_BOX_SIZE, GRID_BOX_SIZE)
-                box= Gtk.Box();
-                box.pack_start(da, True, True, 0)
-                grid.attach(box, i, j, 1, 1)
-                #position = i*GRID_WIDTH + j
-                #glyph = font[position]
-                data = [glyph, GRID_BOX_SIZE]
-                da.connect('draw', self.glyph_render_event, data)
-
+        vbox.pack_start(glyphGrid, True, True, 0)
+        
         self.set_canvas(vbox)
         self.show_all()
 
-    def glyph_render_event(self, da, cairo_ctx, data):
-
-        BOX_SIZE = data[1]
-        glyph = data[0]
-        bounds = glyph.bounds
-        
-        #Currently the Glyph Rendering method is not Normalised
-        """
-        GLYPH_WIDTH=bounds[2]-bounds[0]
-        GLYPH_HEIGHT=bounds[3]-bounds[1]
-
-        cairo_ctx.set_source_rgb(0, 0, 0)
-        #cairo_ctx.set_line_width(1)
-        cairo_ctx.scale(BOX_SIZE, BOX_SIZE)
-
-        for contour in glyph:
-            
-            #move to initial point
-            point = contour[0]
-            cairo_ctx.move_to(point.x/GLYPH_WIDTH, 1 - point.y/GLYPH_HEIGHT)
-                        
-            for segment in contour.segments:
-                #drawSegment(wid, cr, segment)
-                #first determine type of Segment
-                #print(segment)
-                if len(segment) == 3:
-                    #its a bezier
-                    cairo_ctx.curve_to(segment[0].x/GLYPH_WIDTH, 1 - segment[0].y/GLYPH_HEIGHT, segment[1].x/GLYPH_WIDTH ,1-segment[1].y/GLYPH_HEIGHT ,segment[2].x/GLYPH_WIDTH,1-segment[2].y/GLYPH_HEIGHT)
-
-                elif len(segment) == 1:
-                    #its a line
-                    cairo_ctx.line_to(segment[0].x/GLYPH_WIDTH, 1-segment[0].y/GLYPH_HEIGHT);
-
-                else:
-                    print("Error: Unknown Case Found")            
-                    print(segment)
-
-            #close the contour
-            cairo_ctx.close_path()
-            
-        #fill the contour
-        cairo_ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD);
-        cairo_ctx.fill();             
-        cairo_ctx.stroke()
-        """
-        
-        cairo_ctx.scale (BOX_SIZE, BOX_SIZE) # Normalizing the canvas
-        cairo_ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
-    
-        pat = cairo.LinearGradient (0.0, 0.0, 0.0, 1.0)
-        pat.add_color_stop_rgba (1, 0.7, 0, 0, 0.5) # First stop, 50% opacity
-        pat.add_color_stop_rgba (0, 0.9, 0.7, 0.2, 1) # Last stop, 100% opacity
-
-        cairo_ctx.rectangle (0, 0, 1, 1) # Rectangle(x0, y0, x1, y1)
-        cairo_ctx.set_source (pat)
-        cairo_ctx.fill ()
-
-        cairo_ctx.translate (0.1, 0.1) # Changing the current transformation matrix
-        cairo_ctx.set_source_rgb (0.3, 0.2, 0.5) # Solid color
-        cairo_ctx.set_line_width (0.02)
-
-        cairo_ctx.move_to (0, 0)
-        cairo_ctx.line_to (0.5, 0.1) # Line to (x,y)
-        cairo_ctx.curve_to (0.5, 0.2, 0.5, 0.4, 0.2, 0.8) # Curve(x1, y1, x2, y2, x3, y3)
-        cairo_ctx.close_path ()
-
-        cairo_ctx.translate (0.15, 0.15) # Changing the current transformation matrix
-        cairo_ctx.set_source_rgb (0.5, 0.5, 0.5) # Solid color
-        cairo_ctx.set_line_width (0.2)
-        cairo_ctx.move_to (0, 0)
-        cairo_ctx.line_to (0.3, 0.1) # Line to (x,y)
-        cairo_ctx.curve_to (0.3, 0.2, 0.1, 0.1, 0.1, 0.25) # Curve(x1, y1, x2, y2, x3, y3)
-        cairo_ctx.close_path ()
-        cairo_ctx.fill ()
-        cairo_ctx.stroke ()
