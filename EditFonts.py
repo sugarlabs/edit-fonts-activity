@@ -99,47 +99,52 @@ class EditFonts(activity.Activity):
 
         "Toolbar ******ends********"
 
-        #testing defcon 
-        path = "sample"
-        font = Font(path)
-        glyph = font['A']
-        print(glyph.name)
+        #testing defcon
+        # path = "sample"
+        # font = Font(path)
+        # glyph = font['A']
+        # print(glyph.name)
 
+        for ufo_input_filename in os.listdir('.'):
+            if not ufo_input_filename.endswith('.ufo'):
+                continue # skip non-ufo files
+            font = Font(ufo_input_filename)
+            glyph = font['A']
+            print(glyph.name)
 
         #Starting the Main Canvas Design
 
-        #Outermost invisible box  
+        #Outermost invisible box
         #this will be added to the canvas later
         vbox = Gtk.VBox(homogeneous=False, spacing=8)
-        
-        #Making the Page Heading
-        headingBox = Gtk.Box()
 
-        HEADING_STRING = "<span foreground='black' size='20000' font='Cantarell' font_weight='bold'>Character Map</span>"
-
-        pageHeading = Gtk.Label()
-        pageHeading.set_markup(HEADING_STRING)
-        headingBox.add(pageHeading)
-
-        alignHeading = Gtk.Alignment(xalign=0.5,
-                              yalign=0.5,
-                              xscale=0,
-                              yscale=0)
-        alignHeading.add(headingBox)
-        
-        vbox.pack_start(alignHeading, False, False, 30)
+        # #Making the Page Heading
+        # headingBox = Gtk.Box()
+        #
+        # HEADING_STRING = "<span foreground='black' size='20000' font='Cantarell' font_weight='bold'>Character Map</span>"
+        #
+        # pageHeading = Gtk.Label()
+        # pageHeading.set_markup(HEADING_STRING)
+        # headingBox.add(pageHeading)
+        #
+        # alignHeading = Gtk.Alignment(xalign=0.5,
+        #                       yalign=0.5,
+        #                       xscale=0,
+        #                       yscale=0)
+        # alignHeading.add(headingBox)
+        #
+        # vbox.pack_start(alignHeading, False, False, 30)
 
         #using scroll view
         #CharacterMap = characterMap(font, 15, 10, 'SCROLL')
-        
+
         #using button view
         #CharacterMap = characterMap(font, 15, 10, 'BUTTON')
 
         #single line character map for Eli's Layout
-        CharacterMap = characterMap(font, 15, 1, 'BUTTON')
-       
+        CharacterMap = characterMap(font, 10, 1, 'BUTTON')
+
         vbox.pack_start(CharacterMap, True, True, 0)
-        
+
         self.set_canvas(vbox)
         self.show_all()
-
