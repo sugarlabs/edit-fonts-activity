@@ -36,4 +36,4 @@ after_success:
 #   file: "FILE TO UPLOAD"
 #   skip_cleanup: true
 #   on:
-    tags: true
+#tags: true
