@@ -24,9 +24,9 @@ install:
 script: 
   - flake8 sugar-build/activities/edit-fonts.activity
 
-after_success:
-  - python setup.py dist_xo
-  - cd ~; ls -alFR
+#after_success:
+#  - python setup.py dist_xo
+#  - cd ~; ls -alFR
 
 # TODO Set this up to auto-deloy tagged commits to the github releases page
 # deploy:
