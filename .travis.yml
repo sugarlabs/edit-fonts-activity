@@ -1,7 +1,7 @@
 language: python
 branches:
   only:
-    - yash-v0
+    - master
 python:
   - "2.7"
 # TODO: See if this helps
@@ -19,14 +19,12 @@ before_install:
 
 install: 
   - cd sugar-build/activities/
-  - git clone https://github.com/YashAgarwal/edit-fonts-activity.git edit-fonts.activity
+  - git clone https://github.com/YashAgarwal/testingTravis.git edit-fonts.activity
 
 script: 
   - flake8 sugar-build/activities/edit-fonts.activity
 
 after_success:
-# TODO: Set up coveralls
-# - coveralls
   - python setup.py dist_xo
   - cd ~; ls -alFR
 
