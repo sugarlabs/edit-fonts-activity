@@ -15,8 +15,8 @@ before_install:
   - "git clone git://github.com/sugarlabs/sugar-build.git"
   - "cd sugar-build"
   - "./osbuild pull"
+  - "./osbuild build"
   - "./osbuild shell"
-  - "build"
 
 install: 
   - "cd sugar-build/activities/"
