@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [
+	<!ENTITY stroke_color "#000">
+	<!ENTITY fill_color "#eee">
+]>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="55"
+   height="54.695999"
+   viewBox="0 0 55 54.696"
+   id="svg2"
+   xml:space="preserve"><metadata
+     id="metadata22"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs20" />
+<g
+     transform="matrix(1.2968515,-0.18023617,0.10513636,0.75648652,-3.221165,2.92517)"
+     id="text3591"
+     style="fill:&fill_color;;fill-opacity:1;stroke:&stroke_color;;stroke-width:2">
+<path
+       d="m 4.0273273,7.128957 25.1943737,0 0,10.16158 -17.551996,0 -0.02624,12.837648 11.221567,0.174045 0,10.409355 -11.195327,0 -0.02624,22.708924 -7.6161377,0 0,-56.291552"
+       id="path3056"/></g>
+
+<g transform="matrix(0.62856326,0,0,0.62117157,19.098582,19.584534)"
+     id="emblem-favorite"
+     style="display:block"><polygon
+       points="51,22.224 39.251,33.68 42.025,49.852 27.5,42.215 12.976,49.852 15.75,33.68 4,22.224 20.237,19.865 27.5,5.149 34.76,19.865 "
+       id="polygon3247"
+       style="fill:&fill_color;;stroke:&stroke_color;;stroke-width:3.5;stroke-linecap:round" /></g></svg>
