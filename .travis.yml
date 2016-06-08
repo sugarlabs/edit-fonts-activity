@@ -18,15 +18,15 @@ before_install:
   - "build"
 
 install: 
-  - cd sugar-build/activities/
-  - git clone https://github.com/YashAgarwal/testingTravis.git edit-fonts.activity
+  - "cd sugar-build/activities/"
+  - "git clone https://github.com/YashAgarwal/testingTravis.git edit-fonts.activity"
 
 script: 
-  - flake8 sugar-build/activities/edit-fonts.activity
+  - "flake8 sugar-build/activities/edit-fonts.activity"
 
 after_success:
-  - python setup.py dist_xo
-  - cd ~; ls -alFR
+  - "python setup.py dist_xo"
+  - "cd ~; ls -alFR"
   
 
 # TODO Set this up to auto-deloy tagged commits to the github releases page
