@@ -1,5 +1,7 @@
 # Edit Fonts Activity
 
+_Testing Travis CI_
+
 A font editor Activity, for GSoC16 project: https://github.com/sugarlabs/edit-fonts-activity
 
 ##New Features
