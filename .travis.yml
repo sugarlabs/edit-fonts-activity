@@ -25,7 +25,8 @@ script:
   - "flake8 edit-fonts.activity"
 
 after_success:
-  - "travis_wait 30 mvn install"
+  - "cd .."
+#  - "travis_wait 30 mvn install"
   - "./osbuild shell"
   - "python setup.py dist_xo"
   - "cd ~; ls -alFR"
