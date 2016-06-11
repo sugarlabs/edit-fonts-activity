@@ -136,7 +136,7 @@ class EditFonts(activity.Activity):
         #CharacterMap = characterMap(font, 15, 10, 'BUTTON')
 
         #single line character map for Eli's Layout
-        CharacterMap = characterMap(font, 15, 1, 'BUTTON')
+        CharacterMap = characterMap(font, 15, 10, 'BUTTON')
        
         vbox.pack_start(CharacterMap, True, True, 0)
         

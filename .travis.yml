@@ -1,4 +1,3 @@
-install: travis_wait 30 mvn install
 sudo: required
 language: python
 branches:
@@ -17,7 +16,6 @@ before_install:
   - "cd sugar-build"
   - "./osbuild pull"
   - "./osbuild build"
-  - "./osbuild shell"
 
 install: 
   - "cd sugar-build/activities/"
@@ -27,6 +25,8 @@ script:
   - "flake8 sugar-build/activities/edit-fonts.activity"
 
 after_success:
+  - "travis_wait 30 mvn install"
+  - "./osbuild shell"
   - "python setup.py dist_xo"
   - "cd ~; ls -alFR"
   
