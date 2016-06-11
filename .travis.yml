@@ -18,11 +18,11 @@ before_install:
   - "./osbuild build"
 
 install: 
-  - "cd sugar-build/activities/"
+  - "cd activities/"
   - "git clone https://github.com/YashAgarwal/testingTravis.git edit-fonts.activity"
 
 script: 
-  - "flake8 sugar-build/activities/edit-fonts.activity"
+  - "flake8 edit-fonts.activity"
 
 after_success:
   - "travis_wait 30 mvn install"
