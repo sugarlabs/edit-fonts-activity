@@ -4,7 +4,7 @@ import math
 from defcon import Font
 from defconGTK.renderGlyph import renderGlyph
 
-class characterMap(Gtk.Box):
+class CharacterMap(Gtk.Box):
 
     #Grid Parameters
     #default values
@@ -16,7 +16,7 @@ class characterMap(Gtk.Box):
     
     def __init__(self,font, w=10, h=80, ui_type= 'BUTTON'):
         
-        super(characterMap, self).__init__()
+        super(CharacterMap, self).__init__()
         
         
         self.GRID_WIDTH = w;  #number of columns  

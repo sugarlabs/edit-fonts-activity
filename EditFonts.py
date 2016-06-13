@@ -49,8 +49,9 @@ from defcon import Font
 #This has all the custom made widgets required for this library
 from defconGTK.renderGlyph import renderGlyph
 from defconGTK.glyphGridInstance import glyphGridInstance
-from defconGTK.characterMap import characterMap
-
+from defconGTK.characterMap import CharacterMap
+from toolbar import BasicToolbar
+import pager
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -63,51 +64,20 @@ class EditFonts(activity.Activity):
         # make the share option insensitive
         self.max_participants = 1
 
-        "Toolbar ******starts********"
-
-        # toolbar with the new toolbar redesign
-        toolbar_box = ToolbarBox()
-
-        activity_button = ActivityButton(self)
-        toolbar_box.toolbar.insert(activity_button, 0)
-        activity_button.show()
-
-        title_entry = TitleEntry(self)
-        toolbar_box.toolbar.insert(title_entry, -1)
-        title_entry.show()
-
-        description_item = DescriptionItem(self)
-        toolbar_box.toolbar.insert(description_item, -1)
-        description_item.show()
-
-        share_button = ShareButton(self)
-        toolbar_box.toolbar.insert(share_button, -1)
-        share_button.show()
-
-        separator = Gtk.SeparatorToolItem()
-        separator.props.draw = False
-        separator.set_expand(True)
-        toolbar_box.toolbar.insert(separator, -1)
-        separator.show()
-
-        stop_button = StopButton(self)
-        toolbar_box.toolbar.insert(stop_button, -1)
-        stop_button.show()
-
+        toolbar_box = BasicToolbar(self)
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
-
-        "Toolbar ******ends********"
 
         #testing defcon 
         path = "sample"
         font = Font(path)
         glyph = font['A']
         print(glyph.name)
-
-
         #Starting the Main Canvas Design
 
+        PAGE_MANAGER.font = font
+        
+        """
         #Outermost invisible box  
         #this will be added to the canvas later
         vbox = Gtk.VBox(homogeneous=False, spacing=8)
@@ -136,10 +106,11 @@ class EditFonts(activity.Activity):
         #CharacterMap = characterMap(font, 15, 10, 'BUTTON')
 
         #single line character map for Eli's Layout
-        CharacterMap = characterMap(font, 15, 10, 'BUTTON')
+        characterMap = CharacterMap(font, 15, 10, 'BUTTON')
        
-        vbox.pack_start(CharacterMap, True, True, 0)
-        
-        self.set_canvas(vbox)
+        vbox.pack_start(characterMap, True, True, 0)
+        """
+
+        self.set_canvas(PAGE_MANAGER)
         self.show_all()
 

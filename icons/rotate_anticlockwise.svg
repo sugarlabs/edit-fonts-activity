@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 13.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="55px"
+   height="55px"
+   viewBox="0 0 55 55"
+   enable-background="new 0 0 55 55"
+   xml:space="preserve"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="rotate_anticlockwise.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"><metadata
+   id="metadata14"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+   id="defs12"><inkscape:perspective
+     sodipodi:type="inkscape:persp3d"
+     inkscape:vp_x="0 : 27.5 : 1"
+     inkscape:vp_y="0 : 1000 : 0"
+     inkscape:vp_z="55 : 27.5 : 1"
+     inkscape:persp3d-origin="27.5 : 18.333333 : 1"
+     id="perspective16" /></defs><sodipodi:namedview
+   inkscape:window-height="976"
+   inkscape:window-width="1680"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0.0"
+   guidetolerance="10.0"
+   gridtolerance="10.0"
+   objecttolerance="10.0"
+   borderopacity="1.0"
+   bordercolor="#666666"
+   pagecolor="#ffffff"
+   id="base"
+   showgrid="false"
+   inkscape:zoom="8.3636364"
+   inkscape:cx="27.5"
+   inkscape:cy="27.5"
+   inkscape:window-x="0"
+   inkscape:window-y="24"
+   inkscape:current-layer="svg2" />
+
+<g
+   id="Undo"
+   transform="matrix(0,-1,1,0,0.975043,54.158)">
+	<g
+   display="inline"
+   id="g5"
+   style="display:inline">
+		<polyline
+   points="    22.903,27.523 15.091,20.935 22.903,14.344   "
+   id="polyline7"
+   style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round;stroke-linejoin:round" />
+		<path
+   d="M 15.091,20.935 L 32.345,20.935 C 37.038,20.935 40.879,24.776 40.879,29.469 C 40.879,34.162 40.983652,31.904174 40.83413,38.838957"
+   id="path9"
+   style="fill:none;stroke:#ffffff;stroke-width:2.98670006;stroke-linecap:round"
+   sodipodi:nodetypes="ccsc" />
+	</g>
+</g>
+</svg>
