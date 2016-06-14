@@ -12,7 +12,7 @@ PAGE_MANAGER = None
 
 class EditorPage(Gtk.Box):
     """
-    This Class Creates the "Font:<familyName>" Page that loads up on clicking any Font
+    This Class Creates the "Let's Edit Font:<familyName>" Page that loads up on clicking any Glyph in the Character Map or when the edit font button is clicked on the Font Summary page
     """
 
     def __init__(self, pageManager, font, glyphName = 'A'):

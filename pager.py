@@ -17,12 +17,14 @@ class PageManager(Gtk.Notebook):
         if font:
             #go to the font info page
             self.append_page(SummaryPage(self,self.font),Gtk.Label('Font Summary'))
+
             #self.append_page(Gtk.Box(),Gtk.Label('Font Info'))
               
         else:
             #go to the create new font page
             #self.append_page(CreateNewFont(),Gtk.Label('Create New Font'))  
-            self.append_page(Gtk.Box(),Gtk.Label('Create New Font'))  
+            self.append_page(Gtk.Box(),Gtk.Label('Create New Font'))
+
             
     def startEditor(glyphName = 'A'):        
         #start the Editor View
@@ -30,6 +32,7 @@ class PageManager(Gtk.Notebook):
         self.remove_page(n)
         self.insert_page(EditorPage(self,self.font,glyphName),Gtk.Label('Editor View'),n)
         self.set_current_page(n)
+
 
 
 PAGE_MANAGER = PageManager()
