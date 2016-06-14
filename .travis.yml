@@ -26,8 +26,7 @@ script:
 
 after_success:
   - "cd .."
-#  - "travis_wait 30 mvn install"
-  - "echo "cd activities/edit-fonts.activity; python setup.py dist_xo" | ./osbuild shell"
+  - "echo \"cd activities/edit-fonts.activity; python setup.py dist_xo\" | ./osbuild shell"
   - "cd ~; ls -alFR"
   
 
