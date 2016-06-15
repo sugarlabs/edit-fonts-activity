@@ -51,7 +51,7 @@ from defconGTK.renderGlyph import renderGlyph
 from defconGTK.glyphGridInstance import glyphGridInstance
 from defconGTK.characterMap import CharacterMap
 from toolbar import BasicToolbar
-import pager
+#import pager
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -75,9 +75,8 @@ class EditFonts(activity.Activity):
         print(glyph.name)
         #Starting the Main Canvas Design
 
-        PAGE_MANAGER.font = font
+        #PAGE_MANAGER.font = font
         
-        """
         #Outermost invisible box  
         #this will be added to the canvas later
         vbox = Gtk.VBox(homogeneous=False, spacing=8)
@@ -109,8 +108,8 @@ class EditFonts(activity.Activity):
         characterMap = CharacterMap(font, 15, 10, 'BUTTON')
        
         vbox.pack_start(characterMap, True, True, 0)
-        """
+        
 
-        self.set_canvas(PAGE_MANAGER)
+        self.set_canvas(vbox)
         self.show_all()
 
