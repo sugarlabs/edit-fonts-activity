@@ -47,11 +47,13 @@ import math
 from defcon import Font
 
 #This has all the custom made widgets required for this library
-from defconGTK.renderGlyph import renderGlyph
-from defconGTK.glyphGridInstance import glyphGridInstance
-from defconGTK.characterMap import CharacterMap
+from defconGTK.summaryPage import SummaryPage
+from defconGTK.editorPage import EditorPage
+
 from toolbar import BasicToolbar
 #import pager
+
+PAGE = {"EDITOR":1 , "SUMMARY":0 }
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -69,12 +71,22 @@ class EditFonts(activity.Activity):
         toolbar_box.show()
 
         #testing defcon 
-        path = "sample"
-        font = Font(path)
-        glyph = font['A']
-        print(glyph.name)
-        #Starting the Main Canvas Design
+        self.main_path = "sample"
+        self.main_font = Font(self.main_path)
+       
+        self.glyphName = 'A'
 
+        #Starting the Main Canvas Design
+        #a gtk notebook object will manga all the pages of the application for this activity
+
+        self.notebook= Gtk.Notebook()
+        
+        self.notebook.set_show_tabs(False)
+
+        self.create_all_pages()
+        self.set_page("SUMMARY")
+
+        """
         #PAGE_MANAGER.font = font
         
         #Outermost invisible box  
@@ -109,7 +121,36 @@ class EditFonts(activity.Activity):
        
         vbox.pack_start(characterMap, True, True, 0)
         
-
-        self.set_canvas(vbox)
+        """
+        self.set_canvas(self.notebook)
         self.show_all()
 
+
+    def create_all_pages(self):
+        
+        for pageName, pageNumber in PAGE.iteritems():
+            self.create_page(pageName)
+
+    def set_page(self, pageName):
+
+        self.create_page(pageName)
+        
+        if pageName == "SUMMARY":
+            self.notebook.set_current_page(PAGE[pageName])
+        
+        elif pageName == "EDITOR":
+            self.notebook.set_current_page(PAGE[pageName])
+        
+    def create_page(self, pageName):
+
+        if pageName == "SUMMARY":
+            self.summary_page = SummaryPage(self)
+            self.summary_page.set_border_width(10)
+            self.notebook.remove_page(PAGE[pageName])
+            self.notebook.insert_page(self.summary_page, Gtk.Label("Summary Page") , PAGE[pageName])
+            
+        elif pageName == "EDITOR":
+            self.editor_page = EditorPage(self)
+            self.editor_page.set_border_width(10)
+            self.notebook.remove_page(PAGE[pageName])
+            self.notebook.insert_page(self.editor_page, Gtk.Label("Summary Page") , PAGE[pageName])

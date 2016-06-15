@@ -54,9 +54,6 @@ class glyphGridInstance(Gtk.Box):
         self.b= -font.info.descender
  
         self.init_ui()
-        print("yay")
-
-
     
     def init_ui(self):
 

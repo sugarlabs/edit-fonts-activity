@@ -6,18 +6,17 @@ from defconGTK.customBox import PageHeading, FontInfoBox
 from defconGTK.characterMap import CharacterMap
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-import pager
 
 class SummaryPage(Gtk.Box):
     """
     This Class Creates the "Font:<familyName>" Page that loads up on clicking any Font
     """
 
-    def __init__(self, font):
+    def __init__(self, activity):
         
         super(SummaryPage, self).__init__()        
-        self.font =font
-        PAGE_MANAGER.font = self.font
+        self.activity = activity
+        self.font = activity.main_font
         self._init_ui()
 
     def _init_ui(self):
@@ -44,7 +43,7 @@ class SummaryPage(Gtk.Box):
         self.infoBox = FontInfoBox(self.font)
         self.infoBoxExpander.add(self.infoBox)
 
-        self.characterMap = CharacterMap(self.font, 15, 5, 'BUTTON')
+        self.characterMap = CharacterMap(self, 10, 5, 'SCROLL')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         
@@ -56,7 +55,7 @@ class SummaryPage(Gtk.Box):
         self.vbox.pack_start(Gtk.HSeparator(),
                         False, False, 0)
 
-        self.vbox.pack_start(self.characterMap, False, False, 30)
+        self.vbox.pack_start(self.characterMap, True, True, 30)
 
         self.show_all()
 
@@ -116,29 +115,11 @@ class SummaryPage(Gtk.Box):
         return frame
 
     def _clickDelete(self, handle):
-        #NOT WORKING
-        dialog = Gtk.MessageDialog(transient_for=self.window,
-                                   modal=True,
-                                   destroy_with_parent=True,
-                                   message_type=Gtk.MessageType.INFO,
-                                   buttons=Gtk.ButtonsType.OK,
-                                   text="You just clicked the Delete Button: function yet to be written!")
-        dialog.run()
-        dialog.destroy()
-
+        pass
     def _clickEdit(self, handle):
         #create a new page
-        PAGE_MANAGER.startEditor()
+        self.activity.set_page("EDITOR")
 
     def _clickInstall(self, handle):
-        #NOT WORKING
-        dialog = Gtk.MessageDialog(transient_for=self.window,
-                                   modal=True,
-                                   destroy_with_parent=True,
-                                   message_type=Gtk.MessageType.INFO,
-                                   buttons=Gtk.ButtonsType.OK,
-                                   text="You just clicked the Install Button: function yet to be written!")
-        dialog.run()
-        dialog.destroy()
-     
+        pass
 
