@@ -19,7 +19,7 @@ before_install:
 
 install: 
   - "cd activities/"
-  - "git clone https://github.com/YashAgarwal/testingTravis.git ./EditFonts.activity"
+  - "git clone https://github.com/YashAgarwal/edit-fonts-activity.git ./EditFonts.activity"
 
 script: 
   - "flake8 edit-fonts.activity"
