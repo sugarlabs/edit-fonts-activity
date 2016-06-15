@@ -15,13 +15,5 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-try:
-    from sugar.activity import bundlebuilder
-    bundlebuilder.start()
-except ImportError:
-    import os
-    os.system("find ./ | sed 's,^./,EditFonts.activity/,g' > MANIFEST")
-    os.chdir('..')
-    os.system('zip -r EditFonts.xo EditFonts.activity')
-    os.system('mv EditFonts.xo ./EditFonts.activity')
-    os.chdir('EditFonts.activity')
+from sugar.activity import bundlebuilder
+bundlebuilder.start()

@@ -14,7 +14,7 @@ class CharacterMap(Gtk.Box):
     GRID_ROW_SPACING = 5
     GRID_COLUMN_SPACING = 5
     
-    def __init__(self,font, w=10, h=80, ui_type= 'BUTTON'):
+    def __init__(self, pageHandle, w=10, h=80, ui_type= 'BUTTON'):
         
         super(CharacterMap, self).__init__()
         
@@ -25,10 +25,10 @@ class CharacterMap(Gtk.Box):
         self.GRID_ROW_SPACING = 5;
         self.GRID_COLUMN_SPACING = self.GRID_ROW_SPACING;
         
-        
-        self.font =font
-        self.h= font.info.ascender - font.info.descender 
-        self.b= -font.info.descender
+        self.pageHandle = pageHandle 
+        self.font = self.pageHandle.font
+        self.h= self.font.info.ascender - self.font.info.descender 
+        self.b= -self.font.info.descender
 
         self.glyphList=self.font.keys()
         self.marker=0    
@@ -47,6 +47,7 @@ class CharacterMap(Gtk.Box):
             self.init_ui_scrollable()
             self.align.add(self.grid)
             scrolled_window = Gtk.ScrolledWindow()
+            scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
             scrolled_window.set_border_width(10)    
             scrolled_window.add_with_viewport(self.align)
             self.pack_start(scrolled_window, True, True, 0)
@@ -75,17 +76,31 @@ class CharacterMap(Gtk.Box):
 
         self.grid.attach(self.backButton, 0,self.GRID_HEIGHT/2, 1, 1)
         self.grid.attach(self.nextButton, self.GRID_WIDTH + 2 ,self.GRID_HEIGHT/2, 1, 1)
-          
+        
+
+
         i=1
         j=0
         
-        print("diplaying glyphs " + str(self.marker) + " to " + str(self.marker+self.GRID_HEIGHT*self.GRID_WIDTH))
+        #print("diplaying glyphs " + str(self.marker) + " to " + str(self.marker+self.GRID_HEIGHT*self.GRID_WIDTH))
         for glyphName in self.glyphList[self.marker:self.marker+self.GRID_HEIGHT*self.GRID_WIDTH]:
             
-            box= Gtk.Box()
-            #print(glyphName)
+            box= Gtk.VBox()
+            box.pack_start(Gtk.Label(self._shorten(glyphName)), True, True, 2)
+            button = Gtk.Button()
+            button.connect("clicked", self._glyphClicked, glyphName)
             glyphBox = renderGlyph(self.font[glyphName], self.GRID_BOX_SIZE, self.GRID_BOX_SIZE, self.h, self.b)     
-            box.add(glyphBox)
+            
+            alignment = Gtk.Alignment(xalign=0.5,
+                                  yalign=0.5,
+                                  xscale=0,
+                                  yscale=0)
+
+            alignment.add(glyphBox)
+
+            button.add(alignment)
+            button.set_relief(Gtk.ReliefStyle.NONE)
+            box.pack_start(button, True, False, 0)
             self.grid.attach(box, i, j, 1, 1)
             #print(str(i) + "," + str(j))
             i+=1
@@ -96,6 +111,47 @@ class CharacterMap(Gtk.Box):
         self.align.add(self.grid)
         self.show_all()
 
+    def init_ui_scrollable(self):
+
+        self.grid = Gtk.Grid()
+        
+        self.grid.set_row_spacing(self.GRID_ROW_SPACING)
+        self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
+
+        i=0
+        j=0
+        
+        for glyphName in self.glyphList:
+            
+            box= Gtk.VBox()
+            box.pack_start(Gtk.Label(self._shorten(glyphName)), True, True, 2)
+            button = Gtk.Button()
+            button.connect("clicked", self._glyphClicked, glyphName)
+            glyphBox = renderGlyph(self.font[glyphName], self.GRID_BOX_SIZE, self.GRID_BOX_SIZE, self.h, self.b)     
+            
+            alignment = Gtk.Alignment(xalign=0.5,
+                                  yalign=0.5,
+                                  xscale=0,
+                                  yscale=0)
+
+            alignment.add(glyphBox)
+
+            button.add(alignment)
+            button.set_relief(Gtk.ReliefStyle.NONE)
+            box.pack_start(button, True, True, 0)
+            
+            self.grid.attach(box, i, j, 1, 1)
+            #print(str(i) + "," + str(j))
+            i+=1
+            if(i >= self.GRID_WIDTH):                
+                i=0
+                j+=1
+
+    def _glyphClicked(self, handle, glyphName):
+
+        self.pageHandle.activity.glyphName = glyphName
+        self.pageHandle.activity.set_page("EDITOR")
+    
     def _updateMarker(self, handle, increment):
         
         #a very stupid way to do this
@@ -111,25 +167,7 @@ class CharacterMap(Gtk.Box):
 
         self.init_ui_button()
         
-    def init_ui_scrollable(self):
 
-        self.grid = Gtk.Grid()
-        
-        self.grid.set_row_spacing(self.GRID_ROW_SPACING)
-        self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
+    def _shorten(self, str):
 
-        i=0
-        j=0
-        
-        for glyphName in self.glyphList:
-            
-            box= Gtk.Box()
-            #print(glyphName)
-            glyphBox = renderGlyph(self.font[glyphName], self.GRID_BOX_SIZE, self.GRID_BOX_SIZE, self.h, self.b)     
-            box.add(glyphBox)
-            self.grid.attach(box, i, j, 1, 1)
-            #print(str(i) + "," + str(j))
-            i+=1
-            if(i >= self.GRID_WIDTH):                
-                i=0
-                j+=1
+        return str
