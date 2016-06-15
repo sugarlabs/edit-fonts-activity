@@ -19,15 +19,15 @@ before_install:
 
 install: 
   - "cd activities/"
-  - "git clone https://github.com/YashAgarwal/testingTravis.git edit-fonts.activity"
+  - "git clone https://github.com/YashAgarwal/testingTravis.git ./EditFonts.activity"
 
 script: 
   - "flake8 edit-fonts.activity"
-
-after_success:
   - "cd .."
-  - "echo \"cd activities/edit-fonts.activity; python setup.py dist_xo\" | ./osbuild shell"
-  - "cd ~; ls -alFR"
+  - "echo 'cd activities/EditFonts.activity; python setup.py dist_xo' | ./osbuild shell"
+
+#after_success:
+#  - "cd ~; ls -alFR"
   
 
 # TODO Set this up to auto-deloy tagged commits to the github releases page
