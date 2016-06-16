@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="uni2090" format="2">
+  <advance width="950"/>
+  <unicode hex="2090"/>
+  <outline>
+    <contour>
+      <point x="328" y="438" type="qcurve"/>
+      <point x="247" y="438"/>
+      <point x="168" y="484"/>
+      <point x="168" y="543" type="qcurve" smooth="yes"/>
+      <point x="168" y="617"/>
+      <point x="319" y="696"/>
+      <point x="463" y="696" type="qcurve" smooth="yes"/>
+      <point x="622" y="696"/>
+      <point x="760" y="569"/>
+      <point x="760" y="428" type="qcurve" smooth="yes"/>
+      <point x="760" y="37" type="line" smooth="yes"/>
+      <point x="760" y="-17"/>
+      <point x="804" y="-59"/>
+      <point x="864" y="-59" type="qcurve"/>
+      <point x="864" y="-143" type="line"/>
+      <point x="625" y="-143" type="line"/>
+      <point x="600" y="-31" type="line"/>
+      <point x="592" y="-31" type="line"/>
+      <point x="548" y="-98"/>
+      <point x="437" y="-158"/>
+      <point x="358" y="-158" type="qcurve" smooth="yes"/>
+      <point x="244" y="-158"/>
+      <point x="102" y="-35"/>
+      <point x="102" y="74" type="qcurve" smooth="yes"/>
+      <point x="102" y="210"/>
+      <point x="283" y="336"/>
+      <point x="471" y="342" type="qcurve" smooth="yes"/>
+      <point x="586" y="346" type="line"/>
+      <point x="586" y="428" type="line" smooth="yes"/>
+      <point x="586" y="533"/>
+      <point x="521" y="600"/>
+      <point x="455" y="600" type="qcurve" smooth="yes"/>
+      <point x="390" y="600"/>
+      <point x="328" y="534"/>
+    </contour>
+    <contour>
+      <point x="393" y="-43" type="qcurve" smooth="yes"/>
+      <point x="483" y="-43"/>
+      <point x="586" y="62"/>
+      <point x="586" y="154" type="qcurve" smooth="yes"/>
+      <point x="586" y="264" type="line"/>
+      <point x="487" y="260" type="line" smooth="yes"/>
+      <point x="383" y="255"/>
+      <point x="283" y="175"/>
+      <point x="283" y="84" type="qcurve" smooth="yes"/>
+      <point x="283" y="-43"/>
+    </contour>
+  </outline>
+</glyph>
