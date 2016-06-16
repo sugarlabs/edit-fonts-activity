@@ -1,4 +1,4 @@
-# Edit Fonts Activity  [![Build Status](https://travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=yash-v0)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
+# Edit Fonts Activity  [![Build Status](https://api.travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=yash-v0)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
 
 A font editor Activity, for GSoC16 project: https://github.com/sugarlabs/edit-fonts-activity
 
