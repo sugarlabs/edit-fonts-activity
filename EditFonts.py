@@ -64,13 +64,14 @@ class EditFonts(activity.Activity):
         """Set up the EditFonts activity."""
         activity.Activity.__init__(self, handle)
 
+        #self.modify_bg(Gtk.StateType.NORMAL,
+        #                        style.Color('#D6EAF8').get_gdk_color())
+
         # we do not have collaboration features
         # make the share option insensitive
         self.max_participants = 1
 
-        """
-        Toolbar
-        """
+        """Toolbar"""
         toolbar_box = ToolbarBox()
 
         activity_button = ActivityButton(self)
@@ -134,19 +135,18 @@ class EditFonts(activity.Activity):
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
 
-        """
-        Toolbar ends here
-        """
+        """Toolbar ends here"""
 
+        """Loading Font"""
+        
         #testing defcon 
         self.main_path = "ufo/sample.ufo"
         self.main_font = Font(self.main_path)
        
         self.glyphName = 'A'
 
-        """
-        Starting the Main Canvas Design
-        """
+        """Starting the Main Canvas Design"""
+        
         #a gtk notebook object will manga all the pages of the application for this activity
         self.notebook= Gtk.Notebook()
         
