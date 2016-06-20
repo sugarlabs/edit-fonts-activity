@@ -11,7 +11,7 @@ python:
 #  - sugar-build
 
 before_install:
-  - pip install flake8
+  - "pip install flake8"
   - "git clone git://github.com/sugarlabs/sugar-build.git"
   - "cd sugar-build"
   - "./osbuild pull"
@@ -24,7 +24,7 @@ install:
 script: 
   - "flake8 EditFonts.activity"
   - "cd .."
-  - "echo 'cd activities/EditFonts.activity; python setup.py dist_xo' | ./osbuild shell"
+  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
 #after_success:
 #  - "cd ~; ls -alFR"

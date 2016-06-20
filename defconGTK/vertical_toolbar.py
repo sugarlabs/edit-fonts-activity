@@ -7,14 +7,14 @@ from defconGTK.characterMap import CharacterMap
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-class SummaryPage(Gtk.Box):
-    """
-    This Class Creates the "Font:<familyName>" Page that loads up on clicking any Font
+class VerticalToolbar(Gtk.Frame):
+    """This Class is the Parent Class for the Vertical Toolbars in the activity
+    
     """
 
     def __init__(self, activity):
         
-        super(SummaryPage, self).__init__()        
+        super(VerticalToolbar, self).__init__()        
         self.activity = activity
         self.font = activity.main_font
         self._init_ui()
@@ -110,7 +110,7 @@ class SummaryPage(Gtk.Box):
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                               icon_name='delete',
                               stroke_color=style.COLOR_BLACK.get_svg(),
-                              fill_color=style.Color('#E74C3C').get_svg())
+                              fill_color=style.COLOR_WHITE.get_svg())
 
         deleteButton = Gtk.Button()
         deleteButton.add(image_icon)
