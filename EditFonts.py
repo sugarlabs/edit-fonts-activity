@@ -49,13 +49,11 @@ from defcon import Font
 from ufo2ft import compileOTF, compileTTF
 import extractor
 
-#This has all the custom made widgets required for this library
-from defconGTK.summaryPage import SummaryPage
-from defconGTK.editorPage import EditorPage
+from pages.summary_page import SummaryPage
+from pages.editor_page import EditorPage
+from pages.manager_page import ManagerPage
 
-#import pager
-
-PAGE = {"EDITOR":1 , "SUMMARY":0 }
+PAGE = [{'SUMMARY': SummaryPage}, {'EDITOR': EditorPage}, {'MANAGER': ManagerPage}]
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -140,7 +138,7 @@ class EditFonts(activity.Activity):
         """Loading Font"""
         
         #testing defcon 
-        self.main_path = "ufo/sample.ufo"
+        self.main_path = "test_fonts/sample.ufo"
         self.main_font = Font(self.main_path)
        
         self.glyphName = 'A'
@@ -153,40 +151,29 @@ class EditFonts(activity.Activity):
         self.notebook.set_show_tabs(False)
 
         self.create_all_pages()
-        self.set_page("SUMMARY")
+        self.set_page("MANAGER")
 
         self.set_canvas(self.notebook)
         self.show_all()
 
-
     def create_all_pages(self):
         
-        for pageName, pageNumber in PAGE.iteritems():
-            self.create_page(pageName)
+        for (index, d) in enumerate(PAGE):
+            self.create_page(d.keys()[0])
 
     def set_page(self, pageName):
 
+        pageNum = next(index for (index, d) in enumerate(PAGE) if pageName in d)
         self.create_page(pageName)
-        
-        if pageName == "SUMMARY":
-            self.notebook.set_current_page(PAGE[pageName])
-        
-        elif pageName == "EDITOR":
-            self.notebook.set_current_page(PAGE[pageName])
+        self.notebook.set_current_page(pageNum)
         
     def create_page(self, pageName):
 
-        if pageName == "SUMMARY":
-            self.summary_page = SummaryPage(self)
-            self.summary_page.set_border_width(10)
-            self.notebook.remove_page(PAGE[pageName])
-            self.notebook.insert_page(self.summary_page, Gtk.Label("Summary Page") , PAGE[pageName])
-            
-        elif pageName == "EDITOR":
-            self.editor_page = EditorPage(self)
-            self.editor_page.set_border_width(10)
-            self.notebook.remove_page(PAGE[pageName])
-            self.notebook.insert_page(self.editor_page, Gtk.Label("Summary Page") , PAGE[pageName])
+        pageNum = next(index for (index, d) in enumerate(PAGE) if pageName in d)
+        self.page = PAGE[pageNum][pageName](self)    
+        self.page.set_border_width(10)
+        self.notebook.remove_page(pageNum)
+        self.notebook.insert_page(self.page, Gtk.Label(pageName) , pageNum)
 
     def _load_otf(self, button):
         ##NOT WORKING##
