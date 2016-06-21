@@ -19,13 +19,12 @@ before_install:
 
 install: 
   - "cd activities/"
-  - "git clone https://github.com/sugarlabs/edit-fonts-activity.git EditFonts.activity"
+  - "git clone -b master https://github.com/sugarlabs/edit-fonts-activity.git EditFonts.activity"
 
 script: 
-#  - "flake8 EditFonts.activity"
+  - "flake8 EditFonts.activity"
   - "cd .."
-  - "pwd"
-#  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
+  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
 #after_success:
 #  - "cd ~; ls -alFR"
