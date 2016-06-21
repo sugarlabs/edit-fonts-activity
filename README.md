@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=yash-v0)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
+[![Build Status](https://travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=master)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
 
 # Sugar Activity: Edit Fonts Activity
 
