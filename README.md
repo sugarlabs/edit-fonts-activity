@@ -1,113 +1,15 @@
-# Edit Fonts Activity
+[![Build Status](https://travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=yash-v0)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
 
-A font editor Activity, for GSoC16 project: https://github.com/sugarlabs/edit-fonts-activity
+# Sugar Activity: Edit Fonts Activity
 
-##New Features
+Live Site: <http://sugarlabs.github.io/edit-fonts-activity/>
 
-* Normalised the glyph drawing code
-* Made a renderGlyph Class for drawing the glyph inside a specified box size
-* Made a glyphGridInstance Class for drawing a grid of glyph from a given list
-* Glyph aspect ratio problem solved
-* Character Map class added
-* Font Info Box added 
-* Multipage System
-* Export/Import Buttons (NOT WORKING)
+Typeface design is a cornerstone of literate cultures, with subliminal power: Typefaces carry the emotions of texts, from formal designs that speak with authority to fun designs that are silly or military or ornate. They are both artistic and functional works, and our ability to share and modify them is important for the same reasons as for software programs.
 
-Here is a gif showing all the features
-![pic](multipage.gif)
+Sugar is a learning platform that reinvents how computers are used for education. Collaboration, reflection, and discovery are integrated directly into the user interface, and “studio thinking” and “reflective practice” are promoted through Sugar’s clarity of design. Sugar was initially developed by Red Hat and Pentagram with One Laptop per Child, and today is developed by the Sugar Labs community. It now has over 1M users, including every child in Uruguay.
 
-## The Import/Export Buttons
+Fonts are fun to make, and Sugar needs a font editor activity so learners can make and modify them for their own tastes and needs.
 
-I'm having the following problems with it
+## Using Edit Fonts Activity
 
-```python
-    def _load_otf(self, button):
-        ##NOT WORKING##
-        ##unable to access the path##
-
-        path = "NotoSerif-Regular.ttf"
-        file_name = os.path.join(self.get_activity_root(),
-                                 path)
-
-        extractor.extractUFO(file_name, self.main_font)
-
-    def _write_ttf(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
-
-        file_name = os.path.join(self.get_activity_root(), 'instance',
-                                 '%s.ttf' % self.metadata['title'])
-
-        #file_name = self.metadata['title'] + '.ttf' 
-
-        ttf = compileTTF(self.main_font)
-        ttf.save(file_name)
-        
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/ttf'
-
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_name
-
-        # jobject.metadata['preview'] = \
-        #    self._get_preview_image(file_name)
-
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
-
-        self._show_journal_alert(_('Success'),
-                                 _('A TTF Font file was created in the Journal'))
-
-    def _write_ufo(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
-
-        file_name = os.path.join(self.get_activity_root(), 'instance',
-                                 '%s.ufo' % self.metadata['title'])
-
-        #file_name = self.metadata['title'] + '.ttf' 
-        self.main_font.save(file_name)
-
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/ufo'
-
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_name
-
-        # jobject.metadata['preview'] = \
-        #    self._get_preview_image(file_name)
-
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
-
-        self._show_journal_alert(_('Success'),
-                                 _('A UFO Font file was created in the Journal'))
-
-    def _write_otf(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
-
-        file_name = os.path.join(self.get_activity_root(), 'instance',
-                                 '%s.otf' % self.metadata['title'])
-
-        otf = compileTTF(self.main_font)
-        otf.save(file_name)
-        
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/otf'
-
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_name
-
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
-
-        self._show_journal_alert(_('Success'),
-                                 _('A OTF Font file was created in the Journal'))
-
-```
-I think defcon deletes the duplicate kearnings when loading the font, but this gives an error on exporting the font.
-
+Download the `.xo` file from `dist/` and run it like any other sugar activity
