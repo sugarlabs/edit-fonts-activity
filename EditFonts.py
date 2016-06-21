@@ -121,6 +121,23 @@ class EditFonts(activity.Activity):
         self.bt_save_ufo.show()
 
         separator = Gtk.SeparatorToolItem()
+        toolbar_box.toolbar.insert(separator, -1)
+        
+        self.bt_open_manager = ToolButton()
+        self.bt_open_manager.props.icon_name = 'manager'
+        self.bt_open_manager.connect('clicked',lambda _: self.set_page("MANAGER"))
+        self.bt_open_manager.set_tooltip(_('Open Manager'))
+        toolbar_box.toolbar.insert(self.bt_open_manager, -1)
+        self.bt_open_manager.show()
+
+        self.bt_open_editor = ToolButton()
+        self.bt_open_editor.props.icon_name = 'edit'
+        self.bt_open_editor.connect('clicked',lambda _: self.set_page("EDITOR"))
+        self.bt_open_editor.set_tooltip(_('Open Editor(Temporary Button)'))
+        toolbar_box.toolbar.insert(self.bt_open_editor, -1)
+        self.bt_open_editor.show()
+
+        separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
         toolbar_box.toolbar.insert(separator, -1)

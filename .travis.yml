@@ -2,7 +2,7 @@ sudo: required
 language: python
 branches:
   only:
-    - yash-v0
+    - master
 python:
   - "2.7"
 # TODO: See if this helps
