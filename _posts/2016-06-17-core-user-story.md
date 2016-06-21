@@ -16,11 +16,24 @@ Probably sidebearings is the easier one!
 
 For editing points, there is
 
-1. adding new points to make a new contour (a "pen tool")
-2. repositioning existing points
-3. adding new points to existing contours
-4. removing points from a contour that 'breaks' an closed contour into an open one
-5. 'merging' points, where they are removed from a closed contour without breaking it open
+1. repositioning existing points
+2. adding new points to existing contours
+3. removing points from a contour that 'breaks' an closed contour into an open one
+4. 'merging' points, where they are removed from a closed contour without breaking it open
+5. adding new points to make a new contour, a "pen tool." 
+
+Perhaps the best primer on the 'pen tool' is the video made by John Warnock - one of the Adobe founders, who invented Adobe Illustrator 30 years ago - that was included in the very first version of Adobe Illustrator:
+
+<iframe width="420" height="315" src="https://www.youtube-nocookie.com/embed/sAbjajnLZY0" frameborder="0" allowfullscreen></iframe>
+
+<https://youtu.be/sAbjajnLZY0>
+
+There are various ways of calculating Bezier splines, and some are much faster than others. 
+[incolumitas.com/2013/10/06/plotting-bezier-curves](http://incolumitas.com/2013/10/06/plotting-bezier-curves) has sample Python code, [which is public domain](http://incolumitas.com/pages/impressum) and you can use freely. 
+
+And of course the best resource for learning about Bezier code is [pomax.github.io/bezierinfo](http://pomax.github.io/bezierinfo/)
+
+## What is needed for a v1.0 
  
 Imagine you are using it for the first time... 
 What are the essential things that you do?
