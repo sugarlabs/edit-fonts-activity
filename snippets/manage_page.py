@@ -134,12 +134,15 @@ class ManagerPage(Gtk.Box):
             print "font-config file found"
             print "Opening it"
             
+            global fav_fonts
             # get the font names in the file to the white list
             file = open(fav_fonts_file_path, 'r')
             # get the font names in the file to the white list
             t = file.read()
             fav_fonts = t.split(';')
             file.close()
+
+
             
         #FIX ME: Automatic change monitoring not working
 
@@ -332,71 +335,6 @@ class ListModel(Gtk.ListStore):
             self.append(data)
 
 
-"""
-class ListModel(Gtk.TreeModelSort):
-    __gtype_name__ = 'SugarListModel'
-
-    COLUMN_FAVORITE = 0
-    COLUMN_FONT_NAME = 1
-    COLUMN_TEST = 2
-    COLUMN_SCALE = 3
-    COLUMN_SCALE_SET = 4
-
-    def __init__(self):
-        self._model = Gtk.ListStore(bool, str, str, int, bool)
-        self._model_filter = self._model.filter_new()
-        Gtk.TreeModelSort.__init__(self, model=self._model_filter)
-        self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
-                                Gtk.SortType.ASCENDING)
-
-        # load the model
-        global _all_active_fonts
-        global fav_fonts
-        
-        for font_name in _all_active_fonts:
-            favorite = font_name in fav_fonts
-            self._model.append([
-                favorite, font_name,
-                _('The quick brown fox jumps over the lazy dog.'), 2, True])
-
-    def set_visible_func(self, func):
-        self._model_filter.set_visible_func(func)
-
-    def refilter(self):
-        self._model_filter.refilter()
-
-    def chage_favorite(self, font_name):
-        
-        global fav_fonts
-
-        if font_name in fav_fonts:
-            fav_fonts.remove(font_name)
-        else:
-            fav_fonts.append(font_name)
-
-        fonts_file = open(fav_fonts_file_path, 'w')
-        for font_name in fav_fonts:
-            fonts_file.write('%s\n' % font_name)
-        fonts_file.close()
-
-    def set_value(self, _iter, col, val):
-        self._model.set_value( _iter, col, val)
-"""
-
-"""
-class CellRendererFavorite(CellRendererIcon):
-    __gtype_name__ = 'SugarCellRendererFavorite'
-
-    def __init__(self):
-        CellRendererIcon.__init__(self)
-
-        self.props.width = style.GRID_CELL_SIZE
-        self.props.height = style.GRID_CELL_SIZE
-        self.props.size = style.SMALL_ICON_SIZE
-        self.props.icon_name = "emblem-favorite"
-        self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
-"""
-
 class CellRendererClickablePixbuf(Gtk.CellRendererPixbuf):
     
     __gsignals__ = {
@@ -413,6 +351,7 @@ class CellRendererClickablePixbuf(Gtk.CellRendererPixbuf):
     def do_activate(self, event, widget, path, background_area, cell_area,
                     flags):
         self.emit('clicked', path)
+
 
 class FontsList(Gtk.VBox):
     __gtype_name__ = 'SugarActivitiesList'
