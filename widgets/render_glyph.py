@@ -53,18 +53,50 @@ class RenderGlyph(Gtk.Box):
             #move to initial point
             point = contour[0]
             cr.move_to(self.X(point.x),self.Y(point.y))
-                        
+            #FIX ME: Validate the segments more thoroughly
+            
             for segment in contour.segments:
                 #first determine type of Segment
-                if len(segment) == 3:
-                    #its a bezier
-                    cr.curve_to(self.X(segment[0].x),self.Y(segment[0].y),self.X(segment[1].x),self.Y(segment[1].y),self.X(segment[2].x),self.Y(segment[2].y))
+                if len(segment) >= 3 and segment[-1].segmentType == u'qcurve':
+                    #its a Truetype quadractic B spline
+                    
+                    for i,point in enumerate(segment): 
+                        
+                        if i is len(segment) - 2:
+                            cr.curve_to(self.X(point.x),self.Y(point.y),
+                                        self.X(point.x),self.Y(point.y),
+                                        self.X(segment[i+1].x),self.Y(segment[i+1].y))
+                            
+                            break
 
-                elif len(segment) == 1:
+                        mid_point_x = (point.x + segment[i+1].x)/2
+                        mid_point_y = (point.x + segment[i+1].x)/2
+                        cr.curve_to(self.X(point.x),self.Y(point.y),
+                                        self.X(point.x),self.Y(point.y),
+                                        self.X(mid_point_x),self.Y(mid_point_y))
+                        
+                elif len(segment) is 3 and segment[-1].segmentType == u'curve':
+                    #its a bezier
+                    cr.curve_to(self.X(segment[0].x),self.Y(segment[0].y),
+                                self.X(segment[1].x),self.Y(segment[1].y),
+                                self.X(segment[2].x),self.Y(segment[2].y))
+
+                #Adding the support for qcurve
+                elif len(segment) is 2 and segment[-1].segmentType == u'qcurve':
+                    #its a qcurve
+                    cr.curve_to(self.X(segment[0].x),self.Y(segment[0].y),
+                                        self.X(segment[0].x),self.Y(segment[0].y),
+                                        self.X(segment[1].x),self.Y(segment[1].y))
+                
+                elif len(segment) is 1 and segment[-1].segmentType == u'line':
                     #its a line
                     cr.line_to(self.X(segment[0].x),self.Y(segment[0].y))
 
                 else:
+                    #its a higher order curve or something
+                    for point in segment:
+                        cr.line_to(self.X(point.x),self.Y(point.y))
+
                     print("Error: Unknown Case Found")            
                     print(segment)
 

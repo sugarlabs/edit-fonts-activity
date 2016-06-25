@@ -4,6 +4,7 @@ import logging
 from gettext import gettext as _
 
 from gi.repository import GConf
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -18,10 +19,30 @@ from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.activity.widgets import StopButton
+from sugar3.graphics.icon import Icon
 
 DEFAULT_FONTS = ['Sans', 'Serif', 'Monospace']
-USER_FONTS_FILE_PATH = env.get_profile_path('fonts')
+USER_FONTS_FILE_PATH = env.get_profile_path('.fonts')
 GLOBAL_FONTS_FILE_PATH = '/etc/sugar_fonts'
+
+QUERY = ''
+
+#favorite fonts config file
+fav_fonts_file_path = 'fonts-favorite.config'
+fav_fonts = []
+
+#active fonts folder
+fonts_file_path = '~/.fonts'
+_all_active_fonts = []
+
+#inactive fonts folder
+inactive_fonts_file_path = '~/.fonts-inactive'
+
+#FIX ME:Only font name will be shown for the Inactive fonts as I can't upload any ttf file using Pango
+#this can be done in two of the following ways 
+#temporarily install the font and draw using Pango
+#convert to ufo format
+inactive_fonts_path = []
 
 class ManagerPage(Gtk.Box):
     """This Class Creates the "Font Manager" Page
@@ -29,69 +50,75 @@ class ManagerPage(Gtk.Box):
     """
 
     def __init__(self, activity):
+        
         super(ManagerPage, self).__init__()    
-        self.activity= activity
-        self.font = activity.main_font
-        self.glyphName = activity.glyphName
+        self.activity = activity
+
         self._init_ui()
 
+    def update(self, activity):
+        #FIX ME: this shouldn't destroy anything
+        #just update all the information in the modal 
+
+        self.activity = activity
+        
     def _init_ui(self):
         
         self.init_fonts()
-        self.font_list = FontsList(self._all_fonts, self._font_white_list)
+        self.font_list = FontsList()
         self.pack_start(self.font_list, True, True, 0)
         self.show_all()
 
     def init_fonts(self):
 
-        # load the data in the model
-        self._all_fonts = []
-        context = self.get_pango_context()
+        #Active Fonts
+
+        #check if the ~/.fonts directory exists
+        if not os.path.isdir(fonts_file_path):
+            os.makedirs(fonts_file_path)
+
+        #get all installed fonts
+        global _all_active_fonts
+        
+        context = self.activity.get_pango_context()
+
         for family in context.list_families():
             name = family.get_name()
-            self._all_fonts.append(name)
+            _all_active_fonts.append(name)
 
-        # copied from fontcombobox
+        #Inactive Fonts
 
-        self._font_white_list = []
-        self._font_white_list.extend(DEFAULT_FONTS)
+        #check if the ~/.fonts-inactive exists
+        if not os.path.isdir(inactive_fonts_file_path):
+            os.makedirs(inactive_fonts_file_path)
 
-        # check if there are a user configuration file
-        if not os.path.exists(USER_FONTS_FILE_PATH):
-            # verify if exists a file in /etc
-            if os.path.exists(GLOBAL_FONTS_FILE_PATH):
-                shutil.copy(GLOBAL_FONTS_FILE_PATH, USER_FONTS_FILE_PATH)
+        #get all files in the folder
+        #store all the filenames in self.inactive_FONTS
+        (_, _, self.inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()        
 
-        if os.path.exists(USER_FONTS_FILE_PATH):
+        #Favorite Fonts
+
+        #open or write the favorite fonts file
+        if not os.path.exists(fav_fonts_file_path):
+            file = open(fav_fonts_file_path, 'w')
+            file.close()            
+
+        if os.path.exists(fav_fonts_file_path):
             # get the font names in the file to the white list
-            fonts_file = open(USER_FONTS_FILE_PATH)
+            file = open(fav_fonts_file_path, 'r')
             # get the font names in the file to the white list
-            for line in fonts_file:
-                self._font_white_list.append(line.strip())
-            # monitor changes in the file
-            gio_fonts_file = Gio.File.new_for_path(USER_FONTS_FILE_PATH)
-            self.monitor = gio_fonts_file.monitor_file(
-                Gio.FileMonitorFlags.NONE, None)
-            self.monitor.connect('changed', self._reload_fonts)
-
-    def _reload_fonts(self, monitor, gio_file, other_file, event):
-        if event != Gio.FileMonitorEvent.CHANGES_DONE_HINT:
-            return
-        font_white_list = []
-        font_white_list.extend(DEFAULT_FONTS)
-        fonts_file = open(USER_FONTS_FILE_PATH)
-        for line in fonts_file:
-            font_name = line.strip()
-            if font_name not in font_white_list:
-                font_white_list.append(font_name)
-        logging.error('font list file updated %s', font_white_list)
+            t = file.read()
+            fav_fonts.append(t.split('\n'))
+            file.close()
+            
+        #FIX ME: Automatic change monitoring not working
 
 
 class FontsTreeView(Gtk.TreeView):
 
     __gtype_name__ = 'SugarActivitiesTreeView'
 
-    def __init__(self, all_fonts, favorites):
+    def __init__(self):
         Gtk.TreeView.__init__(self)
 
         self._query = ''
@@ -105,12 +132,16 @@ class FontsTreeView(Gtk.TreeView):
         selection = self.get_selection()
         selection.set_mode(Gtk.SelectionMode.NONE)
 
-        model = ListModel(all_fonts, favorites)
-        model.set_visible_func(self.__model_visible_cb)
-        self.set_model(model)
+        self.model = ListModel()
+        self.model.set_visible_func(self.__model_visible_cb)
+        self.set_model(self.model)
 
-        cell_favorite = CellRendererFavorite(self)
+        #FIX ME: This widget is not receiving the click event
+        cell_favorite = CellRendererClickablePixbuf()
+        #cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE
         cell_favorite.connect('clicked', self.__favorite_clicked_cb)
+        #print help(cell_favorite.activate)        
+        #print help(cell_favorite.props.mode)        
         column = Gtk.TreeViewColumn()
         column.pack_start(cell_favorite, True)
         column.set_cell_data_func(cell_favorite, self.__favorite_set_data_cb)
@@ -149,26 +180,71 @@ class FontsTreeView(Gtk.TreeView):
         self.append_column(column)
 
         self.set_search_column(ListModel.COLUMN_FONT_NAME)
-        self.set_enable_search(False)
+        self.set_enable_search(True)
+
+        #FIX ME: This will only work in Gtk+ 3.8 and later.
+        #self.props.activate_on_single_click = True
+        #self.connect('row-activated', self.__row_activated_cb)
+
+    def __row_activated_cb(self, treeview, path, col):
+        
+        if col is treeview.get_column(0):
+            iter_ = self.model.get_iter(path)
+            is_fav = self.model.get_value(iter_, 0)
+            self.model.set_value(row, 0, model[row][0]^1)
+            print "Star clicked"
+
+        else:
+            print "Row clicked"
 
     def __favorite_set_data_cb(self, column, cell, model, tree_iter, data):
         font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
-        favorite = font_name in model._favorites
+        favorite = font_name in fav_fonts
         if favorite:
-            cell.props.xo_color = self.xo_color
+            cell.props.icon_name = "emblem-favorite"
         else:
-            cell.props.xo_color = None
+            cell.props.icon_name = "edit"
 
     def __favorite_clicked_cb(self, cell, path):
+        """
+        What happens when the user clicks on any of the stars 
+        
+        """
+        print "star was clicked"
+        
         model = self.get_model()
+        iter_ = model.get_iter(path)
+        is_fav = model.get_value(iter_, ListModel.COLUMN_FAVORITE)
+        font_name = model.get_value(iter_, ListModel.COLUMN_FONT_NAME)
+        
+        #change the value in the model 
+        is_fav ^= 1
+        model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
+        
+        #change the color of the icon
+        #and update the fav_fonts list
+        
+        print "hello"
+        if is_fav:
+            #cell.props.xo_color = self.xo_color
+            fav_fonts.append(font_name)
+        else:
+            #cell.props.xo_color = None
+            fav_fonts.remove(font_name)
+
+        #Update the fav fonts config file
         row = model[path]
         font_name = row[ListModel.COLUMN_FONT_NAME]
-        model.chage_favorite(font_name)
-
+        logging.debug(font_name + " clicked")
+        
+        fonts_file = open(fav_fonts_file_path, 'w')
+        for font_name in fav_fonts:
+            fonts_file.write('%s\n' % font_name)
+        fonts_file.close()
+        
     def set_filter(self, query):
         """Set a new query and refilter the model, return the number
         of matching activities.
-
         """
         self._query = query.decode('utf-8')
         self.get_model().refilter()
@@ -189,7 +265,7 @@ class ListModel(Gtk.TreeModelSort):
     COLUMN_SCALE = 3
     COLUMN_SCALE_SET = 4
 
-    def __init__(self, all_fonts, favorites):
+    def __init__(self):
         self._model = Gtk.ListStore(bool, str, str, int, bool)
         self._model_filter = self._model.filter_new()
         Gtk.TreeModelSort.__init__(self, model=self._model_filter)
@@ -197,10 +273,11 @@ class ListModel(Gtk.TreeModelSort):
                                 Gtk.SortType.ASCENDING)
 
         # load the model
-        self._all_fonts = all_fonts
-        self._favorites = favorites
-        for font_name in self._all_fonts:
-            favorite = font_name in self._favorites
+        global _all_active_fonts
+        global fav_fonts
+       
+        for font_name in _all_active_fonts:
+            favorite = font_name in fav_fonts
             self._model.append([
                 favorite, font_name,
                 _('The quick brown fox jumps over the lazy dog.'), 2, True])
@@ -212,37 +289,55 @@ class ListModel(Gtk.TreeModelSort):
         self._model_filter.refilter()
 
     def chage_favorite(self, font_name):
-        if font_name in self._favorites:
-            self._favorites.remove(font_name)
-        else:
-            self._favorites.append(font_name)
+        
+        global fav_fonts
 
-        fonts_file = open(USER_FONTS_FILE_PATH, 'w')
-        for font_name in self._favorites:
+        if font_name in fav_fonts:
+            fav_fonts.remove(font_name)
+        else:
+            fav_fonts.append(font_name)
+
+        fonts_file = open(fav_fonts_file_path, 'w')
+        for font_name in fav_fonts:
             fonts_file.write('%s\n' % font_name)
         fonts_file.close()
 
+    def set_value(self, row, col, val):
+        self._model.set_value(row, col, val)
 
 class CellRendererFavorite(CellRendererIcon):
     __gtype_name__ = 'SugarCellRendererFavorite'
 
-    def __init__(self, tree_view):
-        CellRendererIcon.__init__(self, tree_view)
+    def __init__(self):
+        CellRendererIcon.__init__(self)
 
         self.props.width = style.GRID_CELL_SIZE
         self.props.height = style.GRID_CELL_SIZE
         self.props.size = style.SMALL_ICON_SIZE
-        self.props.icon_name = 'emblem-favorite'
+        self.props.icon_name = "emblem-favorite"
         self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
-        prelit_color = tree_view.xo_color
-        self.props.prelit_stroke_color = prelit_color.get_stroke_color()
-        self.props.prelit_fill_color = prelit_color.get_fill_color()
 
+class CellRendererClickablePixbuf(Gtk.CellRendererPixbuf):
+    
+    __gsignals__ = {
+                    'clicked': (GObject.SignalFlags.RUN_FIRST, None,
+                                ([str]))
+                    }
+
+    def __init__(self):
+        super(CellRendererClickablePixbuf, self).__init__()
+
+        self.props.icon_name = "emblem-favorite"
+        self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
+
+    def do_activate(self, event, widget, path, background_area, cell_area,
+                    flags):
+        self.emit('clicked', path)
 
 class FontsList(Gtk.VBox):
     __gtype_name__ = 'SugarActivitiesList'
 
-    def __init__(self, all_fonts, favorites):
+    def __init__(self):
         logging.debug('STARTUP: Loading the activities list')
 
         Gtk.VBox.__init__(self)
@@ -256,7 +351,7 @@ class FontsList(Gtk.VBox):
         self.pack_start(self._scrolled_window, True, True, 0)
         self._scrolled_window.show()
 
-        self._tree_view = FontsTreeView(all_fonts, favorites)
+        self._tree_view = FontsTreeView()
         self._scrolled_window.add(self._tree_view)
         self._tree_view.show()
 
