@@ -23,6 +23,10 @@ class SummaryPage(Gtk.Box):
         self.font = activity.main_font
         self._init_ui()
 
+    def update(self, activity):
+        self.activity = activity
+        self.font = activity.main_font
+        self.glyphName = activity.glyphName        
 
     def _init_ui(self):
         

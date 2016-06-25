@@ -2,6 +2,14 @@
 name = Edit Fonts
 bundle_id = org.sugarlabs.EditFonts
 icon = edit-fonts
-exec = sugar-activity EditFonts.EditFonts
 activity_version = 1
+mime_types = application/x-editfont-activity;application/x-font-ttf;application/x-font-opentype;application/font-sfnt;application/x-plist;
+exec = sugar-activity EditFonts.EditFonts
 license = GPLv3+
+show_launcher = yes
+summary = Interested in making your own Font, well now you can!
+categories = media language art
+repository = https://github.com/sugarlabs/edit-fonts-activity.git
+max_participants = 1
+
+

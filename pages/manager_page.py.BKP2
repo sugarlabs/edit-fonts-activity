@@ -1,0 +1,404 @@
+import os
+import shutil
+import logging
+from gettext import gettext as _
+
+from gi.repository import GConf
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import Gio
+from gi.repository import Pango
+
+from sugar3 import env
+from sugar3.graphics import style
+from sugar3.graphics.icon import CellRendererIcon
+from sugar3.graphics.xocolor import XoColor
+
+from sugar3.activity import activity
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton
+from sugar3.activity.widgets import StopButton
+
+
+QUERY = ''
+
+#favorite fonts config file
+fav_fonts_file_path = '~/.fonts-favorite'
+fav_fonts = []
+
+#active fonts folder
+fonts_file_path = '~/.fonts'
+_all_active_fonts = []
+
+#inactive fonts folder
+inactive_fonts_file_path = '~/.fonts-inactive'
+
+#FIX ME:Only font name will be shown for the Inactive fonts as I can't upload any ttf file using Pango
+#this can be done in two of the following ways 
+#temporarily install the font and draw using Pango
+#convert to ufo format
+inactive_fonts_path = []
+
+class ManagerPage(Gtk.Box):
+    """This Class Creates the "Font Manager" Page
+    
+    """
+
+    def __init__(self, activity):
+        
+        super(ManagerPage, self).__init__()    
+        self.activity = activity
+
+        self._init_ui()
+
+    def update(self, activity):
+        #FIX ME: this shouldn't destroy anything
+        #just update all the information in the modal 
+
+        self.activity = activity
+        
+    def _init_ui(self):
+        
+        self.init_fonts()
+        self.font_list = FontList()
+        print "pack_start"
+        self.pack_start(self.font_list, True, True, 0)
+        self.show_all()
+
+    def init_fonts(self):
+
+        #Active Fonts
+
+        #check if the ~/.fonts directory exists
+        if not os.path.isdir(fonts_file_path):
+            os.makedirs(fonts_file_path)
+
+        #get all installed fonts
+        _all_active_fonts = []
+        context = self.activity.get_pango_context()
+        for family in context.list_families():
+            name = family.get_name()
+            _all_active_fonts.append(name)
+
+        #Inactive Fonts
+
+        #check if the ~/.fonts-inactive exists
+        if not os.path.isdir(inactive_fonts_file_path):
+            os.makedirs(inactive_fonts_file_path)
+
+        #get all files in the folder
+        #store all the filenames in self.inactive_FONTS
+        (_, _, self.inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()        
+
+        #Favorite Fonts
+
+        #open or write the favorite fonts file
+        if not os.path.exists(fav_fonts_file_path):
+            file = open(fav_fonts_file_path, 'w')
+            file.close()            
+
+        if os.path.exists(fav_fonts_file_path):
+            # get the font names in the file to the white list
+            file = open(fav_fonts_file_path, 'r')
+            # get the font names in the file to the white list
+            for line in file:
+                fav_fonts.append(line.strip())
+            file.close()
+            
+            logging.debug("fav_fonts_list:")
+            for i in fav_fonts:
+                logging.debug(i)
+
+            #FIX ME: Automatic change monitoring not working
+            """
+            # monitor changes in the file
+            gio_fonts_file = Gio.File.new_for_path(fav_fonts_file_path)
+            print 0
+            self.monitor = gio_fonts_file.monitor_file(
+                                    Gio.FileMonitorFlags.NONE, None)
+            self.monitor.connect('changed', self._reload_fonts)
+            #print 0
+            """
+
+    def _reload_fonts(self, monitor, gio_file, other_file, event):
+        
+        if event != Gio.FileMonitorEvent.CHANGES_DONE_HINT:
+            return
+        fav_fonts = []
+        fonts_file = open(fav_fonts_file_path, r)
+        for line in fonts_file:
+            font_name = line.strip()
+            if font_name not in fav_fonts:
+                fav_fonts.append(font_name)
+        logging.error('favorite font list file updated %s', fav_fonts)
+
+
+class FontList(Gtk.VBox):
+
+    def __init__(self):
+        super(FontList, self).__init__()
+        
+        label = Gtk.Label(label='Welcome!')
+        self.pack_start(label, False, False, 0)
+
+        """
+        self.entry = Gtk.Entry()
+        self.entry.set_text("Hello World")
+        self.pack_start(self.entry, True, True, 0)
+
+        self.entry.connect("notify::text", self._search, self.entry)
+
+        treeview = Gtk.TreeView(model=self.model)
+        treeview.set_rules_hint(True)
+        treeview.set_search_column(self.COLUMN_NAME)
+        """
+
+        logging.debug('STARTUP: Loading the fonts list')
+
+        self._scrolled_window = Gtk.ScrolledWindow()
+        self._scrolled_window.set_policy(Gtk.PolicyType.NEVER,
+                                         Gtk.PolicyType.AUTOMATIC)
+        self._scrolled_window.set_shadow_type(Gtk.ShadowType.NONE)
+        self._scrolled_window.connect('key-press-event',
+                                      self.__key_press_event_cb)
+        self.pack_start(self._scrolled_window, True, True, 0)
+        self._scrolled_window.show()
+
+        self._tree_view = FontsTreeView()
+        self._scrolled_window.add(self._tree_view)
+        self.show_all()
+
+    """
+    def _search(self, widget, event, entry):
+        
+        query = entry.get_text()
+        logging.debug("Query:" + query)
+
+        iter_ = self.model.get_iter_first()
+        
+        while iter_ != None:
+            self.model.set_value(iter_, ListModel.COLUMN_TEXT, query)
+            iter_ = self.model.iter_next(iter_)
+    
+    def set_filter(self, query):
+        matches = self._tree_view.set_filter(query)
+        if matches == 0:
+            self._show_clear_message()
+        else:
+            self._hide_clear_message()
+    """
+
+    def grab_focus(self):
+        # overwrite grab focus in order to grab focus from the parent
+        self._tree_view.grab_focus()
+
+    def __key_press_event_cb(self, scrolled_window, event):
+        keyname = Gdk.keyval_name(event.keyval)
+
+        vadjustment = scrolled_window.props.vadjustment
+        if keyname == 'Up':
+            if vadjustment.props.value > vadjustment.props.lower:
+                vadjustment.props.value -= vadjustment.props.step_increment
+        elif keyname == 'Down':
+            max_value = vadjustment.props.upper - vadjustment.props.page_size
+            if vadjustment.props.value < max_value:
+                vadjustment.props.value = min(
+                    vadjustment.props.value + vadjustment.props.step_increment,
+                    max_value)
+        else:
+            return False
+
+        return True
+
+
+class FontsTreeView(Gtk.TreeView):
+
+    def __init__(self):
+        Gtk.TreeView.__init__(self)
+
+        logging.debug("I'm here")
+        
+        print "I'm here"
+        
+        client = GConf.Client.get_default()
+        self.xo_color = XoColor(client.get_string('/desktop/sugar/user/color'))
+        self.nick = XoColor(client.get_string('/desktop/sugar/user/nick'))
+        logging.debug(self.nick)
+
+        self.set_headers_visible(False)
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
+                        Gdk.EventMask.TOUCH_MASK |
+                        Gdk.EventMask.BUTTON_RELEASE_MASK)
+        
+        #alter what happens when you click on the Treeview here
+        #selection = self.get_selection()
+        #selection.set_mode(Gtk.SelectionMode.NONE)
+
+        model = ListModel()
+        model.set_visible_func(self.__model_visible_cb)
+        self.set_model(model)
+        cell_favorite = CellRendererFavorite(self)
+        cell_favorite.connect('clicked', self.__favorite_clicked_cb)
+        column = Gtk.TreeViewColumn()
+        column.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        column.pack_start(cell_favorite, True)
+        column.set_cell_data_func(cell_favorite, self.__favorite_set_data_cb)
+        self.append_column(column)
+
+        #adding the font name to the next column and all the rendering settings
+        cell_text = Gtk.CellRendererText()
+        cell_text.props.ellipsize_set = False
+        column = Gtk.TreeViewColumn()
+        column.props.sizing = Gtk.TreeViewColumnSizing.GROW_ONLY
+        column.props.expand = False
+        column.set_sort_column_id(ListModel.COLUMN_FONT_NAME)
+        column.pack_start(cell_text, True)
+        column.add_attribute(cell_text, 'text', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'scale', 2)
+        column.add_attribute(cell_text, 'scale-set', True)
+        self.append_column(column)
+
+        #add the custom rendered text for each font
+        cell_text = Gtk.CellRendererText()
+        cell_text.props.ellipsize = Pango.EllipsizeMode.MIDDLE
+        cell_text.props.ellipsize_set = True
+        column = Gtk.TreeViewColumn()
+        column.set_alignment(1)
+        column.props.sizing = Gtk.TreeViewColumnSizing.GROW_ONLY
+        column.props.resizable = True
+        column.props.reorderable = True
+        column.props.expand = True
+        column.set_sort_column_id(ListModel.COLUMN_TEXT)
+        column.pack_start(cell_text, True)
+        column.add_attribute(cell_text, 'text', ListModel.COLUMN_TEXT)
+        column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'scale', 2)
+        column.add_attribute(cell_text, 'scale-set', True)
+        self.append_column(column)
+
+        # column for is_active toggle
+        renderer = Gtk.CellRendererToggle()
+        #renderer.connect('toggled', self.is_active_toggled)
+        column = Gtk.TreeViewColumn()
+        column.props.sizing = Gtk.TreeViewColumnSizing.AUTOSIZE
+        column.set_cell_data_func(renderer, self.__active_set_data_cb)
+        self.append_column(column)
+
+        #set search status
+        self.set_search_column(ListModel.COLUMN_FONT_NAME)
+        self.set_enable_search(True)
+
+
+    def __favorite_clicked_cb(self, cell, path):
+        """
+        What happens when the user clicks on any of the stars 
+        
+        """
+        model = self.get_model()
+        iter_ = model.get_iter(path_str)
+        is_fav = model.get_value(iter_, ListModel.COLUMN_FAV)
+
+        #change the value in the model 
+        is_fav ^= 1
+        model.set_value(iter_, ListModel.COLUMN_FAV, is_fav)
+        
+        #change the color of the icon
+        #and update the fav_fonts list
+        if is_fav:
+            cell.props.xo_color = self.xo_color
+            fav_fonts.remove(font_name)
+        else:
+            cell.props.xo_color = None
+            fav_fonts.append(font_name)
+
+        #Update the fav fonts config file
+        row = model[path]
+        font_name = row[ListModel.COLUMN_FONT_NAME]
+        logging.debug(font_name + " clicked")
+        
+        fonts_file = open(fav_fonts_file_path, 'w')
+        for font_name in fav_fonts:
+            fonts_file.write('%s\n' % font_name)
+        fonts_file.close()
+
+    def __favorite_set_data_cb(self, column, cell, model, tree_iter, data):
+        """
+        This sets the color of the stars for favorite fonts 
+        
+        """
+        font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
+        is_fav = font_name in fav_fonts
+        if is_fav:
+            cell.props.xo_color = self.xo_color
+        else:
+            cell.props.xo_color = None
+
+    def __active_set_data_cb(self, column, cell, model, tree_iter, data):
+        """
+        This sets the state(active/inactive) of the fonts 
+        
+        """
+        pass
+        
+    def set_filter(self, query):
+        """
+        Set a new query and refilter the model, return the number
+        of matching activities.
+
+        """
+        self._query = query.decode('utf-8')
+        self.get_model().refilter()
+        matches = self.get_model().iter_n_children(None)
+        return matches
+
+    def __model_visible_cb(self, model, tree_iter, data):
+        title = model[tree_iter][ListModel.COLUMN_FONT_NAME]
+        return title is not None and title.find(self._query) > -1
+
+
+class ListModel(Gtk.TreeModelSort):
+
+    (COLUMN_FAV,
+     COLUMN_FONT_NAME,
+     COLUMN_TEXT,
+     COLUMN_ACTIVE) = range(4)
+
+    def __init__(self):
+ 
+        #initialise the model
+        self._model = Gtk.ListStore(bool, str, str, bool)
+        self._model_filter = self._model.filter_new()
+        Gtk.TreeModelSort.__init__(self, model=self._model_filter)
+        self.set_sort_column_id(self.COLUMN_FONT_NAME, 
+                                Gtk.SortType.ASCENDING)
+
+        # load the model
+        #loading the active fonts
+        for font_name in _all_active_fonts:
+            is_fav = font_name in fav_fonts
+            self._model.append([
+                #TODO: add dynamic font sample text
+                favorite, font_name, "Hello World", True])
+
+        #TODO: load inactive fonts
+
+    def set_visible_func(self, func):
+        self._model_filter.set_visible_func(func)
+
+    def refilter(self):
+        self._model_filter.refilter()
+
+class CellRendererFavorite(CellRendererIcon):
+
+    def __init__(self, parent):
+        CellRendererIcon.__init__(self)
+
+        self.props.width = style.GRID_CELL_SIZE
+        self.props.height = style.GRID_CELL_SIZE
+        self.props.size = style.SMALL_ICON_SIZE
+        self.props.icon_name = 'emblem-favorite'
+        self.props.mode = Gtk.CellRendererMode.ACTIVATABLE
+        prelit_color = parent.xo_color
+        self.props.prelit_stroke_color = prelit_color.get_stroke_color()
+        self.props.prelit_fill_color = prelit_color.get_fill_color()
