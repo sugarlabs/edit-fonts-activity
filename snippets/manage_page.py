@@ -49,7 +49,7 @@ svg_active = """
 QUERY = ''
 
 #favorite fonts config file
-fav_fonts_file_path = 'fonts-favorite.config'
+fav_fonts_file_path = 'fonts.config'
 fav_fonts = []
 
 #active fonts folder
@@ -125,15 +125,20 @@ class ManagerPage(Gtk.Box):
 
         #open or write the favorite fonts file
         if not os.path.exists(fav_fonts_file_path):
+            print "No font-config file found"
+            print "Creating one"
             file = open(fav_fonts_file_path, 'w')
             file.close()            
 
         if os.path.exists(fav_fonts_file_path):
+            print "font-config file found"
+            print "Opening it"
+            
             # get the font names in the file to the white list
             file = open(fav_fonts_file_path, 'r')
             # get the font names in the file to the white list
             t = file.read()
-            fav_fonts.append(t.split('\n'))
+            fav_fonts = t.split(';')
             file.close()
             
         #FIX ME: Automatic change monitoring not working
@@ -158,7 +163,7 @@ class FontsTreeView(Gtk.TreeView):
         selection.set_mode(Gtk.SelectionMode.NONE)
 
         self.model = ListModel()
-        self.model.set_visible_func(self.__model_visible_cb)
+        #self.model.set_visible_func(self.__model_visible_cb)
         self.set_model(self.model)
 
         #FIX ME: This widget is not receiving the click event
@@ -256,24 +261,21 @@ class FontsTreeView(Gtk.TreeView):
         iter_ = model.get_iter(path)
         is_fav = model.get_value(iter_, ListModel.COLUMN_FAVORITE)
 
-        print is_fav
-        font_name = model.get_value(iter_, ListModel.COLUMN_FONT_NAME)
+        print is_fav        
+        row = model[path]
+        font_name = row[ListModel.COLUMN_FONT_NAME]
         
         #change the value in the model 
         is_fav ^=True
         print is_fav
-        model[iter_][ListModel.COLUMN_FAVORITE] = is_fav
-        model._model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
-        self.set_model(model)
-        print dir(model)
-
+        model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
+        #self.set_model(model)
+        
         print model.get_value(iter_, ListModel.COLUMN_FAVORITE)
         
         #change the color of the icon
         #and update the fav_fonts list
         
-        print "hello"
-
         if is_fav:
             #cell.props.xo_color = self.xo_color
             fav_fonts.append(font_name)
@@ -282,13 +284,13 @@ class FontsTreeView(Gtk.TreeView):
             fav_fonts.remove(font_name)
 
         #Update the fav fonts config file
-        row = model[path]
-        font_name = row[ListModel.COLUMN_FONT_NAME]
+        #row = model[path]
+        #font_name = row[ListModel.COLUMN_FONT_NAME]
         logging.debug(font_name + " clicked")
         
         fonts_file = open(fav_fonts_file_path, 'w')
         for font_name in fav_fonts:
-            fonts_file.write('%s\n' % font_name)
+            fonts_file.write('%s;' % font_name)
         fonts_file.close()
         
     def set_filter(self, query):
@@ -304,7 +306,33 @@ class FontsTreeView(Gtk.TreeView):
         title = model[tree_iter][ListModel.COLUMN_FONT_NAME]
         return title is not None and title.find(self._query) > -1
 
+class ListModel(Gtk.ListStore):
+    __gtype_name__ = 'SugarListModel'
 
+    COLUMN_FAVORITE = 0
+    COLUMN_FONT_NAME = 1
+    COLUMN_TEST = 2
+    COLUMN_SCALE = 3
+    COLUMN_SCALE_SET = 4
+
+    def __init__(self):
+        super(ListModel, self).__init__(bool, str, str, int, bool)
+        self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
+                                Gtk.SortType.ASCENDING)
+
+        # load the model
+        global _all_active_fonts
+        global fav_fonts
+        
+        for font_name in _all_active_fonts:
+            favorite = font_name in fav_fonts
+            data = [favorite, font_name,
+                _('The quick brown fox jumps over the lazy dog.'), 1, True]
+            print data
+            self.append(data)
+
+
+"""
 class ListModel(Gtk.TreeModelSort):
     __gtype_name__ = 'SugarListModel'
 
@@ -324,7 +352,7 @@ class ListModel(Gtk.TreeModelSort):
         # load the model
         global _all_active_fonts
         global fav_fonts
-       
+        
         for font_name in _all_active_fonts:
             favorite = font_name in fav_fonts
             self._model.append([
@@ -353,6 +381,7 @@ class ListModel(Gtk.TreeModelSort):
 
     def set_value(self, _iter, col, val):
         self._model.set_value( _iter, col, val)
+"""
 
 """
 class CellRendererFavorite(CellRendererIcon):
