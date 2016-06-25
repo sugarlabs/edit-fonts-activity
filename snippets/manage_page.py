@@ -3,8 +3,8 @@ import shutil
 import logging
 from gettext import gettext as _
 
-#import gi
-#gi.require_version('Gtk', 3.0)
+import gi
+gi.require_version('Gtk', '3.0')
 
 #from gi.repository import GConf
 from gi.repository import GObject
@@ -23,6 +23,28 @@ from gi.repository import Pango
 #from sugar3.activity.widgets import ActivityToolbarButton
 #from sugar3.activity.widgets import StopButton
 #from sugar3.graphics.icon import Icon
+
+gi.require_version('WebKit', '3.0')
+
+from gi.repository import WebKit, GLib, GdkPixbuf
+
+svg_inactive = """
+<svg viewBox="0 0 60 55" width="50" height="25">
+    <g display="block">
+        <polygon display="inline" style="fill:rgb(255,255,255);stroke-width:3.5;stroke:rgb(0,0,0)" points="27.5,7.266 34.074,20.588 48.774,22.723    38.138,33.092 40.647,47.734 27.5,40.82 14.353,47.734 16.862,33.092 6.226,22.723 20.926,20.588" />
+    </g>
+</svg>
+
+"""
+
+svg_active = """
+<svg viewBox="0 0 60 55" width="50" height="25">
+    <g display="block">
+        <polygon display="inline" style="fill:rgb(229,0,0);stroke-width:3.5;stroke:rgb(0,0,0)" points="27.5,7.266 34.074,20.588 48.774,22.723    38.138,33.092 40.647,47.734 27.5,40.82 14.353,47.734 16.862,33.092 6.226,22.723 20.926,20.588" />
+    </g>
+</svg>
+
+"""
 
 QUERY = ''
 
@@ -43,8 +65,8 @@ inactive_fonts_file_path = '~/.fonts-inactive'
 #convert to ufo format
 inactive_fonts_path = []
 
-STAR_ICON_NAME = ""
-STAR_INACTIVE_ICON_NAME = ""
+STAR_ICON_NAME = ''
+STAR_INACTIVE_ICON_NAME = '1'
 
 class ManagerPage(Gtk.Box):
     """This Class Creates the "Font Manager" Page
@@ -141,6 +163,15 @@ class FontsTreeView(Gtk.TreeView):
 
         #FIX ME: This widget is not receiving the click event
         cell_favorite = CellRendererClickablePixbuf()
+        
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(svg_active.encode())
+        loader.close()  
+        cell_favorite.props.pixbuf = loader.get_pixbuf()
+
+        print cell_favorite.props.pixbuf
+        cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE        
+
         #cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE
         cell_favorite.connect('clicked', self.__favorite_clicked_cb)
         #print help(cell_favorite.activate)        
@@ -204,9 +235,15 @@ class FontsTreeView(Gtk.TreeView):
         font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
         favorite = font_name in fav_fonts
         if favorite:
-            cell.props.icon_name = STAR_ICON_NAME
+            loader = GdkPixbuf.PixbufLoader()
+            loader.write(svg_active.encode())
+            loader.close()  
+            cell.props.pixbuf = loader.get_pixbuf()
         else:
-            cell.props.icon_name = STAR_INACTIVE_ICON_NAME
+            loader = GdkPixbuf.PixbufLoader()
+            loader.write(svg_inactive.encode())
+            loader.close()  
+            cell.props.pixbuf = loader.get_pixbuf()
 
     def __favorite_clicked_cb(self, cell, path):
         """
@@ -218,16 +255,25 @@ class FontsTreeView(Gtk.TreeView):
         model = self.get_model()
         iter_ = model.get_iter(path)
         is_fav = model.get_value(iter_, ListModel.COLUMN_FAVORITE)
+
+        print is_fav
         font_name = model.get_value(iter_, ListModel.COLUMN_FONT_NAME)
         
         #change the value in the model 
-        is_fav ^= 1
-        model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
+        is_fav ^=True
+        print is_fav
+        model[iter_][ListModel.COLUMN_FAVORITE] = is_fav
+        model._model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
+        self.set_model(model)
+        print dir(model)
+
+        print model.get_value(iter_, ListModel.COLUMN_FAVORITE)
         
         #change the color of the icon
         #and update the fav_fonts list
         
         print "hello"
+
         if is_fav:
             #cell.props.xo_color = self.xo_color
             fav_fonts.append(font_name)
@@ -305,8 +351,8 @@ class ListModel(Gtk.TreeModelSort):
             fonts_file.write('%s\n' % font_name)
         fonts_file.close()
 
-    def set_value(self, row, col, val):
-        self._model.set_value(row, col, val)
+    def set_value(self, _iter, col, val):
+        self._model.set_value( _iter, col, val)
 
 """
 class CellRendererFavorite(CellRendererIcon):
