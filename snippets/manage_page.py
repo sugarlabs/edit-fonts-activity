@@ -89,6 +89,7 @@ class ManagerPage(Gtk.Box):
     def _init_ui(self):
         
         self.init_fonts()
+
         self.font_list = FontsList()
         self.pack_start(self.font_list, True, True, 0)
         self.show_all()
@@ -135,6 +136,7 @@ class ManagerPage(Gtk.Box):
             print "Opening it"
             
             global fav_fonts
+
             # get the font names in the file to the white list
             file = open(fav_fonts_file_path, 'r')
             # get the font names in the file to the white list
@@ -142,17 +144,14 @@ class ManagerPage(Gtk.Box):
             fav_fonts = t.split(';')
             file.close()
 
-
-            
         #FIX ME: Automatic change monitoring not working
-
 
 class FontsTreeView(Gtk.TreeView):
 
     __gtype_name__ = 'SugarActivitiesTreeView'
 
-    def __init__(self):
-        Gtk.TreeView.__init__(self)
+    def __init__(self, _filter):
+        Gtk.TreeView.new_with_model(_filter)
 
         self._query = ''
         #client = GConf.Client.get_default()
@@ -162,12 +161,12 @@ class FontsTreeView(Gtk.TreeView):
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
                         Gdk.EventMask.TOUCH_MASK |
                         Gdk.EventMask.BUTTON_RELEASE_MASK)
+        
         selection = self.get_selection()
-        selection.set_mode(Gtk.SelectionMode.NONE)
+        if selection is not None:
+            selection.set_mode(Gtk.SelectionMode.NONE)
 
-        self.model = ListModel()
-        #self.model.set_visible_func(self.__model_visible_cb)
-        self.set_model(self.model)
+        self.model = self.get_model()
 
         #FIX ME: This widget is not receiving the click event
         cell_favorite = CellRendererClickablePixbuf()
@@ -191,14 +190,15 @@ class FontsTreeView(Gtk.TreeView):
 
         cell_text = Gtk.CellRendererText()
         cell_text.props.ellipsize_set = False
+        cell_text.props.height = 60 
         column = Gtk.TreeViewColumn()
         column.props.sizing = Gtk.TreeViewColumnSizing.GROW_ONLY
         column.props.expand = False
         column.set_sort_column_id(ListModel.COLUMN_FONT_NAME)
         column.pack_start(cell_text, True)
         column.add_attribute(cell_text, 'text', ListModel.COLUMN_FONT_NAME)
-        column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
-        column.add_attribute(cell_text, 'scale', ListModel.COLUMN_SCALE)
+        #column.add_attribute(cell_text, 'font', ListModel.COLUMN_FONT_NAME)
+        column.add_attribute(cell_text, 'scale', ListModel.COLUMN_FONT_NAME_SCALE)
         column.add_attribute(cell_text, 'scale-set',
                              ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
@@ -258,39 +258,24 @@ class FontsTreeView(Gtk.TreeView):
         What happens when the user clicks on any of the stars 
         
         """
-        print "star was clicked"
         
         model = self.get_model()
         iter_ = model.get_iter(path)
         is_fav = model.get_value(iter_, ListModel.COLUMN_FAVORITE)
-
-        print is_fav        
         row = model[path]
         font_name = row[ListModel.COLUMN_FONT_NAME]
         
         #change the value in the model 
         is_fav ^=True
-        print is_fav
         model.set_value(iter_, ListModel.COLUMN_FAVORITE, is_fav)
-        #self.set_model(model)
         
-        print model.get_value(iter_, ListModel.COLUMN_FAVORITE)
-        
-        #change the color of the icon
-        #and update the fav_fonts list
-        
+        #update the fav_fonts list
         if is_fav:
-            #cell.props.xo_color = self.xo_color
             fav_fonts.append(font_name)
         else:
-            #cell.props.xo_color = None
             fav_fonts.remove(font_name)
 
-        #Update the fav fonts config file
-        #row = model[path]
-        #font_name = row[ListModel.COLUMN_FONT_NAME]
-        logging.debug(font_name + " clicked")
-        
+        #Update the fav fonts config file        
         fonts_file = open(fav_fonts_file_path, 'w')
         for font_name in fav_fonts:
             fonts_file.write('%s;' % font_name)
@@ -316,10 +301,11 @@ class ListModel(Gtk.ListStore):
     COLUMN_FONT_NAME = 1
     COLUMN_TEST = 2
     COLUMN_SCALE = 3
-    COLUMN_SCALE_SET = 4
+    COLUMN_FONT_NAME_SCALE = 4
+    COLUMN_SCALE_SET = 5
 
     def __init__(self):
-        super(ListModel, self).__init__(bool, str, str, int, bool)
+        super(ListModel, self).__init__(bool, str, str, float, float, bool)
         self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
                                 Gtk.SortType.ASCENDING)
 
@@ -330,7 +316,7 @@ class ListModel(Gtk.ListStore):
         for font_name in _all_active_fonts:
             favorite = font_name in fav_fonts
             data = [favorite, font_name,
-                _('The quick brown fox jumps over the lazy dog.'), 1, True]
+                'The quick brown fox jumps over the lazy dog.', 1.7, 1, True]
             print data
             self.append(data)
 
@@ -361,6 +347,34 @@ class FontsList(Gtk.VBox):
 
         Gtk.VBox.__init__(self)
 
+        bar = Gtk.HBox()
+
+        #Creating the ListStore model
+        self.data_liststore = ListModel()
+
+        self.entry = Gtk.Entry()
+        self.entry.set_text("Hello World")
+        bar.pack_end(self.entry, False, False, 5)
+        self.entry.connect("notify::text", self._update, self.entry)
+
+        self.entry = Gtk.Entry()
+        self.entry.set_text("Search")
+        bar.pack_start(self.entry, False, False, 5)
+        self.entry.connect("notify::text", self._search, self.entry)
+        
+        self.pack_start(bar, True, True, 10)
+        
+        self.current_filter_query = None
+        #Creating the filter, feeding it with the liststore model
+        self.font_name_filter = self.data_liststore.filter_new()
+        
+        #setting the filter function
+        self.font_name_filter.set_visible_func(self.font_name_filter_func)
+
+        #creating the treeview, making it use the filter as a model, and adding the columns
+        #self._tree_view = FontsTreeView.new_with_model(self.font_name_filter)
+        self._tree_view = FontsTreeView(self.font_name_filter)
+
         self._scrolled_window = Gtk.ScrolledWindow()
         self._scrolled_window.set_policy(Gtk.PolicyType.NEVER,
                                          Gtk.PolicyType.AUTOMATIC)
@@ -370,9 +384,38 @@ class FontsList(Gtk.VBox):
         self.pack_start(self._scrolled_window, True, True, 0)
         self._scrolled_window.show()
 
-        self._tree_view = FontsTreeView()
         self._scrolled_window.add(self._tree_view)
         self._tree_view.show()
+
+    def font_name_filter_func(self, model, iter, data):
+        """Tests if the language in the row is the one in the filter"""
+        if self.current_filter_query is None or self.current_filter_query == "None":
+            return True
+        else:
+            c = model[iter][ListModel.COLUMN_FONT_NAME].find(self.current_filter_query)
+            if c >= 0:
+                return True
+            else:
+                return False
+
+    def _search(self, widget, event, entry):
+        
+        """Called on any of the button clicks"""
+        #we set the current language filter to the button's label
+        self.current_filter_query = entry.get_text()
+        #we update the filter, which updates in turn the view
+        self.font_name_filter.refilter()
+
+
+    def _update(self, widget, event, entry):
+        
+        query = entry.get_text()
+        self.model = self._tree_view.get_model()
+        iter_ = self.model.get_iter_first()
+        
+        while iter_ != None:
+            self.model.set_value(iter_, ListModel.COLUMN_TEST, query)
+            iter_ = self.model.iter_next(iter_)
 
     def grab_focus(self):
         # overwrite grab focus in order to grab focus from the parent
