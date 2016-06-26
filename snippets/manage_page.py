@@ -59,7 +59,8 @@ _all_active_fonts = []
 #inactive fonts folder
 inactive_fonts_file_path = '~/.fonts-inactive'
 
-#FIX ME:Only font name will be shown for the Inactive fonts as I can't upload any ttf file using Pango
+#FIX ME:Only font name will be shown for the Inactive fonts as I can't 
+#upload any ttf file using Pango
 #this can be done in two of the following ways 
 #temporarily install the font and draw using Pango
 #convert to ufo format
@@ -150,8 +151,8 @@ class FontsTreeView(Gtk.TreeView):
 
     __gtype_name__ = 'SugarActivitiesTreeView'
 
-    def __init__(self, _filter):
-        Gtk.TreeView.new_with_model(_filter)
+    def __init__(self):
+        super(FontsTreeView, self).__init__()
 
         self._query = ''
         #client = GConf.Client.get_default()
@@ -316,7 +317,7 @@ class ListModel(Gtk.ListStore):
         for font_name in _all_active_fonts:
             favorite = font_name in fav_fonts
             data = [favorite, font_name,
-                'The quick brown fox jumps over the lazy dog.', 1.7, 1, True]
+                'The quick brown fox jumps over the lazy dog', 1.7, 1, True]
             print data
             self.append(data)
 
@@ -352,28 +353,36 @@ class FontsList(Gtk.VBox):
         #Creating the ListStore model
         self.data_liststore = ListModel()
 
-        self.entry = Gtk.Entry()
-        self.entry.set_text("Hello World")
-        bar.pack_end(self.entry, False, False, 5)
-        self.entry.connect("notify::text", self._update, self.entry)
+        self.label = Gtk.Label("Edit Me:")
+        bar.pack_start(self.label, False, False, 5)
 
         self.entry = Gtk.Entry()
-        self.entry.set_text("Search")
+        self.entry.set_text("The quick brown fox jumps over the lazy dog")
         bar.pack_start(self.entry, False, False, 5)
+        self.entry.connect("notify::text", self._update, self.entry)
+
+        """
+        self.entry = Gtk.Entry()
+        self.entry.set_text("Search")
+        bar.pack_start(self.entry, True, False, 5)
+        
         self.entry.connect("notify::text", self._search, self.entry)
+        """
+
+        self.pack_start(bar, False, False, 10)
         
-        self.pack_start(bar, True, True, 10)
-        
-        self.current_filter_query = None
+        #self.current_filter_query = None
         #Creating the filter, feeding it with the liststore model
-        self.font_name_filter = self.data_liststore.filter_new()
+        #self.font_name_filter = self.data_liststore.filter_new()
         
         #setting the filter function
-        self.font_name_filter.set_visible_func(self.font_name_filter_func)
+        #self.font_name_filter.set_visible_func(self.font_name_filter_func)
 
         #creating the treeview, making it use the filter as a model, and adding the columns
         #self._tree_view = FontsTreeView.new_with_model(self.font_name_filter)
-        self._tree_view = FontsTreeView(self.font_name_filter)
+        #self._tree_view = FontsTreeView(self.font_name_filter)
+        self._tree_view = FontsTreeView()
+        self._tree_view.set_model(self.data_liststore)
 
         self._scrolled_window = Gtk.ScrolledWindow()
         self._scrolled_window.set_policy(Gtk.PolicyType.NEVER,
@@ -389,6 +398,7 @@ class FontsList(Gtk.VBox):
 
     def font_name_filter_func(self, model, iter, data):
         """Tests if the language in the row is the one in the filter"""
+        """
         if self.current_filter_query is None or self.current_filter_query == "None":
             return True
         else:
@@ -397,15 +407,17 @@ class FontsList(Gtk.VBox):
                 return True
             else:
                 return False
+        """
 
     def _search(self, widget, event, entry):
         
         """Called on any of the button clicks"""
+        """
         #we set the current language filter to the button's label
         self.current_filter_query = entry.get_text()
         #we update the filter, which updates in turn the view
         self.font_name_filter.refilter()
-
+        """
 
     def _update(self, widget, event, entry):
         
@@ -420,13 +432,6 @@ class FontsList(Gtk.VBox):
     def grab_focus(self):
         # overwrite grab focus in order to grab focus from the parent
         self._tree_view.grab_focus()
-
-    def set_filter(self, query):
-        matches = self._tree_view.set_filter(query)
-        if matches == 0:
-            self._show_clear_message()
-        else:
-            self._hide_clear_message()
 
     def __key_press_event_cb(self, scrolled_window, event):
         keyname = Gdk.keyval_name(event.keyval)
