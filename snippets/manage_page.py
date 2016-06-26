@@ -37,8 +37,10 @@ fav_fonts_file_path = 'fonts.config'
 fav_fonts = []
 
 #active fonts folder
-fonts_file_path = '~/.fonts'
-_all_active_fonts = []
+active_fonts_file_path = '~/.fonts'
+active_fonts_path = []
+
+_all_system_fonts = []
 
 #inactive fonts folder
 inactive_fonts_file_path = '~/.fonts-inactive'
@@ -84,18 +86,22 @@ class ManagerPage(Gtk.Box):
         #Active Fonts
 
         #check if the ~/.fonts directory exists
-        if not os.path.isdir(fonts_file_path):
-            os.makedirs(fonts_file_path)
+        if not os.path.isdir(active_fonts_file_path):
+            os.makedirs(active_fonts_file_path)
 
+        (_, _, active_fonts_path) = os.walk(active_fonts_file_path).next()        
+           
         #get all installed fonts
-        global _all_active_fonts
+        global _all_system_fonts
+        global active_fonts_path
+        global inactive_fonts_path
         
         context = self.get_pango_context()
         #context = self.activity.get_pango_context()
 
         for family in context.list_families():
             name = family.get_name()
-            _all_active_fonts.append(name)
+            _all_system_fonts.append(name)
 
         #Inactive Fonts
 
@@ -105,22 +111,13 @@ class ManagerPage(Gtk.Box):
 
         #get all files in the folder
         #store all the filenames in self.inactive_FONTS
-        (_, _, self.inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()        
-
+        (_, _, inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()        
         #Favorite Fonts
 
         #open or write the favorite fonts file
         if not os.path.exists(fav_fonts_file_path):
-            print "No font-config file found"
-            print "Creating one"
             file = open(fav_fonts_file_path, 'w')
             file.close()            
-
-        if os.path.exists(fav_fonts_file_path):
-            print "font-config file found"
-            print "Opening it"
-            
-            global fav_fonts
 
             # get the font names in the file to the white list
             file = open(fav_fonts_file_path, 'r')
@@ -401,17 +398,36 @@ class ListModel(Gtk.ListStore):
                                 Gtk.SortType.ASCENDING)
 
         # load the model
-        global _all_active_fonts
+        global _all_system_fonts
+        global active_fonts_path
+        global inactive_fonts_path
         global fav_fonts
         
-        for font_name in _all_active_fonts:
+        #load the system fonts
+        for font_name in _all_system_fonts:
             favorite = font_name in fav_fonts
             data = [favorite, font_name,
                 'The quick brown fox jumps over the lazy dog', 1.7, 1, True, -1, False]
-            print data
+            #print data
             self.append(data)
 
-
+        #load the active fonts
+        for font_name in active_fonts_path:
+            font_name = font_name.strip(".ttf")
+            favorite = font_name in fav_fonts
+            data = [favorite, font_name,
+                'The quick brown fox jumps over the lazy dog', 1.7, 1, True, 1, False]
+            print data
+            self.append(data)
+        
+        #load the inactive fonts
+        for font_name in inactive_fonts_path:
+            font_name = font_name.strip(".ttf")
+            data = [False, font_name,
+                '', 1.7, 1, True, 0, False]
+            print data
+            self.append(data)
+        
 class CellRendererClickablePixbuf(Gtk.CellRendererPixbuf):
     
     __gsignals__ = {
