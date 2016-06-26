@@ -17,4 +17,9 @@ This turned out as a 1h30m discussion:
 
 Here's some high-res photos of the whiteboard:
 
-[ Eli will add high-res photos of the whiteboard here]
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-001.jpg)
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-002.jpg)
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-003.jpg)
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-004.jpg)
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-005.jpg)
+![ux-whiteboard-june25](files/img/ux-whiteboard-june25-006.jpg)
