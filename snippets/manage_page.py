@@ -28,23 +28,7 @@ gi.require_version('WebKit', '3.0')
 
 from gi.repository import WebKit, GLib, GdkPixbuf
 
-svg_inactive = """
-<svg viewBox="0 0 60 55" width="50" height="25">
-    <g display="block">
-        <polygon display="inline" style="fill:rgb(255,255,255);stroke-width:3.5;stroke:rgb(0,0,0)" points="27.5,7.266 34.074,20.588 48.774,22.723    38.138,33.092 40.647,47.734 27.5,40.82 14.353,47.734 16.862,33.092 6.226,22.723 20.926,20.588" />
-    </g>
-</svg>
-
-"""
-
-svg_active = """
-<svg viewBox="0 0 60 55" width="50" height="25">
-    <g display="block">
-        <polygon display="inline" style="fill:rgb(229,0,0);stroke-width:3.5;stroke:rgb(0,0,0)" points="27.5,7.266 34.074,20.588 48.774,22.723    38.138,33.092 40.647,47.734 27.5,40.82 14.353,47.734 16.862,33.092 6.226,22.723 20.926,20.588" />
-    </g>
-</svg>
-
-"""
+from widgets.localIcon import *
 
 QUERY = ''
 
@@ -164,31 +148,27 @@ class FontsTreeView(Gtk.TreeView):
                         Gdk.EventMask.BUTTON_RELEASE_MASK)
         
         selection = self.get_selection()
-        if selection is not None:
-            selection.set_mode(Gtk.SelectionMode.NONE)
+        selection.connect('changed', self.on_treeview_selection_changed)
 
-        self.model = self.get_model()
+        #if selection is not None:
+        #    selection.set_mode(Gtk.SelectionMode.NONE)
 
-        #FIX ME: This widget is not receiving the click event
+        model = self.get_model()
+
+        #stars column
         cell_favorite = CellRendererClickablePixbuf()
-        
         loader = GdkPixbuf.PixbufLoader()
         loader.write(svg_active.encode())
         loader.close()  
         cell_favorite.props.pixbuf = loader.get_pixbuf()
-
-        print cell_favorite.props.pixbuf
         cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE        
-
-        #cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE
         cell_favorite.connect('clicked', self.__favorite_clicked_cb)
-        #print help(cell_favorite.activate)        
-        #print help(cell_favorite.props.mode)        
         column = Gtk.TreeViewColumn()
         column.pack_start(cell_favorite, True)
         column.set_cell_data_func(cell_favorite, self.__favorite_set_data_cb)
         self.append_column(column)
 
+        #Font name column
         cell_text = Gtk.CellRendererText()
         cell_text.props.ellipsize_set = False
         cell_text.props.height = 60 
@@ -204,6 +184,7 @@ class FontsTreeView(Gtk.TreeView):
                              ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
 
+        #Font sample text column
         cell_text = Gtk.CellRendererText()
         cell_text.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         cell_text.props.ellipsize_set = True
@@ -222,19 +203,66 @@ class FontsTreeView(Gtk.TreeView):
                              ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
 
-        self.set_search_column(ListModel.COLUMN_FONT_NAME)
-        self.set_enable_search(True)
+        #activate/deactivate button
+        cell_activate_button = CellRendererClickablePixbuf()
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(activate.encode())
+        loader.close()  
+        cell_activate_button.props.pixbuf = loader.get_pixbuf()
+        cell_activate_button.props.mode = Gtk.CellRendererMode.ACTIVATABLE        
+        cell_activate_button.connect('clicked', self.__activate_clicked_cb)
+        column = Gtk.TreeViewColumn()
+        column.pack_start(cell_activate_button, True)
+        column.add_attribute(cell_activate_button, 'visible', ListModel.COLUMN_SELECTED)
+        column.set_cell_data_func(cell_activate_button, self.__activate_set_data_cb)
+        self.append_column(column)
+
+        #load font button, this will open font summary page
+        cell_edit_font = CellRendererClickablePixbuf()
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(edit.encode())
+        loader.close()  
+        cell_edit_font.props.pixbuf = loader.get_pixbuf()
+        cell_edit_font.connect('clicked', self.__load_font)
+        column = Gtk.TreeViewColumn()
+        column.pack_start(cell_edit_font, True)
+        column.add_attribute(cell_edit_font, 'visible', ListModel.COLUMN_SELECTED)
+        self.append_column(column)
+
+        #I dont know what this means
+        #self.set_search_column(ListModel.COLUMN_FONT_NAME)
+        #self.set_enable_search(True)
 
         #FIX ME: This will only work in Gtk+ 3.8 and later.
         #self.props.activate_on_single_click = True
         #self.connect('row-activated', self.__row_activated_cb)
 
+    def on_treeview_selection_changed(self, selection):
+        #FIX ME: only show the activate/edit buttons if the row is selected
+        #the activate and edit buttons should be shown in top toolbar
+        print "Selection Changed"
+        
+        selection = self.get_selection()
+        model = self.get_model()
+                
+        #disable all buttons in all rows
+        _iter = model.get_iter_first()
+        while _iter != None:
+            model.set_value(_iter, ListModel.COLUMN_SELECTED, False)
+            _iter = model.iter_next(_iter)
+        
+        if selection is not None:
+            store, _iter = selection.get_selected()
+            if _iter is not None:
+                #enable extra buttons in this row
+                model.set_value(_iter, ListModel.COLUMN_SELECTED, True)
+
     def __row_activated_cb(self, treeview, path, col):
         
         if col is treeview.get_column(0):
-            iter_ = self.model.get_iter(path)
-            is_fav = self.model.get_value(iter_, 0)
-            self.model.set_value(row, 0, model[row][0]^1)
+            iter_ = model.get_iter(path)
+            is_fav = model.get_value(iter_, 0)
+            model.set_value(row, 0, model[row][0]^1)
             print "Star clicked"
 
         else:
@@ -253,6 +281,66 @@ class FontsTreeView(Gtk.TreeView):
             loader.write(svg_inactive.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
+
+
+    def __activate_set_data_cb(self, column, cell, model, tree_iter, data):
+        
+        #DOUBT: Currently I'm showing the a green icon when the font is active and a red icon when its deactivated so I'm using the this cell as a status indicator rather than a button with when shows a green tick sign means the cell will be activated if the button is clicked - is this setting correct? 
+        
+        #FIX ME: add tooltips here to that the user what icons mean what
+    
+        is_activated = model[tree_iter][ListModel.COLUMN_ACTIVATE]
+    
+        if is_activated is 1:
+            loader = GdkPixbuf.PixbufLoader()
+            loader.write(activate.encode())
+            loader.close()  
+            cell.props.pixbuf = loader.get_pixbuf()
+        
+        elif is_activated is 0:
+            loader = GdkPixbuf.PixbufLoader()
+            loader.write(deactivate.encode())
+            loader.close()  
+            cell.props.pixbuf = loader.get_pixbuf()
+        
+        else:
+            loader = GdkPixbuf.PixbufLoader()
+            loader.write(lock.encode())
+            loader.close()  
+            cell.props.pixbuf = loader.get_pixbuf()
+    
+    def __load_font(self, column, cell, model, tree_iter, data):
+        pass
+
+    def __activate_clicked_cb(self, cell, path):
+        """
+        What happens when the user clicks on the activate/deactivate button 
+        
+        """
+        
+        model = self.get_model()
+        iter_ = model.get_iter(path)
+        is_activated = model.get_value(iter_, ListModel.COLUMN_ACTIVATE)
+        row = model[path]
+        font_name = row[ListModel.COLUMN_FONT_NAME]
+        
+        
+        #change the value in the model 
+        if is_activated is 1:
+            is_activated = 0
+        elif is_activated is 0:
+            is_activated = 1    
+        else:
+            print "This font is locked so the state cannot be changed"
+        model.set_value(iter_, ListModel.COLUMN_ACTIVATE, is_activated)
+            
+        #update the fav_fonts list
+        if is_activated:
+            #activate font here
+            pass
+        else:
+            #deactivate font here
+            pass
 
     def __favorite_clicked_cb(self, cell, path):
         """
@@ -298,15 +386,17 @@ class FontsTreeView(Gtk.TreeView):
 class ListModel(Gtk.ListStore):
     __gtype_name__ = 'SugarListModel'
 
-    COLUMN_FAVORITE = 0
-    COLUMN_FONT_NAME = 1
-    COLUMN_TEST = 2
-    COLUMN_SCALE = 3
-    COLUMN_FONT_NAME_SCALE = 4
-    COLUMN_SCALE_SET = 5
+    (COLUMN_FAVORITE,
+    COLUMN_FONT_NAME,
+    COLUMN_TEST,
+    COLUMN_SCALE,
+    COLUMN_FONT_NAME_SCALE,
+    COLUMN_SCALE_SET,
+    COLUMN_ACTIVATE,
+    COLUMN_SELECTED) = range(8)
 
     def __init__(self):
-        super(ListModel, self).__init__(bool, str, str, float, float, bool)
+        super(ListModel, self).__init__(bool, str, str, float, float, bool, int, bool)
         self.set_sort_column_id(ListModel.COLUMN_FONT_NAME,
                                 Gtk.SortType.ASCENDING)
 
@@ -317,7 +407,7 @@ class ListModel(Gtk.ListStore):
         for font_name in _all_active_fonts:
             favorite = font_name in fav_fonts
             data = [favorite, font_name,
-                'The quick brown fox jumps over the lazy dog', 1.7, 1, True]
+                'The quick brown fox jumps over the lazy dog', 1.7, 1, True, -1, False]
             print data
             self.append(data)
 
@@ -422,12 +512,12 @@ class FontsList(Gtk.VBox):
     def _update(self, widget, event, entry):
         
         query = entry.get_text()
-        self.model = self._tree_view.get_model()
-        iter_ = self.model.get_iter_first()
+        model = self._tree_view.get_model()
+        iter_ = model.get_iter_first()
         
         while iter_ != None:
-            self.model.set_value(iter_, ListModel.COLUMN_TEST, query)
-            iter_ = self.model.iter_next(iter_)
+            model.set_value(iter_, ListModel.COLUMN_TEST, query)
+            iter_ = model.iter_next(iter_)
 
     def grab_focus(self):
         # overwrite grab focus in order to grab focus from the parent
