@@ -1,6 +1,7 @@
 import os
 import shutil
 import logging
+import subprocess
 from gettext import gettext as _
 
 import gi
@@ -33,19 +34,19 @@ from widgets.localIcon import *
 QUERY = ''
 
 #favorite fonts config file
-fav_fonts_file_path = 'fonts.config'
+fav_fonts_file_path = './fonts.config'
 fav_fonts = []
 
 #active fonts folder
-active_fonts_file_path = '~/.fonts'
+active_fonts_file_path = '/home/yash/.fonts'
 active_fonts_path = []
 
 _all_system_fonts = []
 
 #inactive fonts folder
-inactive_fonts_file_path = '~/.fonts-inactive'
+inactive_fonts_file_path = '/home/yash/.fonts-inactive'
 
-#FIX ME:Only font name will be shown for the Inactive fonts as I can't 
+#FIX ME:Only font names will be shown for the Inactive fonts as I can't 
 #upload any ttf file using Pango
 #this can be done in two of the following ways 
 #temporarily install the font and draw using Pango
@@ -83,6 +84,11 @@ class ManagerPage(Gtk.Box):
 
     def init_fonts(self):
 
+        global _all_system_fonts
+        global active_fonts_path
+        global inactive_fonts_path
+        global fav_fonts
+        
         #Active Fonts
 
         #check if the ~/.fonts directory exists
@@ -90,12 +96,10 @@ class ManagerPage(Gtk.Box):
             os.makedirs(active_fonts_file_path)
 
         (_, _, active_fonts_path) = os.walk(active_fonts_file_path).next()        
-           
-        #get all installed fonts
-        global _all_system_fonts
-        global active_fonts_path
-        global inactive_fonts_path
         
+        #get all files in the folder
+        active_fonts_path = [val.strip('.ttf') for i, val in enumerate(active_fonts_path) if val.endswith('.ttf')]
+
         context = self.get_pango_context()
         #context = self.activity.get_pango_context()
 
@@ -110,22 +114,23 @@ class ManagerPage(Gtk.Box):
             os.makedirs(inactive_fonts_file_path)
 
         #get all files in the folder
-        #store all the filenames in self.inactive_FONTS
         (_, _, inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()        
         #Favorite Fonts
+        inactive_fonts_path = [val.strip('.ttf') for i, val in enumerate(inactive_fonts_path) if val.endswith('.ttf')]
 
         #open or write the favorite fonts file
         if not os.path.exists(fav_fonts_file_path):
             file = open(fav_fonts_file_path, 'w')
             file.close()            
 
-            # get the font names in the file to the white list
-            file = open(fav_fonts_file_path, 'r')
-            # get the font names in the file to the white list
-            t = file.read()
-            fav_fonts = t.split(';')
-            file.close()
-
+        # get the font names in the file to the white list
+        file = open(fav_fonts_file_path, 'r')
+        # get the font names in the file to the white list
+        t = file.read()
+        fav_fonts = t.split('\n')
+        file.close()
+        print fav_fonts
+        
         #FIX ME: Automatic change monitoring not working
 
 class FontsTreeView(Gtk.TreeView):
@@ -185,6 +190,7 @@ class FontsTreeView(Gtk.TreeView):
         cell_text = Gtk.CellRendererText()
         cell_text.props.ellipsize = Pango.EllipsizeMode.MIDDLE
         cell_text.props.ellipsize_set = True
+        cell_text.set_property("background", "white")
         column = Gtk.TreeViewColumn()
         column.set_alignment(1)
         column.props.sizing = Gtk.TreeViewColumnSizing.GROW_ONLY
@@ -199,6 +205,7 @@ class FontsTreeView(Gtk.TreeView):
         column.add_attribute(cell_text, 'scale-set',
                              ListModel.COLUMN_SCALE_SET)
         self.append_column(column)
+
 
         #activate/deactivate button
         cell_activate_button = CellRendererClickablePixbuf()
@@ -237,7 +244,7 @@ class FontsTreeView(Gtk.TreeView):
     def on_treeview_selection_changed(self, selection):
         #FIX ME: only show the activate/edit buttons if the row is selected
         #the activate and edit buttons should be shown in top toolbar
-        print "Selection Changed"
+        #print "Selection Changed"
         
         selection = self.get_selection()
         model = self.get_model()
@@ -260,10 +267,11 @@ class FontsTreeView(Gtk.TreeView):
             iter_ = model.get_iter(path)
             is_fav = model.get_value(iter_, 0)
             model.set_value(row, 0, model[row][0]^1)
-            print "Star clicked"
+            #print "Star clicked"
 
         else:
-            print "Row clicked"
+            #print "Row clicked"
+            pass
 
     def __favorite_set_data_cb(self, column, cell, model, tree_iter, data):
         font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
@@ -328,16 +336,34 @@ class FontsTreeView(Gtk.TreeView):
         elif is_activated is 0:
             is_activated = 1    
         else:
-            print "This font is locked so the state cannot be changed"
+            #print "This font is locked so the state cannot be changed"
+            pass
+
         model.set_value(iter_, ListModel.COLUMN_ACTIVATE, is_activated)
             
         #update the fav_fonts list
         if is_activated:
+            
             #activate font here
-            pass
+            batcmd= "mv " + inactive_fonts_file_path + "/" + font_name + ".ttf " + active_fonts_file_path + "/" + font_name + ".ttf " 
+            result = subprocess.check_output(batcmd, shell=True)
+            batcmd= "fc-cache -f -v" 
+            result = subprocess.check_output(batcmd, shell=True)
+            
         else:
             #deactivate font here
-            pass
+            batcmd= "mv " + active_fonts_file_path + "/" + font_name + ".ttf " + inactive_fonts_file_path + "/" + font_name + ".ttf " 
+            result = subprocess.check_output(batcmd, shell=True)
+            batcmd= "fc-cache -f -v" 
+            result = subprocess.check_output(batcmd, shell=True)
+
+        context = self.get_pango_context()
+        #context = self.activity.get_pango_context()
+
+        for family in context.list_families():
+            name = family.get_name()
+            print name
+
 
     def __favorite_clicked_cb(self, cell, path):
         """
@@ -364,7 +390,7 @@ class FontsTreeView(Gtk.TreeView):
         #Update the fav fonts config file        
         fonts_file = open(fav_fonts_file_path, 'w')
         for font_name in fav_fonts:
-            fonts_file.write('%s;' % font_name)
+            fonts_file.write('%s\n' % font_name)
         fonts_file.close()
         
     def set_filter(self, query):
@@ -406,9 +432,10 @@ class ListModel(Gtk.ListStore):
         #load the system fonts
         for font_name in _all_system_fonts:
             favorite = font_name in fav_fonts
+            print favorite
             data = [favorite, font_name,
                 'The quick brown fox jumps over the lazy dog', 1.7, 1, True, -1, False]
-            #print data
+            
             self.append(data)
 
         #load the active fonts
@@ -417,7 +444,7 @@ class ListModel(Gtk.ListStore):
             favorite = font_name in fav_fonts
             data = [favorite, font_name,
                 'The quick brown fox jumps over the lazy dog', 1.7, 1, True, 1, False]
-            print data
+            #print data
             self.append(data)
         
         #load the inactive fonts
@@ -425,7 +452,7 @@ class ListModel(Gtk.ListStore):
             font_name = font_name.strip(".ttf")
             data = [False, font_name,
                 '', 1.7, 1, True, 0, False]
-            print data
+            #print data
             self.append(data)
         
 class CellRendererClickablePixbuf(Gtk.CellRendererPixbuf):
