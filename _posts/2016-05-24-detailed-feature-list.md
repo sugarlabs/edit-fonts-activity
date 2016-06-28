@@ -79,7 +79,6 @@ author: Yash Agarwal
       * when clicked this will be toggle the font filter in the fontList View
 
 ##### Priority 2
-
 * Allow to user to make 'collections' within the library
 	* Add attribute to font object stating collection name
 * Convert .ufo to .otf and viceversa
