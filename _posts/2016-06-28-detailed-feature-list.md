@@ -5,8 +5,6 @@ category: article
 author: Yash Agarwal
 ---
 
-__This was Last Updated on 28th June, Monday__
-
 * *This is a tentative list and will be updated regularly as more progress is made on the project*
 * *This file contains elements like*
 
