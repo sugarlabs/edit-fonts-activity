@@ -16,7 +16,7 @@ author: Yash Agarwal
 	* task 2
 * Feature 2
 	* task 1
-```	
+```
 
 ### A Glyph Editing interface together with text preview
 
@@ -33,19 +33,19 @@ author: Yash Agarwal
 	* add glyph button
 * Basic Glyph editing interface
 	* Make a drawing canvas on which the Glyph will be displayed as an outline
-		* Display the points and offcurve points 
+		* Display the points and offcurve points
 		* User can move around points
 			* How can the user move around small circles ?
 		* The offcurve points for a curve with the smooth set as yes will stay collinear    	 
 * Font Info Page
 	* Define the main info which will be in scope of this activity
 	* Allow the user to edit this info	 
- 		  
-      
+
+
 ##### Priority 2
-* Multi Glyph editing interface 
+* Multi Glyph editing interface
 * Basic Curve Offsetting- Glyph editing interface
-* Caps Curve Offsetting- Glyph editing interface	
+* Caps Curve Offsetting- Glyph editing interface
 
 ### Font Manager
 
@@ -53,17 +53,17 @@ author: Yash Agarwal
 
 * Convert .ttf to .ufo
 * Convert .ufo to .ttf
-* save .ttf file 
+* save .ttf file
 * Show all the available fonts found in the system font directory
 * Allow the user to Activate/Deactivate fonts
-* General text string preview for all fonts	
+* General text string preview for all fonts
   * Add a text box in the top center where the user can write a text and all the fonts will render that particular string --No button click needed
     * Take and store the text string every time the textbox text is changed
 	* Update the fontList view with the new string  	 	
 * Allow the user to mark certain fonts as Favorites
 	* Add attribute to font object stating favorite
 	* Mark the star next to the font as *COLORED*
-	  * when the font_star is clicked 
+	  * when the font_star is clicked
 	    * Add the font to the favorite list
 		* Save the changes to the main file
 	* Make a favorite/all switcher button
@@ -77,17 +77,17 @@ author: Yash Agarwal
 	* Make a deactivated/activated switcher button
       * Figure out the UI/UX
       * when clicked this will be toggle the font filter in the fontList View
-    	  	 	  	
+
 ##### Priority 2
 
 * Allow to user to make 'collections' within the library
 	* Add attribute to font object stating collection name
 * Convert .ufo to .otf and viceversa
-* save .otf file 
+* save .otf file
 
 ### A Testing interface for the Font Manager
 
 * A separate more functional testing screen will be made apart from the live preview box.
-* A textbox in which the text is rendered using the font, to get visual feedback. 
-* Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and 
+* A textbox in which the text is rendered using the font, to get visual feedback.
+* Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and
 * Export image button, to save an image of the rendered textbox
