@@ -1,26 +1,12 @@
 ---
 layout: post
-title: Detailed Feature and Task List
+title: Detailed Feature and Task List Week 5
 category: article
 author: Yash Agarwal
 ---
 
-* *This is a tentative list and will be updated regularly as more progress is made on the project*
-* *This file contains elements like*
-
-```
-* Feature 1
-	* mini feature
-	* task 1 required to implement the feature
-		* subtask 1
-	* task 2
-* Feature 2
-	* task 1
-```
-_all elements are arranged in the __decreasing order__ of their __priorities__ within every main heading_
-
 ### Font Manager
----
+
 * [ ] Convert .ttf to .ufo
 	*	[x] Load a ttf file if file path is hardcoded
 	*	[x] Load a ttf using the Object Chooser Dialog
@@ -90,7 +76,7 @@ _all elements are arranged in the __decreasing order__ of their __priorities__ w
 * [ ] Caps Curve Offsetting- Glyph editing interface
 
 ### A Testing interface for the Font Manager
----
+
 * [ ] A separate more functional testing screen will be made apart from the live preview box.
 * [ ] A textbox in which the text is rendered using the font, to get visual feedback.
 * [ ] Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and
