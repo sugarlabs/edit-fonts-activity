@@ -5,19 +5,6 @@ category: article
 author: Yash Agarwal
 ---
 
-* *This is a tentative list and will be updated regularly as more progress is made on the project*
-* *This file contains elements like*
-
-```
-* Feature 1
-	* mini feature
-	* task 1 required to implement the feature
-		* subtask 1  
-	* task 2
-* Feature 2
-	* task 1
-```
-
 ### A Glyph Editing interface together with text preview
 
 ##### Priority 1
