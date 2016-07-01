@@ -9,7 +9,6 @@ from defcon.objects.color import Color
 
 
 class Layer(BaseObject):
-
     """
     This object represents a layer in a :class:`LayerSet`.
 
@@ -65,9 +64,18 @@ class Layer(BaseObject):
     changeNotificationName = "Layer.Changed"
     representationFactories = {}
 
-    def __init__(self, layerSet=None, glyphSet=None, libClass=None, unicodeDataClass=None,
-                guidelineClass=None, glyphClass=None,
-                glyphContourClass=None, glyphPointClass=None, glyphComponentClass=None, glyphAnchorClass=None, glyphImageClass=None):
+    def __init__(self,
+                 layerSet=None,
+                 glyphSet=None,
+                 libClass=None,
+                 unicodeDataClass=None,
+                 guidelineClass=None,
+                 glyphClass=None,
+                 glyphContourClass=None,
+                 glyphPointClass=None,
+                 glyphComponentClass=None,
+                 glyphAnchorClass=None,
+                 glyphImageClass=None):
 
         if layerSet is not None:
             layerSet = weakref.ref(layerSet)
@@ -128,43 +136,51 @@ class Layer(BaseObject):
             return None
         return layerSet.font
 
-    font = property(_get_font, doc="The :class:`Font` that this layer belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this layer belongs to.")
 
     def _get_layerSet(self):
         if self._layerSet is None:
             return None
         return self._layerSet()
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this layer belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this layer belongs to.")
 
     # --------------
     # Glyph Creation
     # --------------
 
     def instantiateGlyphObject(self):
-        glyph = self._glyphClass(
-            layer=self,
-            contourClass=self._glyphContourClass,
-            pointClass=self._glyphPointClass,
-            componentClass=self._glyphComponentClass,
-            anchorClass=self._glyphAnchorClass,
-            guidelineClass=self._guidelineClass,
-            libClass=self._libClass,
-            imageClass=self._glyphImageClass
-        )
+        glyph = self._glyphClass(layer=self,
+                                 contourClass=self._glyphContourClass,
+                                 pointClass=self._glyphPointClass,
+                                 componentClass=self._glyphComponentClass,
+                                 anchorClass=self._glyphAnchorClass,
+                                 guidelineClass=self._guidelineClass,
+                                 libClass=self._libClass,
+                                 imageClass=self._glyphImageClass)
         return glyph
 
     def beginSelfGlyphNotificationObservation(self, glyph):
-        glyph.addObserver(observer=self, methodName="_glyphDirtyStateChange", notification="Glyph.Changed")
-        glyph.addObserver(observer=self, methodName="_glyphNameChange", notification="Glyph.NameChanged")
-        glyph.addObserver(observer=self, methodName="_glyphUnicodesChange", notification="Glyph.UnicodesChanged")
+        glyph.addObserver(observer=self,
+                          methodName="_glyphDirtyStateChange",
+                          notification="Glyph.Changed")
+        glyph.addObserver(observer=self,
+                          methodName="_glyphNameChange",
+                          notification="Glyph.NameChanged")
+        glyph.addObserver(observer=self,
+                          methodName="_glyphUnicodesChange",
+                          notification="Glyph.UnicodesChanged")
 
     def endSelfGlyphNotificationObservation(self, glyph):
         if glyph.dispatcher is None:
             return
         glyph.removeObserver(observer=self, notification="Glyph.Changed")
         glyph.removeObserver(observer=self, notification="Glyph.NameChanged")
-        glyph.removeObserver(observer=self, notification="Glyph.UnicodesChanged")
+        glyph.removeObserver(observer=self,
+                             notification="Glyph.UnicodesChanged")
         glyph.endSelfNotificationObservation()
 
     def loadGlyph(self, name):
@@ -181,7 +197,9 @@ class Layer(BaseObject):
         self._stampGlyphDataState(glyph)
         self._insertGlyph(glyph)
         pointPen = glyph.getPointPen()
-        self._glyphSet.readGlyph(glyphName=name, glyphObject=glyph, pointPen=pointPen)
+        self._glyphSet.readGlyph(glyphName=name,
+                                 glyphObject=glyph,
+                                 pointPen=pointPen)
         glyph.dirty = False
         glyph._isLoading = False
         glyph.enableNotifications()
@@ -283,7 +301,9 @@ class Layer(BaseObject):
         if name in self._keys:
             self._keys.remove(name)
         if self._glyphSet is not None and name in self._glyphSet:
-            self._scheduledForDeletion[name] = dict(dataOnDiskTimeStamp=dataOnDiskTimeStamp, dataOnDisk=dataOnDisk)
+            self._scheduledForDeletion[name] = dict(
+                dataOnDiskTimeStamp=dataOnDiskTimeStamp,
+                dataOnDisk=dataOnDisk)
 
     def __len__(self):
         return len(list(self.keys()))
@@ -318,7 +338,10 @@ class Layer(BaseObject):
     def _get_name(self):
         return self._name
 
-    name = property(_get_name, _set_name, doc="The name of the layer. Setting this posts *Layer.NameChanged* and *Layer.Changed* notifications.")
+    name = property(
+        _get_name,
+        _set_name,
+        doc="The name of the layer. Setting this posts *Layer.NameChanged* and *Layer.Changed* notifications.")
 
     # color
 
@@ -337,7 +360,10 @@ class Layer(BaseObject):
             self.postNotification(notification="Layer.ColorChanged", data=data)
             self.dirty = True
 
-    color = property(_get_color, _set_color, doc="The layer's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Layer.ColorChanged* and *Layer.Changed* notifications.")
+    color = property(
+        _get_color,
+        _set_color,
+        doc="The layer's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Layer.ColorChanged* and *Layer.Changed* notifications.")
 
     # -------------
     # Data Skimmers
@@ -364,7 +390,8 @@ class Layer(BaseObject):
                     found.append(glyphName)
         return found
 
-    glyphsWithOutlines = property(_get_glyphsWithOutlines, doc="A list of glyphs containing outlines.")
+    glyphsWithOutlines = property(_get_glyphsWithOutlines,
+                                  doc="A list of glyphs containing outlines.")
 
     # component references
 
@@ -383,15 +410,19 @@ class Layer(BaseObject):
                 found[baseGlyph].add(glyphName)
         # scan glyphs that have not been loaded
         if self._glyphSet is not None:
-            glyphNames = set(self._glyphSet.contents.keys()) - set(self._glyphs.keys())
-            for glyphName, baseList in list(self._glyphSet.getComponentReferences(glyphNames).items()):
+            glyphNames = set(self._glyphSet.contents.keys()) - set(
+                self._glyphs.keys())
+            for glyphName, baseList in list(
+                    self._glyphSet.getComponentReferences(glyphNames).items()):
                 for baseGlyph in baseList:
                     if baseGlyph not in found:
                         found[baseGlyph] = set()
                     found[baseGlyph].add(glyphName)
         return found
 
-    componentReferences = property(_get_componentReferences, doc="A dict of describing the component relationships in the layer. The dictionary is of form ``{base glyph : [references]}``.")
+    componentReferences = property(
+        _get_componentReferences,
+        doc="A dict of describing the component relationships in the layer. The dictionary is of form ``{base glyph : [references]}``.")
 
     # image references
 
@@ -409,14 +440,18 @@ class Layer(BaseObject):
                 found[fileName].append(glyphName)
         # scan glyphs that have not been loaded
         if self._glyphSet is not None:
-            glyphNames = set(self._glyphSet.contents.keys()) - set(self._glyphs.keys())
-            for glyphName, fileName in list(self._glyphSet.getImageReferences(glyphNames).items()):
+            glyphNames = set(self._glyphSet.contents.keys()) - set(
+                self._glyphs.keys())
+            for glyphName, fileName in list(self._glyphSet.getImageReferences(
+                    glyphNames).items()):
                 if fileName not in found:
                     found[fileName] = []
                 found[fileName].append(glyphName)
         return found
 
-    imageReferences = property(_get_imageReferences, doc="A dict of describing the image file references in the layer. The dictionary is of form ``{image file name : [references]}``.")
+    imageReferences = property(
+        _get_imageReferences,
+        doc="A dict of describing the image file references in the layer. The dictionary is of form ``{image file name : [references]}``.")
 
     # bounds
 
@@ -432,7 +467,9 @@ class Layer(BaseObject):
                 fontRect = unionRect(fontRect, glyphRect)
         return fontRect
 
-    bounds = property(_get_bounds, doc="The bounds of all glyphs in the layer. This can be an expensive operation.")
+    bounds = property(
+        _get_bounds,
+        doc="The bounds of all glyphs in the layer. This can be an expensive operation.")
 
     # control point bounds
 
@@ -461,7 +498,9 @@ class Layer(BaseObject):
                     xScale, xyScale, yxScale, yScale, xOffset, yOffset = transformation
                     if glyphName not in componentReferences:
                         componentReferences[glyphName] = []
-                    componentReferences[glyphName].append((base, xScale, xyScale, yxScale, yScale, xOffset, yOffset))
+                    componentReferences[glyphName].append(
+                        (base, xScale, xyScale, yxScale, yScale, xOffset,
+                         yOffset))
         # get the transformed component bounding boxes and update the glyphs
         for glyphName, components in list(componentReferences.items()):
             glyphRect = glyphRects.get(glyphName, (None, None, None, None))
@@ -475,9 +514,15 @@ class Layer(BaseObject):
                 if None in baseRect:
                     continue
                 # transform the base rect
-                transform = Transform(xx=xScale, xy=xyScale, yx=yxScale, yy=yScale, dx=xOffset, dy=yOffset)
+                transform = Transform(xx=xScale,
+                                      xy=xyScale,
+                                      yx=yxScale,
+                                      yy=yScale,
+                                      dx=xOffset,
+                                      dy=yOffset)
                 xMin, yMin, xMax, yMax = baseRect
-                (xMin, yMin), (xMax, yMax) = transform.transformPoints([(xMin, yMin), (xMax, yMax)])
+                (xMin, yMin), (xMax, yMax) = transform.transformPoints(
+                    [(xMin, yMin), (xMax, yMax)])
                 componentRect = (xMin, yMin, xMax, yMax)
                 # update the glyph rect
                 if None in glyphRect:
@@ -496,7 +541,9 @@ class Layer(BaseObject):
         # done
         return fontRect
 
-    controlPointBounds = property(_get_controlPointBounds, doc="The control bounds of all glyphs in the layer. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured. This is an expensive operation.")
+    controlPointBounds = property(
+        _get_controlPointBounds,
+        doc="The control bounds of all glyphs in the layer. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured. This is an expensive operation.")
 
     # -----------
     # Sub-Objects
@@ -505,13 +552,13 @@ class Layer(BaseObject):
     # lib
 
     def instantiateLib(self):
-        lib = self._libClass(
-            layer=self
-        )
+        lib = self._libClass(layer=self)
         return lib
 
     def beginSelfLibNotificationObservation(self):
-        self._lib.addObserver(observer=self, methodName="_libDirtyStateChange", notification="Lib.Changed")
+        self._lib.addObserver(observer=self,
+                              methodName="_libDirtyStateChange",
+                              notification="Lib.Changed")
 
     def endSelfLibNotificationObservation(self):
         if self._lib is None:
@@ -537,9 +584,7 @@ class Layer(BaseObject):
     # unicode data
 
     def instantiateUnicodeData(self):
-        unicodeData = self._unicodeDataClass(
-            layer=self
-        )
+        unicodeData = self._unicodeDataClass(layer=self)
         return unicodeData
 
     def beginSelfUnicodeDataNotificationObservation(self):
@@ -564,8 +609,10 @@ class Layer(BaseObject):
                     else:
                         cmap[code] = [glyphName]
             if self._glyphSet is not None:
-                glyphNames = set(self._glyphSet.keys()) - set(self._glyphs.keys())
-                for glyphName, unicodes in list(self._glyphSet.getUnicodes(glyphNames=glyphNames).items()):
+                glyphNames = set(self._glyphSet.keys()) - set(
+                    self._glyphs.keys())
+                for glyphName, unicodes in list(self._glyphSet.getUnicodes(
+                        glyphNames=glyphNames).items()):
                     for code in unicodes:
                         if code in cmap:
                             cmap[code].append(glyphName)
@@ -579,7 +626,8 @@ class Layer(BaseObject):
             self.beginSelfUnicodeDataNotificationObservation()
         return self._unicodeData
 
-    unicodeData = property(_get_unicodeData, doc="The layer's :class:`UnicodeData` object.")
+    unicodeData = property(_get_unicodeData,
+                           doc="The layer's :class:`UnicodeData` object.")
 
     # ----
     # Save
@@ -657,8 +705,12 @@ class Layer(BaseObject):
             # scheduled for deletion but not
             # what was scheduled for deletion.
             # consider this a new glyph.
-            elif self._scheduledForDeletion[glyphName]["dataOnDiskTimeStamp"] != glyphSet.getGLIFModificationTime(glyphName):
-                if self._scheduledForDeletion[glyphName]["dataOnDisk"] != glyphSet.getGLIFModificationTime(glyphName):
+            elif self._scheduledForDeletion[glyphName][
+                    "dataOnDiskTimeStamp"] != glyphSet.getGLIFModificationTime(
+                        glyphName):
+                if self._scheduledForDeletion[glyphName][
+                        "dataOnDisk"] != glyphSet.getGLIFModificationTime(
+                            glyphName):
                     addedGlyphs.append(glyphName)
         # glyphs deleted since we started up
         deletedGlyphs = list(self._keys - set(glyphSet.keys()))
@@ -697,7 +749,9 @@ class Layer(BaseObject):
                 glyph.destroyAllRepresentations(None)
                 glyph.clear()
                 pointPen = glyph.getPointPen()
-                self._glyphSet.readGlyph(glyphName=glyphName, glyphObject=glyph, pointPen=pointPen)
+                self._glyphSet.readGlyph(glyphName=glyphName,
+                                         glyphObject=glyph,
+                                         pointPen=pointPen)
                 glyph.dirty = False
                 self._stampGlyphDataState(glyph)
         data = dict(glyphNames=glyphNames)
@@ -717,7 +771,8 @@ class Layer(BaseObject):
                     continue
                 glyph = self._glyphs[reference]
                 glyph.destroyAllRepresentations(None)
-                glyph.postNotification(notification=glyph.changeNotificationName)
+                glyph.postNotification(
+                    notification=glyph.changeNotificationName)
                 referenceChanges.add(reference)
 
     # ------------------------
@@ -751,7 +806,9 @@ class Layer(BaseObject):
         if self._unicodeData is not None:
             self._unicodeData.removeGlyphData(oldName, glyph.unicodes)
         self._insertGlyph(glyph, beginObservations=False)
-        self.postNotification("Layer.GlyphNameChanged", data=dict(oldValue=oldName, newValue=newName))
+        self.postNotification("Layer.GlyphNameChanged",
+                              data=dict(oldValue=oldName,
+                                        newValue=newName))
 
     def _glyphUnicodesChange(self, notification):
         glyphName = notification.object.name
@@ -761,7 +818,9 @@ class Layer(BaseObject):
         if self._unicodeData is not None:
             self._unicodeData.removeGlyphData(glyphName, oldValues)
             self._unicodeData.addGlyphData(glyphName, newValues)
-        self.postNotification("Layer.GlyphUnicodesChanged", data=dict(oldValue=oldValues, newValue=newValues))
+        self.postNotification("Layer.GlyphUnicodesChanged",
+                              data=dict(oldValue=oldValues,
+                                        newValue=newValues))
 
     # -----------------------------
     # Serialization/Deserialization
@@ -770,8 +829,8 @@ class Layer(BaseObject):
     def getDataForSerialization(self, **kwargs):
         from functools import partial
         simple_get = partial(getattr, self)
-        serialize = lambda item: item.getDataForSerialization();
-        serialized_get = lambda key: serialize(simple_get(key));
+        serialize = lambda item: item.getDataForSerialization()
+        serialized_get = lambda key: serialize(simple_get(key))
 
         getters = (
             ('lib', serialized_get),
@@ -784,7 +843,7 @@ class Layer(BaseObject):
     def setDataFromSerialization(self, data):
         from functools import partial
 
-        set_attr = partial(setattr, self) # key, data
+        set_attr = partial(setattr, self)  # key, data
 
         def set_glyph(name, data):
             glyph = self.instantiateGlyphObject()
@@ -799,23 +858,20 @@ class Layer(BaseObject):
             for name in glyphs:
                 set_glyph(name, glyphs[name])
 
-        setters = (
-            ('lib', set_attr),
-            ('color', set_attr),
-            ('glyphs', set_glyphs)
-        )
+        setters = (('lib', set_attr), ('color', set_attr),
+                   ('glyphs', set_glyphs))
 
         for key, setter in setters:
             if key not in data:
                 continue
             setter(key, data[key])
 
-
 # ------------
 # Fast Parsers
 # ------------
 
 # this was forked from glifLib.
+
 
 def _number(s):
     try:
@@ -826,10 +882,12 @@ def _number(s):
     n = float(s)
     return n
 
-class _DoneParsing(Exception): pass
+
+class _DoneParsing(Exception):
+    pass
+
 
 class _BaseParser(object):
-
     def __init__(self):
         self._elementStack = []
 
@@ -857,25 +915,25 @@ def _fetchControlPointBoundsData(glif):
         pass
     return list(parser.points), list(parser.components)
 
+
 _onCurvePointTypes = set(("move", "line", "curve", "qcurve"))
-_transformationInfo = (
-    ("xScale",    1),
-    ("xyScale",   0),
-    ("yxScale",   0),
-    ("yScale",    1),
-    ("xOffset",   0),
-    ("yOffset",   0),
-)
+_transformationInfo = (("xScale", 1),
+                       ("xyScale", 0),
+                       ("yxScale", 0),
+                       ("yScale", 1),
+                       ("xOffset", 0),
+                       ("yOffset", 0), )
+
 
 class _FetchControlPointBoundsDataParser(_BaseParser):
-
     def __init__(self):
         self.points = set()
         self.components = []
         super(_FetchControlPointBoundsDataParser, self).__init__()
 
     def startElementHandler(self, name, attrs):
-        if name == "point" and self._elementStack and self._elementStack[-1] == "contour":
+        if name == "point" and self._elementStack and self._elementStack[
+                -1] == "contour":
             if attrs.get("type") in _onCurvePointTypes:
                 x = attrs.get("x")
                 y = attrs.get("y")
@@ -883,7 +941,8 @@ class _FetchControlPointBoundsDataParser(_BaseParser):
                     x = _number(x)
                     y = _number(y)
                     self.points.add((x, y))
-        elif name == "component" and self._elementStack and self._elementStack[-1] == "outline":
+        elif name == "component" and self._elementStack and self._elementStack[
+                -1] == "outline":
             base = attrs.get("base")
             transformation = []
             for attr, default in _transformationInfo:
@@ -894,7 +953,8 @@ class _FetchControlPointBoundsDataParser(_BaseParser):
                     value = _number(value)
                 transformation.append(value)
             self.components.append((base, transformation))
-        super(_FetchControlPointBoundsDataParser, self).startElementHandler(name, attrs)
+        super(_FetchControlPointBoundsDataParser, self).startElementHandler(
+            name, attrs)
 
     def endElementHandler(self, name):
         if name == "outline":
@@ -910,19 +970,21 @@ def _fetchHasOutlineData(glif):
         pass
     return parser.hasOutline
 
-class _FetchHasOutlineDataParser(_BaseParser):
 
+class _FetchHasOutlineDataParser(_BaseParser):
     def __init__(self):
         self.hasOutline = False
         super(_FetchHasOutlineDataParser, self).__init__()
 
     def startElementHandler(self, name, attrs):
-        if name == "point" and self._elementStack and self._elementStack[-1] == "contour":
+        if name == "point" and self._elementStack and self._elementStack[
+                -1] == "contour":
             segmentType = attrs.get("type")
             if segmentType not in ("move", "offcurve", None):
                 self.hasOutline = True
                 raise _DoneParsing
-        super(_FetchHasOutlineDataParser, self).startElementHandler(name, attrs)
+        super(_FetchHasOutlineDataParser, self).startElementHandler(name,
+                                                                    attrs)
 
     def endElementHandler(self, name):
         if name == "outline":
@@ -932,6 +994,7 @@ class _FetchHasOutlineDataParser(_BaseParser):
 # -----
 # Tests
 # -----
+
 
 def _testSetParentDataInGlyph():
     """
@@ -943,6 +1006,7 @@ def _testSetParentDataInGlyph():
     >>> id(glyph.getParent()) == id(font)
     True
     """
+
 
 def _testNewGlyph():
     """
@@ -962,6 +1026,7 @@ def _testNewGlyph():
     >>> keys
     ['A', 'B', 'C', 'NewGlyphTest']
     """
+
 
 def _testInsertGlyph():
     """
@@ -990,6 +1055,7 @@ def _testInsertGlyph():
     [(1, ['nota']), (2, ['nota']), (3, ['b'])]
     """
 
+
 def _testIter():
     """
     >>> from defcon import Font
@@ -1009,6 +1075,7 @@ def _testIter():
     [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'B'), ('B', 'C'), ('C', 'A'), ('C', 'B'), ('C', 'C')]
     """
 
+
 def _testGetitem():
     """
     >>> from defcon import Font
@@ -1024,6 +1091,7 @@ def _testGetitem():
         ...
     KeyError: 'NotInFont not in layer'
     """
+
 
 def _testDelitem():
     """
@@ -1095,6 +1163,7 @@ def _testDelitem():
 #    >>> tearDownTestFontCopy()
     """
 
+
 def _testLen():
     """
     >>> from defcon import Font
@@ -1109,6 +1178,7 @@ def _testLen():
     >>> len(layer)
     0
     """
+
 
 def _testContains():
     """
@@ -1126,6 +1196,7 @@ def _testContains():
     >>> 'A' in layer
     False
     """
+
 
 def _testKeys():
     """
@@ -1159,6 +1230,7 @@ def _testKeys():
     ['A']
     """
 
+
 def _testColor():
     """
     >>> from defcon import Font
@@ -1181,6 +1253,7 @@ def _testColor():
     '0.5,0.5,0.5,0.5'
     """
 
+
 def _testLib():
     """
     >>> from defcon import Font
@@ -1196,6 +1269,7 @@ def _testLib():
     >>> layer.lib.dirty
     True
     """
+
 
 def _testGlyphWithOutlines():
     """
@@ -1213,6 +1287,7 @@ def _testGlyphWithOutlines():
     ['A', 'B']
     """
 
+
 def _testComponentReferences():
     """
     >>> from defcon import Font
@@ -1225,6 +1300,7 @@ def _testComponentReferences():
     >>> layer.componentReferences
     {'A': set(['C']), 'B': set(['C'])}
     """
+
 
 def _testImageReferences():
     """
@@ -1240,6 +1316,7 @@ def _testImageReferences():
     {'test': ['B'], 'image 1.png': ['A']}
     """
 
+
 def _testBounds():
     """
     >>> from defcon import Font
@@ -1250,6 +1327,7 @@ def _testBounds():
     (0, 0, 700, 700)
     """
 
+
 def _testControlPointBounds():
     """
     >>> from defcon import Font
@@ -1259,6 +1337,7 @@ def _testControlPointBounds():
     >>> layer.controlPointBounds
     (0, 0, 700, 700)
     """
+
 
 def _testGlyphNameChange():
     """
@@ -1275,6 +1354,7 @@ def _testGlyphNameChange():
     >>> layer.dirty
     True
     """
+
 
 def _testGlyphUnicodesChanged():
     """
@@ -1299,6 +1379,7 @@ def _testGlyphUnicodesChanged():
     >>> layer.unicodeData[65]
     ['test', 'A']
     """
+
 
 def _testGlyphDispatcher():
     """
@@ -1395,6 +1476,7 @@ def _testGlyphDispatcher():
     True
     """
 
+
 def _testExternalChanges():
     """
     >>> from ufoLib.plistlib import readPlist, writePlist
@@ -1459,6 +1541,7 @@ def _testExternalChanges():
     >>> tearDownTestFontCopy(font.path)
     """
 
+
 def _testReloadGlyphs():
     """
     >>> from defcon import Font
@@ -1491,6 +1574,7 @@ def _testReloadGlyphs():
     >>> f.write(t)
     >>> f.close()
     """
+
 
 if __name__ == "__main__":
     import doctest

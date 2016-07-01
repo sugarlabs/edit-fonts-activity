@@ -22,7 +22,6 @@ from defcon.tools.notifications import NotificationCenter
 
 
 class Font(BaseObject):
-
     """
     If loading from an existing UFO, **path** should be the path to the UFO.
 
@@ -66,11 +65,25 @@ class Font(BaseObject):
     changeNotificationName = "Font.Changed"
     representationFactories = {}
 
-    def __init__(self, path=None,
-                    kerningClass=None, infoClass=None, groupsClass=None, featuresClass=None, libClass=None, unicodeDataClass=None,
-                    layerSetClass=None, layerClass=None, imageSetClass=None, dataSetClass=None,
-                    guidelineClass=None,
-                    glyphClass=None, glyphContourClass=None, glyphPointClass=None, glyphComponentClass=None, glyphAnchorClass=None, glyphImageClass=None):
+    def __init__(self,
+                 path=None,
+                 kerningClass=None,
+                 infoClass=None,
+                 groupsClass=None,
+                 featuresClass=None,
+                 libClass=None,
+                 unicodeDataClass=None,
+                 layerSetClass=None,
+                 layerClass=None,
+                 imageSetClass=None,
+                 dataSetClass=None,
+                 guidelineClass=None,
+                 glyphClass=None,
+                 glyphContourClass=None,
+                 glyphPointClass=None,
+                 glyphComponentClass=None,
+                 glyphAnchorClass=None,
+                 glyphImageClass=None):
 
         #Q: what does super() mean?
         super(Font, self).__init__()
@@ -94,7 +107,7 @@ class Font(BaseObject):
         if dataSetClass is None:
             dataSetClass = DataSet
 
-        #Q: The ones that are not given an default value above are always None, why? Are they not included in the defcon Lib and only given for expansion purposes? 
+        #Q: The ones that are not given an default value above are always None, why? Are they not included in the defcon Lib and only given for expansion purposes?
         self._unicodeDataClass = unicodeDataClass
         self._layerSetClass = layerSetClass
         self._layerClass = layerClass
@@ -155,20 +168,20 @@ class Font(BaseObject):
             self._layers.defaultLayer = self._layers[defaultLayerName]
             self._layers.dirty = False
             self._layers.enableNotifications()
-            
+
             # get the image file names
             #Q: What are image files in a font?
             #observe that the notifications are disabled before setting the values and then enabled
             self._images.disableNotifications()
             self._images.fileNames = reader.getImageDirectoryListing()
             self._images.enableNotifications()
-            
+
             # get the data directory listing
             #Q: Whats there in the data directories?
             self._data.disableNotifications()
             self._data.fileNames = reader.getDataDirectoryListing()
             self._data.enableNotifications()
-            
+
             # if the UFO version is 1, do some conversion.
             if self._ufoFormatVersion == 1:
                 self._convertFromFormatVersion1RoboFabData()
@@ -179,7 +192,8 @@ class Font(BaseObject):
             # that could create a data corruption within this object.
             if self._ufoFormatVersion < 3:
                 self._reader = reader
-                self._kerningGroupConversionRenameMaps = reader.getKerningGroupConversionRenameMaps()
+                self._kerningGroupConversionRenameMaps = reader.getKerningGroupConversionRenameMaps(
+                )
                 k = self.kerning
                 g = self.groups
             else:
@@ -187,7 +201,7 @@ class Font(BaseObject):
                 # the font as unmodified
                 self._dirty = False
 
-        #Q: does this mean the ufo file is empty?            
+        #Q: does this mean the ufo file is empty?
         if self._layers.defaultLayer is None:
             layer = self.newLayer("public.default")
             self._layers.defaultLayer = layer
@@ -195,8 +209,10 @@ class Font(BaseObject):
     def _get_dispatcher(self):
         return self._dispatcher
 
-    #Q: What does property() do? , does it run the mentioned function 
-    dispatcher = property(_get_dispatcher, doc="The :class:`defcon.tools.notifications.NotificationCenter` assigned to this font.")
+    #Q: What does property() do? , does it run the mentioned function
+    dispatcher = property(
+        _get_dispatcher,
+        doc="The :class:`defcon.tools.notifications.NotificationCenter` assigned to this font.")
 
     # ------
     # Glyphs
@@ -205,7 +221,8 @@ class Font(BaseObject):
     def _get_glyphSet(self):
         return self._layers.defaultLayer
 
-    _glyphSet = property(_get_glyphSet, doc="Convenience for getting the main layer.")
+    _glyphSet = property(_get_glyphSet,
+                         doc="Convenience for getting the main layer.")
 
     def newGlyph(self, name):
         """
@@ -247,7 +264,6 @@ class Font(BaseObject):
     def __contains__(self, name):
         return name in self._glyphSet
 
-
     def keys(self):
         return list(self._glyphSet.keys())
 
@@ -285,12 +301,17 @@ class Font(BaseObject):
         if self._glyphSet is not None:
             self._glyphSet.dirName = glyphsDir
 
-    path = property(_get_path, _set_path, doc="The location of the file on disk. Setting the path should only be done when the user has moved the file in the OS interface. Setting the path is not the same as a save operation.")
+    path = property(
+        _get_path,
+        _set_path,
+        doc="The location of the file on disk. Setting the path should only be done when the user has moved the file in the OS interface. Setting the path is not the same as a save operation.")
 
     def _get_ufoFormatVersion(self):
         return self._ufoFormatVersion
 
-    ufoFormatVersion = property(_get_ufoFormatVersion, doc="The UFO format version that will be used when saving. This is taken from a loaded UFO during __init__. If this font was not loaded from a UFO, this will return None until the font has been saved.")
+    ufoFormatVersion = property(
+        _get_ufoFormatVersion,
+        doc="The UFO format version that will be used when saving. This is taken from a loaded UFO during __init__. If this font was not loaded from a UFO, this will return None until the font has been saved.")
 
     def _get_kerningGroupConversionRenameMaps(self):
         return self._kerningGroupConversionRenameMaps
@@ -298,28 +319,39 @@ class Font(BaseObject):
     def _set_kerningGroupConversionRenameMaps(self, value):
         self._kerningGroupConversionRenameMaps = value
 
-    kerningGroupConversionRenameMaps = property(_get_kerningGroupConversionRenameMaps, _set_kerningGroupConversionRenameMaps, doc="The kerning group rename map that will be used when writing UFO 1 and UFO 2. This follows the format defined in UFOReader. This will only not be None if it has been set or this object was loaded from a UFO 1 or UFO 2 file.")
+    kerningGroupConversionRenameMaps = property(
+        _get_kerningGroupConversionRenameMaps,
+        _set_kerningGroupConversionRenameMaps,
+        doc="The kerning group rename map that will be used when writing UFO 1 and UFO 2. This follows the format defined in UFOReader. This will only not be None if it has been set or this object was loaded from a UFO 1 or UFO 2 file.")
 
     def _get_glyphsWithOutlines(self):
         return self._glyphSet.glyphsWithOutlines
 
     #Q: more explanation needed regarding how these outlines are stored
-    glyphsWithOutlines = property(_get_glyphsWithOutlines, doc="A list of glyphs containing outlines in the font's main layer.")
+    glyphsWithOutlines = property(
+        _get_glyphsWithOutlines,
+        doc="A list of glyphs containing outlines in the font's main layer.")
 
     def _get_componentReferences(self):
         return self._glyphSet.componentReferences
 
-    componentReferences = property(_get_componentReferences, doc="A dict of describing the component relationships in the font's main layer. The dictionary is of form ``{base glyph : [references]}``.")
+    componentReferences = property(
+        _get_componentReferences,
+        doc="A dict of describing the component relationships in the font's main layer. The dictionary is of form ``{base glyph : [references]}``.")
 
     def _get_bounds(self):
         return self._glyphSet.bounds
 
-    bounds = property(_get_bounds, doc="The bounds of all glyphs in the font's main layer. This can be an expensive operation.")
+    bounds = property(
+        _get_bounds,
+        doc="The bounds of all glyphs in the font's main layer. This can be an expensive operation.")
 
     def _get_controlPointBounds(self):
         return self._glyphSet.controlPointBounds
 
-    controlPointBounds = property(_get_controlPointBounds, doc="The control bounds of all glyphs in the font's main layer. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured. This is an expensive operation.")
+    controlPointBounds = property(
+        _get_controlPointBounds,
+        doc="The control bounds of all glyphs in the font's main layer. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured. This is an expensive operation.")
 
     # -----------
     # Sub-Objects
@@ -339,23 +371,31 @@ class Font(BaseObject):
             glyphPointClass=self._glyphPointClass,
             glyphComponentClass=self._glyphComponentClass,
             glyphAnchorClass=self._glyphAnchorClass,
-            glyphImageClass=self._glyphImageClass
-        )
+            glyphImageClass=self._glyphImageClass)
         return layers
 
     def beginSelfLayerSetNotificationObservation(self):
         layers = self.layers
-        layers.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="LayerSet.Changed")
-        layers.addObserver(observer=self, methodName="_layerAddedNotificationCallback", notification="LayerSet.LayerAdded")
-        layers.addObserver(observer=self, methodName="_layerWillBeDeletedNotificationCallback", notification="LayerSet.LayerWillBeDeleted")
+        layers.addObserver(observer=self,
+                           methodName="_objectDirtyStateChange",
+                           notification="LayerSet.Changed")
+        layers.addObserver(observer=self,
+                           methodName="_layerAddedNotificationCallback",
+                           notification="LayerSet.LayerAdded")
+        layers.addObserver(
+            observer=self,
+            methodName="_layerWillBeDeletedNotificationCallback",
+            notification="LayerSet.LayerWillBeDeleted")
 
     def endSelfLayerSetNotificationObservation(self):
         layers = self.layers
         if layers.dispatcher is None:
             return
         layers.removeObserver(observer=self, notification="LayerSet.Changed")
-        layers.removeObserver(observer=self, notification="LayerSet.LayerAdded")
-        layers.removeObserver(observer=self, notification="LayerSet.LayerWillBeDeleted")
+        layers.removeObserver(observer=self,
+                              notification="LayerSet.LayerAdded")
+        layers.removeObserver(observer=self,
+                              notification="LayerSet.LayerWillBeDeleted")
         layers.endSelfNotificationObservation()
 
     def _get_layers(self):
@@ -366,15 +406,14 @@ class Font(BaseObject):
     # info
 
     def instantiateInfo(self):
-        info = self._infoClass(
-            font=self,
-            guidelineClass=self._guidelineClass
-        )
+        info = self._infoClass(font=self, guidelineClass=self._guidelineClass)
         return info
 
     def beginSelfInfoSetNotificationObservation(self):
         info = self.info
-        info.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="Info.Changed")
+        info.addObserver(observer=self,
+                         methodName="_objectDirtyStateChange",
+                         notification="Info.Changed")
 
     def endSelfInfoSetNotificationObservation(self):
         if self._info is None:
@@ -437,21 +476,22 @@ class Font(BaseObject):
             raise error
 
     def instantiateKerning(self):
-        kerning = self._kerningClass(
-            font=self
-        )
+        kerning = self._kerningClass(font=self)
         return kerning
 
     def beginSelfKerningNotificationObservation(self):
         kerning = self.kerning
-        kerning.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="Kerning.Changed")
+        kerning.addObserver(observer=self,
+                            methodName="_objectDirtyStateChange",
+                            notification="Kerning.Changed")
 
     def endSelfKerningNotificationObservation(self):
         if self._kerning is None:
             return
         if self._kerning.dispatcher is None:
             return
-        self._kerning.removeObserver(observer=self, notification="Kerning.Changed")
+        self._kerning.removeObserver(observer=self,
+                                     notification="Kerning.Changed")
         self._kerning.endSelfNotificationObservation()
 
     def _get_kerning(self):
@@ -469,21 +509,22 @@ class Font(BaseObject):
     # groups
     #Q: are groups only used to represent Kerning Data or is there any other use?
     def instantiateGroups(self):
-        groups = self._groupsClass(
-            font=self
-        )
+        groups = self._groupsClass(font=self)
         return groups
 
     def beginSelfGroupsNotificationObservation(self):
         groups = self.groups
-        groups.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="Groups.Changed")
+        groups.addObserver(observer=self,
+                           methodName="_objectDirtyStateChange",
+                           notification="Groups.Changed")
 
     def endSelfGroupsNotificationObservation(self):
         if self._groups is None:
             return
         if self._groups.dispatcher is None:
             return
-        self._groups.removeObserver(observer=self, notification="Groups.Changed")
+        self._groups.removeObserver(observer=self,
+                                    notification="Groups.Changed")
         self._groups.endSelfNotificationObservation()
 
     def _get_groups(self):
@@ -501,21 +542,22 @@ class Font(BaseObject):
     # features
 
     def instantiateFeatures(self):
-        features = self._featuresClass(
-            font=self
-        )
+        features = self._featuresClass(font=self)
         return features
 
     def beginSelfFeaturesNotificationObservation(self):
         features = self.features
-        features.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="Features.Changed")
+        features.addObserver(observer=self,
+                             methodName="_objectDirtyStateChange",
+                             notification="Features.Changed")
 
     def endSelfFeaturesNotificationObservation(self):
         if self._features is None:
             return
         if self._features.dispatcher is None:
             return
-        self._features.removeObserver(observer=self, notification="Features.Changed")
+        self._features.removeObserver(observer=self,
+                                      notification="Features.Changed")
         self._features.endSelfNotificationObservation()
 
     def _get_features(self):
@@ -533,18 +575,19 @@ class Font(BaseObject):
             self._stampFeaturesDataState(reader)
         return self._features
 
-    features = property(_get_features, doc="The font's :class:`Features` object.")
+    features = property(_get_features,
+                        doc="The font's :class:`Features` object.")
 
     # lib
 
     def instantiateLib(self):
-        lib = self._libClass(
-            font=self
-        )
+        lib = self._libClass(font=self)
         return lib
 
     def beginSelfLibNotificationObservation(self):
-        self._lib.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="Lib.Changed")
+        self._lib.addObserver(observer=self,
+                              methodName="_objectDirtyStateChange",
+                              notification="Lib.Changed")
 
     def endSelfLibNotificationObservation(self):
         if self._lib is None:
@@ -573,18 +616,19 @@ class Font(BaseObject):
     # images
 
     def instantiateImageSet(self):
-        imageSet = self._imageSetClass(
-            font=self
-        )
+        imageSet = self._imageSetClass(font=self)
         return imageSet
 
     def beginSelfImageSetNotificationObservation(self):
-        self._images.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="ImageSet.Changed")
+        self._images.addObserver(observer=self,
+                                 methodName="_objectDirtyStateChange",
+                                 notification="ImageSet.Changed")
 
     def endSelfImageSetNotificationObservation(self):
         if self._images.dispatcher is None:
             return
-        self._images.removeObserver(observer=self, notification="ImageSet.Changed")
+        self._images.removeObserver(observer=self,
+                                    notification="ImageSet.Changed")
         self._images.endSelfNotificationObservation()
 
     def _get_images(self):
@@ -595,18 +639,19 @@ class Font(BaseObject):
     # data
 
     def instantiateDataSet(self):
-        dataSet = self._dataSetClass(
-            font=self
-        )
+        dataSet = self._dataSetClass(font=self)
         return dataSet
 
     def beginSelfDataSetNotificationObservation(self):
-        self._data.addObserver(observer=self, methodName="_objectDirtyStateChange", notification="DataSet.Changed")
+        self._data.addObserver(observer=self,
+                               methodName="_objectDirtyStateChange",
+                               notification="DataSet.Changed")
 
     def endSelfDataSetNotificationObservation(self):
         if self._data.dispatcher is None:
             return
-        self._data.removeObserver(observer=self, notification="DataSet.Changed")
+        self._data.removeObserver(observer=self,
+                                  notification="DataSet.Changed")
         self._data.endSelfNotificationObservation()
 
     def _get_data(self):
@@ -619,7 +664,8 @@ class Font(BaseObject):
     def _get_unicodeData(self):
         return self._glyphSet.unicodeData
 
-    unicodeData = property(_get_unicodeData, doc="The font's :class:`UnicodeData` object.")
+    unicodeData = property(_get_unicodeData,
+                           doc="The font's :class:`UnicodeData` object.")
 
     # glyph order
 
@@ -636,9 +682,14 @@ class Font(BaseObject):
                 del self.lib["public.glyphOrder"]
         else:
             self.lib["public.glyphOrder"] = value
-        self.postNotification("Font.GlyphOrderChanged", data=dict(oldValue=oldValue, newValue=value))
+        self.postNotification("Font.GlyphOrderChanged",
+                              data=dict(oldValue=oldValue,
+                                        newValue=value))
 
-    glyphOrder = property(_get_glyphOrder, _set_glyphOrder, doc="The font's glyph order. When setting the value must be a list of glyph names. There is no requirement, nor guarantee, that the list will contain only names of glyphs in the font. Setting this posts *Font.GlyphOrderChanged* and *Font.Changed* notifications.")
+    glyphOrder = property(
+        _get_glyphOrder,
+        _set_glyphOrder,
+        doc="The font's glyph order. When setting the value must be a list of glyph names. There is no requirement, nor guarantee, that the list will contain only names of glyphs in the font. Setting this posts *Font.GlyphOrderChanged* and *Font.Changed* notifications.")
 
     def updateGlyphOrder(self, addedGlyph=None, removedGlyph=None):
         """
@@ -677,9 +728,9 @@ class Font(BaseObject):
         if formatVersion is None:
             formatVersion = 3
         count = 0
-        count += 1 # info
-        count += 1 # groups
-        count += 1 # lib
+        count += 1  # info
+        count += 1  # groups
+        count += 1  # lib
         if formatVersion != self._ufoFormatVersion and formatVersion < 3:
             count += 1
         else:
@@ -692,7 +743,11 @@ class Font(BaseObject):
         count += self.layers.getSaveProgressBarTickCount(formatVersion)
         return count
 
-    def save(self, path=None, formatVersion=None, removeUnreferencedImages=False, progressBar=None):
+    def save(self,
+             path=None,
+             formatVersion=None,
+             removeUnreferencedImages=False,
+             progressBar=None):
         """
         Save the font to **path**. If path is None, the path
         from the last save or when the font was first opened
@@ -752,17 +807,34 @@ class Font(BaseObject):
                     self.features.dirty = True
             # set the kerning group remap if necessary
             if formatVersion < 3 and self._kerningGroupConversionRenameMaps is not None:
-                writer.setKerningGroupConversionRenameMaps(self._kerningGroupConversionRenameMaps)
+                writer.setKerningGroupConversionRenameMaps(
+                    self._kerningGroupConversionRenameMaps)
             # save the objects
-            self._saveInfo(writer=writer, saveAs=saveAs, progressBar=progressBar)
-            self._saveGroups(writer=writer, saveAs=saveAs, progressBar=progressBar)
-            self._saveKerning(writer=writer, saveAs=saveAs, progressBar=progressBar)
-            self._saveLib(writer=writer, saveAs=saveAs, progressBar=progressBar)
+            self._saveInfo(writer=writer,
+                           saveAs=saveAs,
+                           progressBar=progressBar)
+            self._saveGroups(writer=writer,
+                             saveAs=saveAs,
+                             progressBar=progressBar)
+            self._saveKerning(writer=writer,
+                              saveAs=saveAs,
+                              progressBar=progressBar)
+            self._saveLib(writer=writer,
+                          saveAs=saveAs,
+                          progressBar=progressBar)
             if formatVersion >= 2:
-                self._saveFeatures(writer=writer, saveAs=saveAs, progressBar=progressBar)
+                self._saveFeatures(writer=writer,
+                                   saveAs=saveAs,
+                                   progressBar=progressBar)
             if formatVersion >= 3:
-                self.saveImages(writer=writer, removeUnreferencedImages=removeUnreferencedImages, saveAs=saveAs, progressBar=progressBar)
-                self.saveData(writer=writer, saveAs=saveAs, progressBar=progressBar)
+                self.saveImages(
+                    writer=writer,
+                    removeUnreferencedImages=removeUnreferencedImages,
+                    saveAs=saveAs,
+                    progressBar=progressBar)
+                self.saveData(writer=writer,
+                              saveAs=saveAs,
+                              progressBar=progressBar)
             self.layers.save(writer, saveAs=saveAs, progressBar=progressBar)
             writer.setModificationTime()
             if downConvertinginPlace:
@@ -870,14 +942,21 @@ class Font(BaseObject):
             self._convertToFormatVersion1RoboFabData(libCopy)
         writer.writeLib(libCopy)
 
-    def saveImages(self, writer, removeUnreferencedImages=False, saveAs=False, progressBar=None):
+    def saveImages(self,
+                   writer,
+                   removeUnreferencedImages=False,
+                   saveAs=False,
+                   progressBar=None):
         """
         Save images. This method should not be called externally.
         Subclasses may override this method to implement custom saving behavior.
         """
         if progressBar is not None:
             progressBar.update(text="Saving images...", increment=0)
-        self.images.save(writer, removeUnreferencedImages=removeUnreferencedImages, saveAs=saveAs, progressBar=progressBar)
+        self.images.save(writer,
+                         removeUnreferencedImages=removeUnreferencedImages,
+                         saveAs=saveAs,
+                         progressBar=progressBar)
         if progressBar is not None:
             progressBar.update()
 
@@ -928,9 +1007,12 @@ class Font(BaseObject):
         self._beginSelfLayerNotificationObservation(layer)
 
     def _beginSelfLayerNotificationObservation(self, layer):
-        layer.addObserver(self, "_glyphAddedNotificationCallback", "Layer.GlyphAdded")
-        layer.addObserver(self, "_glyphDeletedNotificationCallback", "Layer.GlyphDeleted")
-        layer.addObserver(self, "_glyphRenamedNotificationCallback", "Layer.GlyphNameChanged")
+        layer.addObserver(self, "_glyphAddedNotificationCallback",
+                          "Layer.GlyphAdded")
+        layer.addObserver(self, "_glyphDeletedNotificationCallback",
+                          "Layer.GlyphDeleted")
+        layer.addObserver(self, "_glyphRenamedNotificationCallback",
+                          "Layer.GlyphNameChanged")
 
     def _layerWillBeDeletedNotificationCallback(self, notification):
         name = notification.data["name"]
@@ -940,7 +1022,8 @@ class Font(BaseObject):
     def _endSelfLayerNotificationObservation(self, layer):
         layer.removeObserver(observer=self, notification="Layer.GlyphAdded")
         layer.removeObserver(observer=self, notification="Layer.GlyphDeleted")
-        layer.removeObserver(observer=self, notification="Layer.GlyphNameChanged")
+        layer.removeObserver(observer=self,
+                             notification="Layer.GlyphNameChanged")
 
     def _glyphAddedNotificationCallback(self, notification):
         name = notification.data["name"]
@@ -1067,39 +1150,41 @@ class Font(BaseObject):
         layerChanges = self.layers.testForExternalChanges(reader)
         modifiedImages = addedImages = deletedImages = []
         if self._images is not None:
-            modifiedImages, addedImages, deletedImages = self._images.testForExternalChanges(reader)
+            modifiedImages, addedImages, deletedImages = self._images.testForExternalChanges(
+                reader)
         modifiedData = addedData = deletedData = []
         if self._data is not None:
-            modifiedData, addedData, deletedData = self._data.testForExternalChanges(reader)
+            modifiedData, addedData, deletedData = self._data.testForExternalChanges(
+                reader)
         # deprecated stuff
         defaultLayerName = self.layers.defaultLayer.name
-        modifiedGlyphs = layerChanges["modified"].get(defaultLayerName, {}).get("modified")
-        addedGlyphs = layerChanges["modified"].get(defaultLayerName, {}).get("added")
-        deletedGlyphs = layerChanges["modified"].get(defaultLayerName, {}).get("deleted")
-        return dict(
-            info=infoChanged,
-            kerning=kerningChanged,
-            groups=groupsChanged,
-            features=featuresChanged,
-            lib=libChanged,
-            layers=layerChanges,
-            images=dict(
-                modified=modifiedImages,
-                added=addedImages,
-                deleted=deletedImages
-            ),
-            data=dict(
-                modifiedData=modifiedData,
-                addedData=addedData,
-                deletedData=deletedData
-            ),
-            # deprecated
-            modifiedGlyphs=modifiedGlyphs,
-            addedGlyphs=addedGlyphs,
-            deletedGlyphs=deletedGlyphs
-        )
+        modifiedGlyphs = layerChanges["modified"].get(defaultLayerName,
+                                                      {}).get("modified")
+        addedGlyphs = layerChanges["modified"].get(defaultLayerName,
+                                                   {}).get("added")
+        deletedGlyphs = layerChanges["modified"].get(defaultLayerName,
+                                                     {}).get("deleted")
+        return dict(info=infoChanged,
+                    kerning=kerningChanged,
+                    groups=groupsChanged,
+                    features=featuresChanged,
+                    lib=libChanged,
+                    layers=layerChanges,
+                    images=dict(modified=modifiedImages,
+                                added=addedImages,
+                                deleted=deletedImages),
+                    data=dict(modifiedData=modifiedData,
+                              addedData=addedData,
+                              deletedData=deletedData),
+                    # deprecated
+                    modifiedGlyphs=modifiedGlyphs,
+                    addedGlyphs=addedGlyphs,
+                    deletedGlyphs=deletedGlyphs)
 
-    def _testFontDataForExternalModifications(self, obj, fileName, reader=None):
+    def _testFontDataForExternalModifications(self,
+                                              obj,
+                                              fileName,
+                                              reader=None):
         # font is not on disk
         if self.path is None:
             return False
@@ -1125,19 +1210,28 @@ class Font(BaseObject):
         return False
 
     def _testInfoForExternalModifications(self, reader=None):
-        return self._testFontDataForExternalModifications(self._info, "fontinfo.plist", reader=reader)
+        return self._testFontDataForExternalModifications(self._info,
+                                                          "fontinfo.plist",
+                                                          reader=reader)
 
     def _testKerningForExternalModifications(self, reader=None):
-        return self._testFontDataForExternalModifications(self._kerning, "kerning.plist", reader=reader)
+        return self._testFontDataForExternalModifications(self._kerning,
+                                                          "kerning.plist",
+                                                          reader=reader)
 
     def _testGroupsForExternalModifications(self, reader=None):
-        return self._testFontDataForExternalModifications(self._groups, "groups.plist", reader=reader)
+        return self._testFontDataForExternalModifications(self._groups,
+                                                          "groups.plist",
+                                                          reader=reader)
 
     def _testFeaturesForExternalModifications(self, reader=None):
-        return self._testFontDataForExternalModifications(self._features, "features.fea", reader=reader)
+        return self._testFontDataForExternalModifications(self._features,
+                                                          "features.fea",
+                                                          reader=reader)
 
     def _testLibForExternalModifications(self, reader=None):
-        return self._testFontDataForExternalModifications(self._lib, "lib.plist", reader=reader)
+        return self._testFontDataForExternalModifications(
+            self._lib, "lib.plist", reader=reader)
 
     # data reloading
 
@@ -1191,7 +1285,8 @@ class Font(BaseObject):
             reader = UFOReader(self._path)
             kerning = reader.readKerning()
             if self._groups is not None:
-                kerningValidity, kerningErrors = kerningValidator(self._kerning)
+                kerningValidity, kerningErrors = kerningValidator(
+                    self._kerning)
                 if not kerningValidity:
                     error = DefconError("The kerning data is not valid.")
                     error.report = "\n".join(kerningErrors)
@@ -1271,11 +1366,9 @@ class Font(BaseObject):
         will be posted.
         """
         defaultLayerName = self.layers.defaultLayer.name
-        layerData = dict(
-            layers={
-                defaultLayerName : dict(glyphNames=glyphNames)
-            }
-        )
+        layerData = dict(layers={
+            defaultLayerName: dict(glyphNames=glyphNames)
+        })
         self.reloadLayers(layerData)
 
     def reloadLayers(self, layerData):
@@ -1299,7 +1392,6 @@ class Font(BaseObject):
         self.layers.reloadLayers(layerData)
         self.postNotification(notification="Font.ReloadedLayers")
         self.postNotification(notification="Font.ReloadedGlyphs")
-
 
     # -----------------------------
     # UFO Format Version Conversion
@@ -1378,16 +1470,16 @@ class Font(BaseObject):
             for featureName, featureText in features:
                 featureDict[featureName] = featureText.strip() + "\n"
             libCopy["org.robofab.opentype.features"] = featureDict
-            libCopy["org.robofab.opentype.featureorder"] = [featureName for featureName, featureText in features]
+            libCopy["org.robofab.opentype.featureorder"] = [
+                featureName for featureName, featureText in features
+            ]
         # hint data
-        hintData = dict(
-            blueFuzz=self.info.postscriptBlueFuzz,
-            blueScale=self.info.postscriptBlueScale,
-            blueShift=self.info.postscriptBlueShift,
-            forceBold=self.info.postscriptForceBold,
-            vStems=self.info.postscriptStemSnapV,
-            hStems=self.info.postscriptStemSnapH
-        )
+        hintData = dict(blueFuzz=self.info.postscriptBlueFuzz,
+                        blueScale=self.info.postscriptBlueScale,
+                        blueShift=self.info.postscriptBlueShift,
+                        forceBold=self.info.postscriptForceBold,
+                        vStems=self.info.postscriptStemSnapV,
+                        hStems=self.info.postscriptStemSnapH)
         bluePairs = [
             ("postscriptBlueValues", "blueValues"),
             ("postscriptOtherBlues", "otherBlues"),
@@ -1416,7 +1508,7 @@ class Font(BaseObject):
         from functools import partial
 
         simple_get = partial(getattr, self)
-        serialize = lambda item: item.getDataForSerialization();
+        serialize = lambda item: item.getDataForSerialization()
         serialized_get = lambda key: serialize(simple_get(key))
 
         getters = (
@@ -1431,18 +1523,17 @@ class Font(BaseObject):
             ('features', serialized_get),
             ('groups', serialized_get),
             ('images', serialized_get),
-            ('info',  serialized_get),
+            ('info', serialized_get),
             ('kerning', serialized_get),
-            ('layers',  serialized_get),
-            ('lib', serialized_get)
-        )
+            ('layers', serialized_get),
+            ('lib', serialized_get))
 
         return self._serialize(getters, **kwargs)
 
     def setDataFromSerialization(self, data):
         from functools import partial
 
-        set_attr = partial(setattr, self) # key, data
+        set_attr = partial(setattr, self)  # key, data
 
         def single_update(key, data):
             item = getattr(self, key)
@@ -1468,31 +1559,23 @@ class Font(BaseObject):
             self.beginSelfImageSetNotificationObservation()
             self._images.setDataFromSerialization(data)
 
-
         # TODO: fill the rest of setDataFromSerialization/getDataForSerialization pairs
-        setters = (
-            ('_ufoFormatVersion', set_attr),
-            ('_kerningGroupConversionRenameMaps', set_attr),
-            ('data', init_set_data),
-            ('features', single_update),
-            ('groups', single_update),
-            ('images', init_set_images),
-            ('info', single_update),
-            ('kerning', single_update),
-            ('layers', init_set_layers),
-            ('lib', single_update)
-        )
+        setters = (('_ufoFormatVersion', set_attr),
+                   ('_kerningGroupConversionRenameMaps', set_attr),
+                   ('data', init_set_data), ('features', single_update),
+                   ('groups', single_update), ('images', init_set_images),
+                   ('info', single_update), ('kerning', single_update),
+                   ('layers', init_set_layers), ('lib', single_update))
 
         for key, setter in setters:
             if key not in data:
                 continue
             setter(key, data[key])
 
-
-
 # -----
 # Tests
 # -----
+
 
 def _testSetParentDataInGlyph():
     """
@@ -1502,6 +1585,7 @@ def _testSetParentDataInGlyph():
     >>> id(glyph.getParent()) == id(font)
     True
     """
+
 
 def _testNewGlyph():
     """
@@ -1520,6 +1604,7 @@ def _testNewGlyph():
     ['A', 'B', 'C', 'NewGlyphTest']
     """
 
+
 def _testIter():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1537,6 +1622,7 @@ def _testIter():
     [('A', 'A'), ('A', 'B'), ('A', 'C'), ('B', 'A'), ('B', 'B'), ('B', 'C'), ('C', 'A'), ('C', 'B'), ('C', 'C')]
     """
 
+
 def _testGetitem():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1550,6 +1636,7 @@ def _testGetitem():
         ...
     KeyError: 'NotInFont not in layer'
     """
+
 
 def _testDelitem():
     """
@@ -1616,6 +1703,7 @@ def _testDelitem():
 #    >>> tearDownTestFontCopy()
     """
 
+
 def _testLen():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1627,6 +1715,7 @@ def _testLen():
     >>> len(font)
     0
     """
+
 
 def _testContains():
     """
@@ -1641,6 +1730,7 @@ def _testContains():
     >>> 'A' in font
     False
     """
+
 
 def _testKeys():
     """
@@ -1671,6 +1761,7 @@ def _testKeys():
     ['A']
     """
 
+
 def _testPath():
     """
     # get
@@ -1695,6 +1786,7 @@ def _testPath():
     >>> shutil.rmtree(path2)
     """
 
+
 def _testGlyphWithOutlines():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1708,6 +1800,7 @@ def _testGlyphWithOutlines():
     ['A', 'B']
     """
 
+
 def _testComponentReferences():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1719,6 +1812,7 @@ def _testComponentReferences():
     {'A': set(['C']), 'B': set(['C'])}
     """
 
+
 def _testBounds():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1727,6 +1821,7 @@ def _testBounds():
     (0, 0, 700, 700)
     """
 
+
 def _testControlPointBounds():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1734,6 +1829,7 @@ def _testControlPointBounds():
     >>> font.controlPointBounds
     (0, 0, 700, 700)
     """
+
 
 def _testSave():
     """
@@ -1766,6 +1862,7 @@ def _testSave():
     >>> tearDownTestFontCopy(saveAsPath)
     """
 
+
 def _testGlyphNameChange():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1779,6 +1876,7 @@ def _testGlyphNameChange():
     >>> font.dirty
     True
     """
+
 
 def _testGlyphUnicodesChanged():
     """
@@ -1800,6 +1898,7 @@ def _testGlyphUnicodesChanged():
     >>> font.unicodeData[65]
     ['test', 'A']
     """
+
 
 def _testTestForExternalChanges():
     """
@@ -1850,6 +1949,7 @@ def _testTestForExternalChanges():
     False
     """
 
+
 def _testReloadInfo():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1877,6 +1977,7 @@ def _testReloadInfo():
     >>> f.write(t)
     >>> f.close()
     """
+
 
 def _testReloadKerning():
     """
@@ -1906,6 +2007,7 @@ def _testReloadKerning():
     >>> f.close()
     """
 
+
 def _testReloadGroups():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1934,6 +2036,7 @@ def _testReloadGroups():
     >>> f.close()
     """
 
+
 def _testReloadLib():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1961,6 +2064,7 @@ def _testReloadLib():
     >>> f.write(t)
     >>> f.close()
     """
+
 
 def _testReloadGlyphs():
     """
@@ -1994,6 +2098,7 @@ def _testReloadGlyphs():
     >>> f.close()
     """
 
+
 def _testGlyphOrder():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -2014,6 +2119,7 @@ def _testGlyphOrder():
     >>> font.glyphOrder
     ['A', 'B', 'C']
     """
+
 
 if __name__ == "__main__":
     import doctest

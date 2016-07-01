@@ -14,11 +14,13 @@ except ImportError:
 # Factories
 # ---------
 
+
 def _makeCMAP(unicodeData):
     mapping = {}
     for name, values in unicodeData.items():
         mapping[name] = values[0]
     return mapping
+
 
 def _layoutEngineOTLTablesRepresentationFactory(layoutEngine):
     import os
@@ -54,8 +56,8 @@ def _layoutEngineOTLTablesRepresentationFactory(layoutEngine):
 # Main Object
 # -----------
 
-class LayoutEngine(BaseObject):
 
+class LayoutEngine(BaseObject):
     """
     This object provides a GDEF, GSUB and GPOS OpenType Layout Engine for
     the default layer of the given font. The engine uses the ``compositor``
@@ -80,10 +82,9 @@ class LayoutEngine(BaseObject):
 
     changeNotificationName = "LayoutEngine.Changed"
     representationFactories = {
-        "defcon.layoutEngine.tables" : dict(
-            factory=_layoutEngineOTLTablesRepresentationFactory,
-            destructiveNotifications=("LayoutEngine._DestroyCachedTables")
-        )
+        "defcon.layoutEngine.tables":
+        dict(factory=_layoutEngineOTLTablesRepresentationFactory,
+             destructiveNotifications=("LayoutEngine._DestroyCachedTables"))
     }
 
     def __init__(self, font):
@@ -105,7 +106,9 @@ class LayoutEngine(BaseObject):
             self._updateEngine()
         return self._layoutEngine
 
-    engine = property(_get_engine, doc="The compositor layout engine. This object must always be retrieved from the LayoutEngine for the automatic updating to occur.")
+    engine = property(
+        _get_engine,
+        doc="The compositor layout engine. This object must always be retrieved from the LayoutEngine for the automatic updating to occur.")
 
     # --------------
     # Engine Updates
@@ -140,13 +143,19 @@ class LayoutEngine(BaseObject):
 
     def beginSelfLayersObservation(self):
         layers = self.font.layers
-        layers.addObserver(observer=self, methodName="_layerSetDefaultLayerWillChange", notification="LayerSet.DefaultLayerWillChange")
-        layers.addObserver(observer=self, methodName="_layerSetDefaultLayerChanged", notification="LayerSet.DefaultLayerChanged")
+        layers.addObserver(observer=self,
+                           methodName="_layerSetDefaultLayerWillChange",
+                           notification="LayerSet.DefaultLayerWillChange")
+        layers.addObserver(observer=self,
+                           methodName="_layerSetDefaultLayerChanged",
+                           notification="LayerSet.DefaultLayerChanged")
 
     def endSelfLayersObservation(self):
         layers = self.font.layers
-        layers.removeObserver(observer=self, notification="LayerSet.DefaultLayerWillChange")
-        layers.removeObserver(observer=self, notification="LayerSet.DefaultLayerChanged")
+        layers.removeObserver(observer=self,
+                              notification="LayerSet.DefaultLayerWillChange")
+        layers.removeObserver(observer=self,
+                              notification="LayerSet.DefaultLayerChanged")
 
     def _layerSetDefaultLayerWillChange(self, notification):
         self.endSelfLayerObservation()
@@ -159,11 +168,14 @@ class LayoutEngine(BaseObject):
 
     def beginSelfLayerObservation(self):
         layer = self.font.layers.defaultLayer
-        layer.addObserver(observer=self, methodName="_layerGlyphUnicodesChanged", notification="Layer.GlyphUnicodesChanged")
+        layer.addObserver(observer=self,
+                          methodName="_layerGlyphUnicodesChanged",
+                          notification="Layer.GlyphUnicodesChanged")
 
     def endSelfLayerObservation(self):
         layer = self.font.layers.defaultLayer
-        layer.removeObserver(observer=self, notification="Layer.GlyphUnicodesChanged")
+        layer.removeObserver(observer=self,
+                             notification="Layer.GlyphUnicodesChanged")
 
     def _layerGlyphUnicodesChanged(self):
         self._postNeedsUpdateNotification()
@@ -172,11 +184,14 @@ class LayoutEngine(BaseObject):
 
     def beginSelfFeaturesObservation(self):
         features = self.font.features
-        features.addObserver(observer=self, methodName="_featuresTextChanged", notification="Features.TextChanged")
+        features.addObserver(observer=self,
+                             methodName="_featuresTextChanged",
+                             notification="Features.TextChanged")
 
     def endSelfFeaturesObservation(self):
         features = self.font.features
-        features.removeObserver(observer=self, notification="Features.TextChanged")
+        features.removeObserver(observer=self,
+                                notification="Features.TextChanged")
 
     def _featuresTextChanged(self, notification):
         self._destroyCachedTables()
@@ -195,7 +210,12 @@ class LayoutEngine(BaseObject):
     # Engine API
     # ----------
 
-    def process(self, stringOrGlyphList, script="latn", langSys=None, rightToLeft=False, case="unchanged"):
+    def process(self,
+                stringOrGlyphList,
+                script="latn",
+                langSys=None,
+                rightToLeft=False,
+                case="unchanged"):
         """
         Process a string (or list of glyph names) with the current
         feature states for the given **script** and **langSys**.
@@ -215,11 +235,11 @@ class LayoutEngine(BaseObject):
         +-----------+
         """
         self._updateEngine()
-        glyphRecords = self.engine.process(
-                stringOrGlyphList,
-                script=script, langSys=langSys,
-                rightToLeft=rightToLeft, case=case
-            )
+        glyphRecords = self.engine.process(stringOrGlyphList,
+                                           script=script,
+                                           langSys=langSys,
+                                           rightToLeft=rightToLeft,
+                                           case=case)
         layer = self.font.layers.defaultLayer
         finalGlyphRecords = []
         for glyphRecord in glyphRecords:

@@ -4,12 +4,15 @@ from defcon.objects.component import _defaultTransformation
 
 
 class DecomposeComponentPointPen(GlyphObjectPointPen):
-
     def __init__(self, glyph, layer):
         self._layer = layer
         super(DecomposeComponentPointPen, self).__init__(glyph)
 
-    def addComponent(self, baseGlyphName, transformation, identifier=None, **kwargs):
+    def addComponent(self,
+                     baseGlyphName,
+                     transformation,
+                     identifier=None,
+                     **kwargs):
         if baseGlyphName in self._layer:
             baseGlyph = self._layer[baseGlyphName]
             if transformation == _defaultTransformation:

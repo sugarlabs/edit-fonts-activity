@@ -7,7 +7,6 @@ _defaultTransformation = (1, 0, 0, 1, 0, 0)
 
 
 class Component(BaseObject):
-
     """
     This object represents a reference to another glyph.
 
@@ -63,7 +62,8 @@ class Component(BaseObject):
             font = self._font()
         return font
 
-    font = property(_get_font, doc="The :class:`Font` that this component belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this component belongs to.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -77,7 +77,9 @@ class Component(BaseObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this component belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this component belongs to.")
 
     def _get_layer(self):
         layer = None
@@ -91,7 +93,8 @@ class Component(BaseObject):
             layer = self._layer()
         return layer
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this component belongs to.")
+    layer = property(_get_layer,
+                     doc="The :class:`Layer` that this component belongs to.")
 
     def _get_glyph(self):
         if self._glyph is None:
@@ -107,7 +110,10 @@ class Component(BaseObject):
         self._layer = None
         self._glyph = glyph
 
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this component belongs to. This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this component belongs to. This should not be set externally.")
 
     # bounds
 
@@ -132,12 +138,16 @@ class Component(BaseObject):
     def _get_bounds(self):
         return self._getBounds("bounds")
 
-    bounds = property(_get_bounds, doc="The bounds of the components's outline expressed as a tuple of form (xMin, yMin, xMax, yMax).")
+    bounds = property(
+        _get_bounds,
+        doc="The bounds of the components's outline expressed as a tuple of form (xMin, yMin, xMax, yMax).")
 
     def _get_controlPointBounds(self):
         return self._getBounds("controlPointBounds")
 
-    controlPointBounds = property(_get_controlPointBounds, doc="The control bounds of all points in the components. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured.")
+    controlPointBounds = property(
+        _get_controlPointBounds,
+        doc="The control bounds of all points in the components. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured.")
 
     # base glyph
 
@@ -149,13 +159,18 @@ class Component(BaseObject):
         self.endSelfBaseGlyphNotificationObservation()
         self._baseGlyph = newBaseGlyph
         self.beginSelfBaseGlyphNotificationObservation()
-        self.postNotification(notification="Component.BaseGlyphChanged", data=dict(oldValue=oldBaseGlyph, newValue=newBaseGlyph))
+        self.postNotification(notification="Component.BaseGlyphChanged",
+                              data=dict(oldValue=oldBaseGlyph,
+                                        newValue=newBaseGlyph))
         self.dirty = True
 
     def _get_baseGlyph(self):
         return self._baseGlyph
 
-    baseGlyph = property(_get_baseGlyph, _set_baseGlyph, doc="The glyph that the components references. Setting this will post *Component.BaseGlyphChanged* and *Component.Changed* notifications.")
+    baseGlyph = property(
+        _get_baseGlyph,
+        _set_baseGlyph,
+        doc="The glyph that the components references. Setting this will post *Component.BaseGlyphChanged* and *Component.Changed* notifications.")
 
     # transformation
 
@@ -164,13 +179,18 @@ class Component(BaseObject):
         if value == oldValue:
             return
         self._transformation = value
-        self.postNotification(notification="Component.TransformationChanged", data=dict(oldValue=oldValue, newValue=value))
+        self.postNotification(notification="Component.TransformationChanged",
+                              data=dict(oldValue=oldValue,
+                                        newValue=value))
         self.dirty = True
 
     def _get_transformation(self):
         return self._transformation
 
-    transformation = property(_get_transformation, _set_transformation, doc="The transformation matrix for the component. Setting this will post *Component.TransformationChanged* and *Component.Changed* notifications.")
+    transformation = property(
+        _get_transformation,
+        _set_transformation,
+        doc="The transformation matrix for the component. Setting this will post *Component.TransformationChanged* and *Component.Changed* notifications.")
 
     # -----------
     # Pen Methods
@@ -189,10 +209,14 @@ class Component(BaseObject):
         Draw the component with **pointPen**.
         """
         try:
-            pointPen.addComponent(self._baseGlyph, self._transformation, identifier=self.identifier)
+            pointPen.addComponent(self._baseGlyph,
+                                  self._transformation,
+                                  identifier=self.identifier)
         except TypeError:
             pointPen.addComponent(self._baseGlyph, self._transformation)
-            warn("The addComponent method needs an identifier kwarg. The component's identifier value has been discarded.", DeprecationWarning)
+            warn(
+                "The addComponent method needs an identifier kwarg. The component's identifier value has been discarded.",
+                DeprecationWarning)
 
     # ----
     # Move
@@ -208,7 +232,8 @@ class Component(BaseObject):
         xScale, xyScale, yxScale, yScale, xOffset, yOffset = self._transformation
         xOffset += x
         yOffset += y
-        self.transformation = (xScale, xyScale, yxScale, yScale, xOffset, yOffset)
+        self.transformation = (xScale, xyScale, yxScale, yScale, xOffset,
+                               yOffset)
 
     # ------------
     # Point Inside
@@ -244,7 +269,9 @@ class Component(BaseObject):
             identifiers = set()
         return identifiers
 
-    identifiers = property(_get_identifiers, doc="Set of identifiers for the glyph that this component belongs to. This is primarily for internal use.")
+    identifiers = property(
+        _get_identifiers,
+        doc="Set of identifiers for the glyph that this component belongs to. This is primarily for internal use.")
 
     def _get_identifier(self):
         return self._identifier
@@ -264,10 +291,15 @@ class Component(BaseObject):
         if value is not None:
             identifiers.add(value)
         # post notifications
-        self.postNotification("Component.IdentifierChanged", data=dict(oldValue=oldIdentifier, newValue=value))
+        self.postNotification("Component.IdentifierChanged",
+                              data=dict(oldValue=oldIdentifier,
+                                        newValue=value))
         self.dirty = True
 
-    identifier = property(_get_identifier, _set_identifier, doc="The identifier. Setting this will post *Component.IdentifierChanged* and *Component.Changed* notifications.")
+    identifier = property(
+        _get_identifier,
+        _set_identifier,
+        doc="The identifier. Setting this will post *Component.IdentifierChanged* and *Component.Changed* notifications.")
 
     def generateIdentifier(self):
         """
@@ -319,10 +351,14 @@ class Component(BaseObject):
         layer = self.layer
         if baseGlyph is None:
             baseGlyph = layer[self.baseGlyph]
-        baseGlyph.addObserver(self, "baseGlyphNameChangedNotificationCallback", "Glyph.NameChanged")
-        baseGlyph.addObserver(self, "baseGlyphDataChangedNotificationCallback", "Glyph.ContoursChanged")
-        baseGlyph.addObserver(self, "baseGlyphDataChangedNotificationCallback", "Glyph.ComponentsChanged")
-        layer.addObserver(self, "layerGlyphWillBeDeletedNotificationCallback", "Layer.GlyphWillBeDeleted")
+        baseGlyph.addObserver(self, "baseGlyphNameChangedNotificationCallback",
+                              "Glyph.NameChanged")
+        baseGlyph.addObserver(self, "baseGlyphDataChangedNotificationCallback",
+                              "Glyph.ContoursChanged")
+        baseGlyph.addObserver(self, "baseGlyphDataChangedNotificationCallback",
+                              "Glyph.ComponentsChanged")
+        layer.addObserver(self, "layerGlyphWillBeDeletedNotificationCallback",
+                          "Layer.GlyphWillBeDeleted")
 
     def _endBaseGlyphObservations(self, baseGlyph=None):
         layer = self.layer
@@ -343,8 +379,10 @@ class Component(BaseObject):
 
     def _beginLayerObservations(self):
         layer = self.layer
-        layer.addObserver(self, "layerGlyphNameChangedNotificationCallback", "Layer.GlyphNameChanged")
-        layer.addObserver(self, "layerGlyphAddedNotificationCallback", "Layer.GlyphAdded")
+        layer.addObserver(self, "layerGlyphNameChangedNotificationCallback",
+                          "Layer.GlyphNameChanged")
+        layer.addObserver(self, "layerGlyphAddedNotificationCallback",
+                          "Layer.GlyphAdded")
 
     def _endLayerObservations(self):
         layer = self.layer
@@ -394,11 +432,8 @@ class Component(BaseObject):
         from functools import partial
 
         simple_get = partial(getattr, self)
-        getters = (
-            ('baseGlyph', simple_get),
-            ('transformation', simple_get),
-            ('identifier', simple_get)
-        )
+        getters = (('baseGlyph', simple_get), ('transformation', simple_get),
+                   ('identifier', simple_get))
 
         return self._serialize(getters, **kwargs)
 
@@ -406,11 +441,8 @@ class Component(BaseObject):
         from functools import partial
 
         simple_set = partial(setattr, self)
-        setters = (
-            ('baseGlyph', simple_set),
-            ('transformation', simple_set),
-            ('identifier', simple_set)
-        )
+        setters = (('baseGlyph', simple_set), ('transformation', simple_set),
+                   ('identifier', simple_set))
         for key, setter in setters:
             if key not in data:
                 continue
@@ -447,6 +479,7 @@ def _testIdentifier():
     >>> list(sorted(glyph.identifiers))
     ['component 1']
     """
+
 
 if __name__ == "__main__":
     import doctest

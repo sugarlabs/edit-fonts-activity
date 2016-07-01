@@ -26,7 +26,11 @@ from defcon.objects.color import Color
 from defcon.objects.guideline import Guideline
 from defcon.objects.layoutEngine import LayoutEngine
 
-def registerRepresentationFactory(cls, name, factory, destructiveNotifications=None):
+
+def registerRepresentationFactory(cls,
+                                  name,
+                                  factory,
+                                  destructiveNotifications=None):
     """
     Register **factory** as a representation factory
     for all instances of **cls** (a :class:`defcon.objects.base.BaseObject`)
@@ -35,7 +39,10 @@ def registerRepresentationFactory(cls, name, factory, destructiveNotifications=N
     if destructiveNotifications is None:
         destructiveNotifications = [cls.changeNotificationName]
     destructiveNotifications = set(destructiveNotifications)
-    cls.representationFactories[name] = dict(factory=factory, destructiveNotifications=destructiveNotifications)
+    cls.representationFactories[name] = dict(
+        factory=factory,
+        destructiveNotifications=destructiveNotifications)
+
 
 def unregisterRepresentationFactory(cls, name):
     """

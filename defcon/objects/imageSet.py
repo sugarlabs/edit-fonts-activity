@@ -8,7 +8,6 @@ from ufoLib.validators import pngSignature
 
 
 class ImageSet(BaseObject):
-
     """
     This object manages all images in the font.
 
@@ -75,7 +74,8 @@ class ImageSet(BaseObject):
             return self._font()
         return None
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     # ----------
     # File Names
@@ -89,9 +89,14 @@ class ImageSet(BaseObject):
         oldValue = list(self._data.keys())
         for fileName in fileNames:
             self._data[fileName] = _imageDict(onDisk=True)
-        self.postNotification("ImageSet.FileNamesChanged", data=dict(oldValue=oldValue, newValue=fileNames))
+        self.postNotification("ImageSet.FileNamesChanged",
+                              data=dict(oldValue=oldValue,
+                                        newValue=fileNames))
 
-    fileNames = property(_get_fileNames, _set_fileNames, doc="A list of all image file names. This should not be set externally.")
+    fileNames = property(
+        _get_fileNames,
+        _set_fileNames,
+        doc="A list of all image file names. This should not be set externally.")
 
     def _get_unreferencedFileNames(self):
         font = self.font
@@ -102,7 +107,9 @@ class ImageSet(BaseObject):
             unreferenced -= set(layer.imageReferences.keys())
         return list(unreferenced)
 
-    unreferencedFileNames = property(_get_unreferencedFileNames, doc="A list of all file names not referenced by a glyph.")
+    unreferencedFileNames = property(
+        _get_unreferencedFileNames,
+        doc="A list of all file names not referenced by a glyph.")
 
     # -------------
     # Dict Behavior
@@ -120,13 +127,15 @@ class ImageSet(BaseObject):
             d["data"] = data
             d["digest"] = _makeDigest(data)
             d["onDisk"] = True
-            d["onDiskModTime"] = reader.getFileModificationTime(os.path.join("images", fileName))
+            d["onDiskModTime"] = reader.getFileModificationTime(os.path.join(
+                "images", fileName))
         return d["data"]
 
     def __setitem__(self, fileName, data):
         if fileName not in self._data:
             assert fileName == self.makeFileName(fileName)
-        assert data.startswith(pngSignature), "Image does not begin with the PNG signature."
+        assert data.startswith(
+            pngSignature), "Image does not begin with the PNG signature."
         isNewImage = fileName not in self._data
         onDisk = False
         onDiskModTime = None
@@ -136,26 +145,36 @@ class ImageSet(BaseObject):
             self._data[fileName] = self._scheduledForDeletion.pop(fileName)
         digest = _makeDigest(data)
         if fileName in self._data:
-            n = self[fileName] # force it to load so that the stamping is correct
+            n = self[
+                fileName]  # force it to load so that the stamping is correct
             if self._data[fileName]["digest"] == digest:
                 return
             onDisk = self._data[fileName]["onDisk"]
             onDiskModTime = self._data[fileName]["onDiskModTime"]
-            del self._data[fileName] # now remove it
+            del self._data[fileName]  # now remove it
         if isNewImage:
-            self.postNotification("ImageSet.ImageWillBeAdded", data=dict(name=fileName))
-        self._data[fileName] = _imageDict(data=data, dirty=True, digest=digest, onDisk=onDisk, onDiskModTime=onDiskModTime)
+            self.postNotification("ImageSet.ImageWillBeAdded",
+                                  data=dict(name=fileName))
+        self._data[fileName] = _imageDict(data=data,
+                                          dirty=True,
+                                          digest=digest,
+                                          onDisk=onDisk,
+                                          onDiskModTime=onDiskModTime)
         if isNewImage:
-            self.postNotification("ImageSet.ImageAdded", data=dict(name=fileName))
+            self.postNotification("ImageSet.ImageAdded",
+                                  data=dict(name=fileName))
         else:
-            self.postNotification("ImageSet.ImageChanged", data=dict(name=fileName))
+            self.postNotification("ImageSet.ImageChanged",
+                                  data=dict(name=fileName))
         self.dirty = True
 
     def __delitem__(self, fileName):
-        n = self[fileName] # force it to load so that the stamping is correct
-        self.postNotification("ImageSet.ImageWillBeDeleted", data=dict(name=fileName))
+        n = self[fileName]  # force it to load so that the stamping is correct
+        self.postNotification("ImageSet.ImageWillBeDeleted",
+                              data=dict(name=fileName))
         self._scheduledForDeletion[fileName] = dict(self._data.pop(fileName))
-        self.postNotification("ImageSet.ImageDeleted", data=dict(name=fileName))
+        self.postNotification("ImageSet.ImageDeleted",
+                              data=dict(name=fileName))
         self.dirty = True
 
     # ----
@@ -170,7 +189,11 @@ class ImageSet(BaseObject):
         """
         return 0
 
-    def save(self, writer, removeUnreferencedImages=False, saveAs=False, progressBar=None):
+    def save(self,
+             writer,
+             removeUnreferencedImages=False,
+             saveAs=False,
+             progressBar=None):
         """
         Save images. This method should not be called externally.
         Subclasses may override this method to implement custom saving behavior.
@@ -182,7 +205,8 @@ class ImageSet(BaseObject):
             self.enableNotifications()
         if saveAs:
             font = self.font
-            if font is not None and font.path is not None and os.path.exists(font.path):
+            if font is not None and font.path is not None and os.path.exists(
+                    font.path):
                 reader = UFOReader(font.path)
                 readerImageNames = reader.getImageDirectoryListing()
                 for fileName, data in list(self._data.items()):
@@ -207,7 +231,8 @@ class ImageSet(BaseObject):
             writer.writeImage(fileName, data["data"])
             data["dirty"] = False
             data["onDisk"] = True
-            data["onDiskModTime"] = reader.getFileModificationTime(os.path.join("images", fileName))
+            data["onDiskModTime"] = reader.getFileModificationTime(
+                os.path.join("images", fileName))
         self.dirty = False
 
     # ---------------
@@ -268,12 +293,15 @@ class ImageSet(BaseObject):
                 addedImages.append(fileName)
             elif not self._scheduledForDeletion[fileName]["onDisk"]:
                 addedImages.append(fileName)
-            elif self._scheduledForDeletion[fileName]["onDiskModTime"] != reader.getFileModificationTime(os.path.join("images", fileName)):
+            elif self._scheduledForDeletion[fileName][
+                    "onDiskModTime"] != reader.getFileModificationTime(
+                        os.path.join("images", fileName)):
                 addedImages.append(fileName)
         for fileName, imageData in list(self._data.items()):
             # file on disk and has been loaded
             if fileName in filesOnDisk and imageData["data"] is not None:
-                newModTime = reader.getFileModificationTime(os.path.join("images", fileName))
+                newModTime = reader.getFileModificationTime(os.path.join(
+                    "images", fileName))
                 if newModTime != imageData["onDiskModTime"]:
                     newData = reader.readImage(fileName)
                     newDigest = _makeDigest(newData)
@@ -321,8 +349,18 @@ class ImageSet(BaseObject):
         for k in data:
             self[k] = data[k]
 
-def _imageDict(data=None, dirty=False, digest=None, onDisk=True, onDiskModTime=None):
-    return dict(data=data, digest=digest, dirty=dirty, onDisk=onDisk, onDiskModTime=onDiskModTime)
+
+def _imageDict(data=None,
+               dirty=False,
+               digest=None,
+               onDisk=True,
+               onDiskModTime=None):
+    return dict(data=data,
+                digest=digest,
+                dirty=dirty,
+                onDisk=onDisk,
+                onDiskModTime=onDiskModTime)
+
 
 def _makeDigest(data):
     m = hashlib.md5()
@@ -332,6 +370,7 @@ def _makeDigest(data):
 # -----
 # Tests
 # -----
+
 
 def _testRead():
     """
@@ -359,6 +398,7 @@ def _testRead():
     True
     """
 
+
 def _testWrite():
     """
     >>> from defcon.test.testTools import makeTestFontCopy, tearDownTestFontCopy
@@ -380,6 +420,7 @@ def _testWrite():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testSaveAs():
     """
     >>> from defcon import Font
@@ -399,6 +440,7 @@ def _testSaveAs():
     True
     >>> tearDownTestFontCopy(saveAsPath)
     """
+
 
 def _testUnreferencedImages():
     """
@@ -423,6 +465,7 @@ def _testUnreferencedImages():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testDuplicateImage():
     """
     >>> from defcon import Font
@@ -439,6 +482,7 @@ def _testDuplicateImage():
     >>> font.images.findDuplicateImage(data)
     'image 2.png'
     """
+
 
 def _testExternalChanges():
     """
@@ -508,6 +552,7 @@ def _testExternalChanges():
     (['image 1.png'], [], [])
     >>> tearDownTestFontCopy()
     """
+
 
 def _testReloadImages():
     """

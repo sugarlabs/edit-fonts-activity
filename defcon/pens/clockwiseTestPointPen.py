@@ -2,8 +2,8 @@ from ufoLib.pointPen import AbstractPointPen
 
 # adapted from robofab.objects.objectsBase.RContour._get_clockwise
 
-class ClockwiseTestPointPen(AbstractPointPen):
 
+class ClockwiseTestPointPen(AbstractPointPen):
     def __init__(self):
         self._points = []
 
@@ -13,7 +13,12 @@ class ClockwiseTestPointPen(AbstractPointPen):
     def endPath(self):
         pass
 
-    def addPoint(self, pt, segmentType=None, smooth=False, name=None, **kwargs):
+    def addPoint(self,
+                 pt,
+                 segmentType=None,
+                 smooth=False,
+                 name=None,
+                 **kwargs):
         if segmentType:
             # overlapping points can give false results, so filter them out
             if self._points and self._points[-1] == pt:
@@ -32,7 +37,7 @@ class ClockwiseTestPointPen(AbstractPointPen):
             index2 = (index1 + 1) % pointCount
             x1, y1 = points[index1]
             x2, y2 = points[index2]
-            angles.append(math.atan2(y2-y1, x2-x1))
+            angles.append(math.atan2(y2 - y1, x2 - x1))
         total = 0
         pi = math.pi
         pi2 = pi * 2

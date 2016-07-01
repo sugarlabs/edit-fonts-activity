@@ -2,8 +2,8 @@ import weakref
 from defcon.tools.notifications import NotificationCenter
 import pickle
 
-class BaseObject(object):
 
+class BaseObject(object):
     """
     The base object in defcon from which all other objects should be derived.
 
@@ -77,7 +77,9 @@ class BaseObject(object):
                 dispatcher = None
         return dispatcher
 
-    dispatcher = property(_get_dispatcher, doc="The :class:`defcon.tools.notifications.NotificationCenter` assigned to the parent of this object.")
+    dispatcher = property(
+        _get_dispatcher,
+        doc="The :class:`defcon.tools.notifications.NotificationCenter` assigned to the parent of this object.")
 
     def addObserver(self, observer, methodName, notification):
         """
@@ -101,8 +103,10 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            self.dispatcher.addObserver(observer=observer, methodName=methodName,
-                notification=notification, observable=self)
+            self.dispatcher.addObserver(observer=observer,
+                                        methodName=methodName,
+                                        notification=notification,
+                                        observable=self)
 
     def removeObserver(self, observer, notification):
         """
@@ -120,7 +124,9 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            self.dispatcher.removeObserver(observer=observer, notification=notification, observable=self)
+            self.dispatcher.removeObserver(observer=observer,
+                                           notification=notification,
+                                           observable=self)
 
     def hasObserver(self, observer, notification):
         """
@@ -134,7 +140,9 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            return self.dispatcher.hasObserver(observer=observer, notification=notification, observable=self)
+            return self.dispatcher.hasObserver(observer=observer,
+                                               notification=notification,
+                                               observable=self)
         return False
 
     def holdNotifications(self, notification=None):
@@ -152,7 +160,8 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            dispatcher.holdNotifications(observable=self, notification=notification)
+            dispatcher.holdNotifications(observable=self,
+                                         notification=notification)
 
     def releaseHeldNotifications(self, notification=None):
         """
@@ -168,7 +177,8 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            dispatcher.releaseHeldNotifications(observable=self, notification=notification)
+            dispatcher.releaseHeldNotifications(observable=self,
+                                                notification=notification)
 
     def disableNotifications(self, notification=None, observer=None):
         """
@@ -185,7 +195,9 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            dispatcher.disableNotifications(observable=self, notification=notification, observer=observer)
+            dispatcher.disableNotifications(observable=self,
+                                            notification=notification,
+                                            observer=observer)
 
     def enableNotifications(self, notification=None, observer=None):
         """
@@ -201,7 +213,9 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            dispatcher.enableNotifications(observable=self, notification=notification, observer=observer)
+            dispatcher.enableNotifications(observable=self,
+                                           notification=notification,
+                                           observer=observer)
 
     def postNotification(self, notification, data=None):
         """
@@ -218,7 +232,9 @@ class BaseObject(object):
         """
         dispatcher = self.dispatcher
         if dispatcher is not None:
-            dispatcher.postNotification(notification=notification, observable=self, data=data)
+            dispatcher.postNotification(notification=notification,
+                                        observable=self,
+                                        data=data)
 
     # ------------------------
     # Notification Observation
@@ -246,7 +262,8 @@ class BaseObject(object):
     def _set_undoManager(self, manager):
         self._undoManager = manager
 
-    undoManager = property(_get_undoManager, _set_undoManager,
+    undoManager = property(_get_undoManager,
+                           _set_undoManager,
                            doc="The undo manager assigned to this object.")
 
     # state registration
@@ -281,10 +298,14 @@ class BaseObject(object):
             raise NotImplementedError
         dispatcher = self._dispatcher
         if dispatcher is not None:
-            self.dispatcher.postNotification(notification=self.beginUndoNotificationName, observable=self)
+            self.dispatcher.postNotification(
+                notification=self.beginUndoNotificationName,
+                observable=self)
         self._undo(index)
         if dispatcher is not None:
-            self.dispatcher.postNotification(notification=self.endUndoNotificationName, observable=self)
+            self.dispatcher.postNotification(
+                notification=self.endUndoNotificationName,
+                observable=self)
 
     # redo
 
@@ -313,10 +334,14 @@ class BaseObject(object):
             raise NotImplementedError
         dispatcher = self._dispatcher
         if dispatcher is not None:
-            self.dispatcher.postNotification(notification=self.beginRedoNotificationName, observable=self)
+            self.dispatcher.postNotification(
+                notification=self.beginRedoNotificationName,
+                observable=self)
         self._redo(index)
         if dispatcher is not None:
-            self.dispatcher.postNotification(notification=self.endRedoNotificationName, observable=self)
+            self.dispatcher.postNotification(
+                notification=self.endRedoNotificationName,
+                observable=self)
 
     # ---------------
     # Representations
@@ -414,14 +439,18 @@ class BaseObject(object):
     def _get_dirty(self):
         return self._dirty
 
-    dirty = property(_get_dirty, _set_dirty, doc="The dirty state of the object. True if the object has been changed. False if not. Setting this to True will cause the base changed notification to be posted. The object will automatically maintain this attribute and update it as you change the object.")
+    dirty = property(
+        _get_dirty,
+        _set_dirty,
+        doc="The dirty state of the object. True if the object has been changed. False if not. Setting this to True will cause the base changed notification to be posted. The object will automatically maintain this attribute and update it as you change the object.")
 
     # -----------------------------
     # Serialization/Deserialization
     # -----------------------------
 
     def serialize(self, dumpFunc=None, whitelist=None, blacklist=None):
-        data = self.getDataForSerialization(whitelist=whitelist, blacklist=blacklist)
+        data = self.getDataForSerialization(whitelist=whitelist,
+                                            blacklist=blacklist)
 
         dump = dumpFunc if dumpFunc is not None else pickle.dumps
         return dump(data)
@@ -466,10 +495,7 @@ class BaseObject(object):
         return data
 
 
-
-
 class BaseDictObject(dict, BaseObject):
-
     """
     A subclass of BaseObject that implements a dict API. Any changes
     to the contents of the object will cause the dirty attribute
@@ -488,10 +514,8 @@ class BaseDictObject(dict, BaseObject):
 
     def _get_dict(self):
         from warnings import warn
-        warn(
-            "BaseDictObject is now a dict and _dict is gone.",
-            DeprecationWarning
-        )
+        warn("BaseDictObject is now a dict and _dict is gone.",
+             DeprecationWarning)
         return self
 
     _dict = property(_get_dict)
@@ -510,13 +534,17 @@ class BaseDictObject(dict, BaseObject):
                 return
         super(BaseDictObject, self).__setitem__(key, value)
         if self.setItemNotificationName is not None:
-            self.postNotification(self.setItemNotificationName, data=dict(key=key, oldValue=oldValue, newValue=value))
+            self.postNotification(self.setItemNotificationName,
+                                  data=dict(key=key,
+                                            oldValue=oldValue,
+                                            newValue=value))
         self.dirty = True
 
     def __delitem__(self, key):
         super(BaseDictObject, self).__delitem__(key)
         if self.deleteItemNotificationName is not None:
-            self.postNotification(self.deleteItemNotificationName, data=dict(key=key))
+            self.postNotification(self.deleteItemNotificationName,
+                                  data=dict(key=key))
         self.dirty = True
 
     def __deepcopy__(self, memo={}):
@@ -553,7 +581,7 @@ class BaseDictObject(dict, BaseObject):
 
         getters = []
         for k in list(self.keys()):
-            k = deepcopy(k) # needed?
+            k = deepcopy(k)  # needed?
             getters.append((k, deep_get))
 
         return self._serialize(getters, **kwargs)
@@ -562,8 +590,10 @@ class BaseDictObject(dict, BaseObject):
         self.clear()
         self.update(data)
 
+
 def _representationTestFactory(obj, **kwargs):
     return repr(tuple(sorted(kwargs.items())))
+
 
 def _testRepresentations():
     """
@@ -651,6 +681,7 @@ def _testRepresentations():
 #    False
 #    """
 
+
 def _testContains():
     """
     >>> obj = BaseDictObject()
@@ -660,6 +691,7 @@ def _testContains():
     >>> "B" in obj
     False
     """
+
 
 def _testLen():
     """
@@ -671,6 +703,7 @@ def _testLen():
     1
     """
 
+
 def _testGetitem():
     """
     >>> obj = BaseDictObject()
@@ -678,6 +711,7 @@ def _testGetitem():
     >>> obj["A"]
     1
     """
+
 
 def _testSetitem():
     """
@@ -688,6 +722,7 @@ def _testSetitem():
     >>> obj.dirty
     True
     """
+
 
 def _testDelitem():
     """
@@ -701,6 +736,7 @@ def _testDelitem():
     True
     """
 
+
 def _testGet():
     """
     >>> obj = BaseDictObject()
@@ -709,6 +745,7 @@ def _testGet():
     1
     >>> obj.get("B")
     """
+
 
 def _testClear():
     """
@@ -721,6 +758,7 @@ def _testClear():
     >>> obj.dirty
     True
     """
+
 
 def _testUpdate():
     """
@@ -738,6 +776,7 @@ def _testUpdate():
     True
     """
 
+
 def _testKeys():
     """
     >>> obj = BaseDictObject()
@@ -745,6 +784,7 @@ def _testKeys():
     >>> obj.keys()
     ['A']
     """
+
 
 def _testValues():
     """
@@ -754,6 +794,7 @@ def _testValues():
     [1]
     """
 
+
 def _testItems():
     """
     >>> obj = BaseDictObject()
@@ -761,7 +802,6 @@ def _testItems():
     >>> obj.items()
     [('A', 1)]
     """
-
 
 
 if __name__ == "__main__":

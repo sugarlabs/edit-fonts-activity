@@ -9,13 +9,12 @@ from sugar3.activity.widgets import ActivityButton
 from sugar3.activity.widgets import TitleEntry
 from sugar3.activity.widgets import ShareButton
 from sugar3.activity.widgets import DescriptionItem
- 
-class BasicToolbar(ToolbarBox):
 
-    def __init__(self, activity,**kwargs):
+
+class BasicToolbar(ToolbarBox):
+    def __init__(self, activity, **kwargs):
         super(BasicToolbar, self).__init__(**kwargs)
-        
-        
+
         activity_button = ActivityButton(activity)
         self.toolbar.insert(activity_button, 0)
         activity_button.show()
@@ -41,4 +40,3 @@ class BasicToolbar(ToolbarBox):
         stop_button = StopButton(activity)
         self.toolbar.insert(stop_button, -1)
         stop_button.show()
-

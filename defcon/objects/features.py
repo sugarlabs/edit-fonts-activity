@@ -3,7 +3,6 @@ from defcon.objects.base import BaseObject
 
 
 class Features(BaseObject):
-
     """
     This object contais the test represening features in the font.
 
@@ -49,7 +48,8 @@ class Features(BaseObject):
             return self._font()
         return None
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     # ----
     # Text
@@ -60,13 +60,18 @@ class Features(BaseObject):
         if oldValue == value:
             return
         self._text = value
-        self.postNotification("Features.TextChanged", data=dict(oldValue=oldValue, newValue=value))
+        self.postNotification("Features.TextChanged",
+                              data=dict(oldValue=oldValue,
+                                        newValue=value))
         self.dirty = True
 
     def _get_text(self):
         return self._text
 
-    text = property(_get_text, _set_text, doc="The raw feature text. Setting this post *Features.TextChanged* and *Features.Changed* notifications.")
+    text = property(
+        _get_text,
+        _set_text,
+        doc="The raw feature text. Setting this post *Features.TextChanged* and *Features.Changed* notifications.")
 
     # ------------------------
     # Notification Observation

@@ -3,7 +3,6 @@ from defcon.objects.base import BaseDictObject
 
 
 class Kerning(BaseDictObject):
-
     """
     This object contains all of the kerning pairs in a font.
 
@@ -75,7 +74,8 @@ class Kerning(BaseDictObject):
             return self._font()
         return None
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     # -------------
     # Pair Handling

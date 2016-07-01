@@ -35,14 +35,12 @@ from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.activity.widgets import StopButton
 
-
 DEFAULT_FONTS = ['Sans', 'Serif', 'Monospace']
 USER_FONTS_FILE_PATH = env.get_profile_path('fonts')
 GLOBAL_FONTS_FILE_PATH = '/etc/sugar_fonts'
 
 
 class FontsActivity(activity.Activity):
-
     def __init__(self, handle):
         """Set up the HelloWorld activity."""
         activity.Activity.__init__(self, handle)
@@ -131,9 +129,8 @@ class FontsTreeView(Gtk.TreeView):
         self.xo_color = XoColor(client.get_string('/desktop/sugar/user/color'))
 
         self.set_headers_visible(False)
-        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.TOUCH_MASK |
-                        Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK | Gdk.EventMask.
+                        TOUCH_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK)
         selection = self.get_selection()
         selection.set_mode(Gtk.SelectionMode.NONE)
 
@@ -235,7 +232,8 @@ class ListModel(Gtk.TreeModelSort):
             favorite = font_name in self._favorites
             self._model.append([
                 favorite, font_name,
-                _('The quick brown fox jumps over the lazy dog.'), 2, True])
+                _('The quick brown fox jumps over the lazy dog.'), 2, True
+            ])
 
     def set_visible_func(self, func):
         self._model_filter.set_visible_func(func)

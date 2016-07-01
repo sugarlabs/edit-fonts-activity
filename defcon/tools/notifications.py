@@ -5,7 +5,6 @@ of the Observer Pattern.
 
 import sys
 import weakref
-
 """
 
 ----------------------
@@ -37,7 +36,6 @@ disabled : {
 
 
 class NotificationCenter(object):
-
     def __init__(self):
         self._registry = {}
         self._holds = {}
@@ -47,7 +45,11 @@ class NotificationCenter(object):
     # Basic
     # -----
 
-    def addObserver(self, observer, methodName, notification=None, observable=None):
+    def addObserver(self,
+                    observer,
+                    methodName,
+                    notification=None,
+                    observable=None):
         """
         Add an observer to this notification dispatcher.
 
@@ -75,7 +77,8 @@ class NotificationCenter(object):
         key = (notification, observable)
         if key not in self._registry:
             self._registry[key] = ObserverDict()
-        assert observer not in self._registry[key], "An observer is only allowed to have one callback for a given notification + observable combination."
+        assert observer not in self._registry[
+            key], "An observer is only allowed to have one callback for a given notification + observable combination."
         self._registry[key][observer] = methodName
 
     def hasObserver(self, observer, notification, observable):
@@ -128,14 +131,14 @@ class NotificationCenter(object):
                 # suspended for this observer
                 (None, observableRef, None),
                 # suspended for this notification + observable
-                (notification, observableRef, None)
-            )
+                (notification, observableRef, None))
             for key in holdDisabledPossibilities:
                 if key in self._disabled:
                     return
                 if key in self._holds:
                     n = (notification, observableRef, data)
-                    if not self._holds[key]["notifications"] or self._holds[key]["notifications"][-1] != n:
+                    if not self._holds[key]["notifications"] or self._holds[
+                            key]["notifications"][-1] != n:
                         self._holds[key]["notifications"].append(n)
                     return
         # posting
@@ -146,8 +149,7 @@ class NotificationCenter(object):
             (notification, observableRef),
             (notification, None),
             (None, observableRef),
-            (None, None)
-        )
+            (None, None))
         for key in registryPossibilities:
             if key not in self._registry:
                 continue
@@ -164,8 +166,7 @@ class NotificationCenter(object):
                         # suspended for observable + observer
                         (None, observableRef, observerRef),
                         # suspended for notification + observable + observer
-                        (notification, observableRef, observerRef)
-                    )
+                        (notification, observableRef, observerRef))
                     disabled = False
                     if self._disabled:
                         for disableKey in holdDisabledPossibilities:
@@ -180,8 +181,11 @@ class NotificationCenter(object):
                             if holdKey in self._holds:
                                 hold = True
                                 n = (notification, observableRef, data)
-                                if not self._holds[holdKey]["notifications"] or self._holds[holdKey]["notifications"][-1] != n:
-                                    self._holds[holdKey]["notifications"].append(n)
+                                if not self._holds[holdKey][
+                                        "notifications"] or self._holds[
+                                            holdKey]["notifications"][-1] != n:
+                                    self._holds[holdKey][
+                                        "notifications"].append(n)
                                 break
                     if hold:
                         continue
@@ -199,7 +203,10 @@ class NotificationCenter(object):
     # Hold
     # ----
 
-    def holdNotifications(self, observable=None, notification=None, observer=None):
+    def holdNotifications(self,
+                          observable=None,
+                          notification=None,
+                          observer=None):
         """
         Hold all notifications posted to all objects observing
         **notification** in **observable**.
@@ -229,7 +236,10 @@ class NotificationCenter(object):
             self._holds[key] = dict(count=0, notifications=[])
         self._holds[key]["count"] += 1
 
-    def releaseHeldNotifications(self, observable=None, notification=None, observer=None):
+    def releaseHeldNotifications(self,
+                                 observable=None,
+                                 notification=None,
+                                 observer=None):
         """
         Release all held notifications posted to all objects observing
         **notification** in **observable**.
@@ -250,7 +260,10 @@ class NotificationCenter(object):
             for notification, observableRef, data in notifications:
                 self.postNotification(notification, observableRef(), data)
 
-    def areNotificationsHeld(self, observable=None, notification=None, observer=None):
+    def areNotificationsHeld(self,
+                             observable=None,
+                             notification=None,
+                             observer=None):
         """
         Returns a boolean indicating if notifications posted to all objects observing
         **notification** in **observable** are being held.
@@ -270,7 +283,10 @@ class NotificationCenter(object):
     # Disable
     # -------
 
-    def disableNotifications(self, observable=None, notification=None, observer=None):
+    def disableNotifications(self,
+                             observable=None,
+                             notification=None,
+                             observer=None):
         """
         Disable all posts of **notification** from **observable** posted
         to **observer** observing.
@@ -298,7 +314,10 @@ class NotificationCenter(object):
             self._disabled[key] = 0
         self._disabled[key] += 1
 
-    def enableNotifications(self, observable=None, notification=None, observer=None):
+    def enableNotifications(self,
+                            observable=None,
+                            notification=None,
+                            observer=None):
         """
         Enable notifications posted to all objects observing
         **notification** in **observable**.
@@ -316,7 +335,10 @@ class NotificationCenter(object):
         if self._disabled[key] == 0:
             del self._disabled[key]
 
-    def areNotificationsDisabled(self, observable=None, notification=None, observer=None):
+    def areNotificationsDisabled(self,
+                                 observable=None,
+                                 notification=None,
+                                 observer=None):
         """
         Returns a boolean indicating if notifications posted to all objects observing
         **notification** in **observable** are disabled.
@@ -334,7 +356,6 @@ class NotificationCenter(object):
 
 
 class Notification(object):
-
     """An object that wraps notification data."""
 
     __slots__ = ("_name", "_objRef", "_data")
@@ -357,16 +378,18 @@ class Notification(object):
             return self._objRef()
         return None
 
-    object = property(_get_object, doc="The observable object the notification belongs to.")
+    object = property(_get_object,
+                      doc="The observable object the notification belongs to.")
 
     def _get_data(self):
         return self._data
 
-    data = property(_get_data, doc="Arbitrary data passed along with the notification. There is no set format for this data and there is not requirement that any data be present. Refer to the documentation for methods that are responsible for generating notifications for information about this data.")
+    data = property(
+        _get_data,
+        doc="Arbitrary data passed along with the notification. There is no set format for this data and there is not requirement that any data be present. Refer to the documentation for methods that are responsible for generating notifications for information about this data.")
 
 
 class _ObserverDict(dict):
-
     """An object for storing ordered observers."""
 
     def __init__(self):
@@ -400,6 +423,7 @@ class _ObserverDict(dict):
         super(ObserverDict, self).__setitem__(key, value)
         self._order.append(key)
 
+
 if sys.version_info >= (3, 5):
     # Python 3.5+ has a C-implementation of OrderedDict
     from collections import OrderedDict
@@ -411,14 +435,13 @@ else:
 # Tests
 # -----
 
-class _TestObserver(object):
 
+class _TestObserver(object):
     def notificationCallback(self, notification):
         print(notification.name, notification.object.name)
 
 
 class _TestObservable(object):
-
     def __init__(self, center, name):
         self.center = center
         self.name = name
@@ -474,6 +497,7 @@ def _testAddObserver():
     False
     """
 
+
 def _testRemoveObserver():
     """
     >>> center = NotificationCenter()
@@ -520,6 +544,7 @@ def _testRemoveObserver():
     >>> center.hasObserver(observer, None, None)
     False
     """
+
 
 def _testPostNotification():
     """
@@ -577,6 +602,7 @@ def _testPostNotification():
     B Observable2
     """
 
+
 def _testHoldNotifications():
     """
     >>> center = NotificationCenter()
@@ -620,6 +646,7 @@ def _testHoldNotifications():
     >>> center.releaseHeldNotifications(notification="A")
     A Observable1
     """
+
 
 def _testAreNotificationsHeld():
     """
@@ -682,6 +709,7 @@ def _testAreNotificationsHeld():
     >>> center.areNotificationsHeld(observer=observer1)
     False
     """
+
 
 def _testDisableNotifications():
     """
@@ -753,6 +781,7 @@ def _testDisableNotifications():
     A Observable1
     """
 
+
 def _testAreNotificationsDisabled():
     """
     # all off
@@ -818,6 +847,7 @@ def _testAreNotificationsDisabled():
     >>> center.areNotificationsDisabled(observer=observer1)
     False
     """
+
 
 if __name__ == "__main__":
     import doctest

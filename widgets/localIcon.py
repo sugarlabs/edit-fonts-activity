@@ -38,7 +38,6 @@ edit = """
 
 """
 
-
 lock = """
 <svg  viewBox="0 0 70 65" width="55px" height="55px" transform='translate(5 5)'  x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="emblem-locked">
     <g display="inline">

@@ -5,7 +5,6 @@ from defcon.tools.identifiers import makeRandomIdentifier
 
 
 class Anchor(BaseDictObject):
-
     """
     This object represents an anchor point.
 
@@ -62,7 +61,8 @@ class Anchor(BaseDictObject):
             font = self._font()
         return font
 
-    font = property(_get_font, doc="The :class:`Font` that this anchor belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this anchor belongs to.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -76,7 +76,9 @@ class Anchor(BaseDictObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this anchor belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this anchor belongs to.")
 
     def _get_layer(self):
         layer = None
@@ -90,7 +92,8 @@ class Anchor(BaseDictObject):
             layer = self._layer()
         return layer
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this anchor belongs to.")
+    layer = property(_get_layer,
+                     doc="The :class:`Layer` that this anchor belongs to.")
 
     def _get_glyph(self):
         if self._glyph is None:
@@ -106,8 +109,10 @@ class Anchor(BaseDictObject):
         self._layer = None
         self._glyph = glyph
 
-
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this anchor belongs to. This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this anchor belongs to. This should not be set externally.")
 
     # coordinates
 
@@ -119,9 +124,14 @@ class Anchor(BaseDictObject):
         if value == old:
             return
         self["x"] = value
-        self.postNotification("Anchor.XChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Anchor.XChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    x = property(_get_x, _set_x, doc="The x coordinate. Setting this will post *Anchor.XChanged* and *Anchor.Changed* notifications.")
+    x = property(
+        _get_x,
+        _set_x,
+        doc="The x coordinate. Setting this will post *Anchor.XChanged* and *Anchor.Changed* notifications.")
 
     def _get_y(self):
         return self.get("y")
@@ -131,9 +141,14 @@ class Anchor(BaseDictObject):
         if value == old:
             return
         self["y"] = value
-        self.postNotification("Anchor.YChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Anchor.YChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    y = property(_get_y, _set_y, doc="The y coordinate. Setting this will post *Anchor.YChanged* and *Anchor.Changed* notifications.")
+    y = property(
+        _get_y,
+        _set_y,
+        doc="The y coordinate. Setting this will post *Anchor.YChanged* and *Anchor.Changed* notifications.")
 
     # name
 
@@ -145,9 +160,14 @@ class Anchor(BaseDictObject):
         if value == old:
             return
         self["name"] = value
-        self.postNotification("Anchor.NameChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Anchor.NameChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    name = property(_get_name, _set_name, doc="The name. Setting this will post *Anchor.NameChanged* and *Anchor.Changed* notifications.")
+    name = property(
+        _get_name,
+        _set_name,
+        doc="The name. Setting this will post *Anchor.NameChanged* and *Anchor.Changed* notifications.")
 
     # color
 
@@ -163,9 +183,14 @@ class Anchor(BaseDictObject):
         if newColor == oldColor:
             return
         self["color"] = newColor
-        self.postNotification("Anchor.ColorChanged", data=dict(oldValue=oldColor, newValue=newColor))
+        self.postNotification("Anchor.ColorChanged",
+                              data=dict(oldValue=oldColor,
+                                        newValue=newColor))
 
-    color = property(_get_color, _set_color, doc="The anchors's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Anchor.ColorChanged* and *Anchor.Changed* notifications.")
+    color = property(
+        _get_color,
+        _set_color,
+        doc="The anchors's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Anchor.ColorChanged* and *Anchor.Changed* notifications.")
 
     # identifier
 
@@ -178,7 +203,9 @@ class Anchor(BaseDictObject):
             identifiers = set()
         return identifiers
 
-    identifiers = property(_get_identifiers, doc="Set of identifiers for the glyph that this anchor belongs to. This is primarily for internal use.")
+    identifiers = property(
+        _get_identifiers,
+        doc="Set of identifiers for the glyph that this anchor belongs to. This is primarily for internal use.")
 
     def _get_identifier(self):
         return self.get("identifier")
@@ -198,9 +225,14 @@ class Anchor(BaseDictObject):
         if value is not None:
             identifiers.add(value)
         # post notifications
-        self.postNotification("Anchor.IdentifierChanged", data=dict(oldValue=oldIdentifier, newValue=value))
+        self.postNotification("Anchor.IdentifierChanged",
+                              data=dict(oldValue=oldIdentifier,
+                                        newValue=value))
 
-    identifier = property(_get_identifier, _set_identifier, doc="The identifier. Setting this will post *Anchor.IdentifierChanged* and *Anchor.Changed* notifications.")
+    identifier = property(
+        _get_identifier,
+        _set_identifier,
+        doc="The identifier. Setting this will post *Anchor.IdentifierChanged* and *Anchor.Changed* notifications.")
 
     def generateIdentifier(self):
         """
@@ -284,6 +316,7 @@ def _test():
     >>> a.x, a.y, a.name, a.identifier, a.color
     (1, 2, '3', '4', '1,1,1,1')
     """
+
 
 if __name__ == "__main__":
     import doctest
