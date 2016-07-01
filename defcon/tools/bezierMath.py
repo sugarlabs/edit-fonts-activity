@@ -4,12 +4,16 @@ Contributed by Frederik Berlaen.
 
 from math import sqrt, atan2
 
+
 def _distance(xxx_todo_changeme, xxx_todo_changeme1):
     (x1, y1) = xxx_todo_changeme
     (x2, y2) = xxx_todo_changeme1
-    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    return sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
-def joinSegments(xxx_todo_changeme2, xxx_todo_changeme3, xxx_todo_changeme4, xxx_todo_changeme5, xxx_todo_changeme6, xxx_todo_changeme7, xxx_todo_changeme8):
+
+def joinSegments(xxx_todo_changeme2, xxx_todo_changeme3, xxx_todo_changeme4,
+                 xxx_todo_changeme5, xxx_todo_changeme6, xxx_todo_changeme7,
+                 xxx_todo_changeme8):
     """
     >>> joinSegments(
     ...    (0, 0),
@@ -26,7 +30,8 @@ def joinSegments(xxx_todo_changeme2, xxx_todo_changeme3, xxx_todo_changeme4, xxx
     (off3X, off3Y) = xxx_todo_changeme6
     (off4X, off4Y) = xxx_todo_changeme7
     (on3X, on3Y) = xxx_todo_changeme8
-    if (on1X, on1Y) == (off1X, off1Y) and (off2X, off2Y) == (on2X, on2Y) == (off3X, off3Y) and  (off4X, off4Y) == (on3X, on3Y):
+    if (on1X, on1Y) == (off1X, off1Y) and (off2X, off2Y) == (on2X, on2Y) == (
+            off3X, off3Y) and (off4X, off4Y) == (on3X, on3Y):
         ## a two line segments
         return (on1X, on1Y), (off4X, off4Y), (on3X, on3Y)
     if (on1X, on1Y) == (off1X, off1Y) and (off2X, off2Y) == (on2X, on2Y):
@@ -53,7 +58,8 @@ def joinSegments(xxx_todo_changeme2, xxx_todo_changeme3, xxx_todo_changeme4, xxx
             y = on3Y + (off3Y - on3Y) * factor
         return (off1X, off1Y), (x, y), (on3X, on3Y)
 
-    if (off2X, off2Y) == (on2X, on2Y) == (off3X, off3Y) or (off2X, off2Y) == (on2X, on2Y) or (on2X, on2Y) == (off3X, off3Y):
+    if (off2X, off2Y) == (on2X, on2Y) == (off3X, off3Y) or (off2X, off2Y) == (
+            on2X, on2Y) or (on2X, on2Y) == (off3X, off3Y):
         ## one or more bcps are on the joined point
         return (off1X, off1Y), (off4X, off4Y), (on3X, on3Y)
 
@@ -101,6 +107,7 @@ def joinSegments(xxx_todo_changeme2, xxx_todo_changeme3, xxx_todo_changeme4, xxx
     p3Y = on3Y + (off4Y - on3Y) * (1 / (1 - t))
 
     return (p2X, p2Y), (p3X, p3Y), (on3X, on3Y)
+
 
 if __name__ == "__main__":
     import doctest

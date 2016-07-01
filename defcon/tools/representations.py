@@ -6,6 +6,7 @@ from defcon.pens.clockwiseTestPointPen import ClockwiseTestPointPen
 # Glyph
 # -----
 
+
 def glyphBoundsRepresentationFactory(glyph):
     # base glyph
     pen = BoundsPen(glyph.getParent())
@@ -20,6 +21,7 @@ def glyphBoundsRepresentationFactory(glyph):
             else:
                 bounds = unionRect(bounds, b)
     return bounds
+
 
 def glyphControlPointBoundsRepresentationFactory(glyph):
     # base glyph
@@ -42,10 +44,12 @@ def glyphControlPointBoundsRepresentationFactory(glyph):
 
 # bounds
 
+
 def contourBoundsRepresentationFactory(obj):
     pen = BoundsPen(None)
     obj.draw(pen)
     return pen.bounds
+
 
 def contourControlPointBoundsRepresentationFactory(obj):
     pen = ControlBoundsPen(None)
@@ -53,6 +57,7 @@ def contourControlPointBoundsRepresentationFactory(obj):
     return pen.bounds
 
 # winding direction
+
 
 def contourClockwiseRepresentationFactory(contour):
     pen = ClockwiseTestPointPen()

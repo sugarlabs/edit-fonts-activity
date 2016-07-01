@@ -3,14 +3,18 @@ from defcon.tools.identifiers import makeRandomIdentifier
 
 
 class Point(object):
-
     """
     This object represents a single point.
     """
 
     __slots__ = ["_x", "_y", "_segmentType", "_smooth", "_name", "_identifier"]
 
-    def __init__(self, xxx_todo_changeme, segmentType=None, smooth=False, name=None, identifier=None):
+    def __init__(self,
+                 xxx_todo_changeme,
+                 segmentType=None,
+                 smooth=False,
+                 name=None,
+                 identifier=None):
         (x, y) = xxx_todo_changeme
         super(Point, self).__init__()
         self._x = x
@@ -21,7 +25,9 @@ class Point(object):
         self._identifier = identifier
 
     def __repr__(self):
-        return "<%s position: (%s, %s) type: %s smooth: %s name: %s identifier: %s>" % (self.__class__.__name__, self.x, self.y, str(self.segmentType), str(self.smooth), str(self.name), str(self.identifier))
+        return "<%s position: (%s, %s) type: %s smooth: %s name: %s identifier: %s>" % (
+            self.__class__.__name__, self.x, self.y, str(self.segmentType),
+            str(self.smooth), str(self.name), str(self.identifier))
 
     def _get_segmentType(self):
         return self._segmentType
@@ -29,7 +35,10 @@ class Point(object):
     def _set_segmentType(self, value):
         self._segmentType = value
 
-    segmentType = property(_get_segmentType, _set_segmentType, doc="The segment type. The positibilies are *move*, *line*, *curve*, *qcurve* and *None* (indicating that this is an off-curve point).")
+    segmentType = property(
+        _get_segmentType,
+        _set_segmentType,
+        doc="The segment type. The positibilies are *move*, *line*, *curve*, *qcurve* and *None* (indicating that this is an off-curve point).")
 
     def _get_x(self):
         return self._x
@@ -53,7 +62,10 @@ class Point(object):
     def _set_smooth(self, value):
         self._smooth = value
 
-    smooth = property(_get_smooth, _set_smooth, doc="A boolean indicating the smooth state of the point.")
+    smooth = property(
+        _get_smooth,
+        _set_smooth,
+        doc="A boolean indicating the smooth state of the point.")
 
     def _get_name(self):
         return self._name
@@ -61,7 +73,9 @@ class Point(object):
     def _set_name(self, value):
         self._name = value
 
-    name = property(_get_name, _set_name, doc="An arbitrary name for the point.")
+    name = property(_get_name,
+                    _set_name,
+                    doc="An arbitrary name for the point.")
 
     def move(self, xxx_todo_changeme1):
         """
@@ -81,7 +95,9 @@ class Point(object):
     def _set_identifier(self, value):
         self._identifier = value
 
-    identifier = property(_get_identifier, _set_identifier, doc="The identifier.")
+    identifier = property(_get_identifier,
+                          _set_identifier,
+                          doc="The identifier.")
 
 
 if __name__ == "__main__":

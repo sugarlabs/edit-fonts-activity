@@ -6,7 +6,6 @@ from defcon.objects.base import BaseDictObject
 
 
 class UnicodeData(BaseDictObject):
-
     """
     This object serves Unicode data for the font.
 
@@ -66,7 +65,8 @@ class UnicodeData(BaseDictObject):
             return None
         return layerSet.font
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     def _get_layerSet(self):
         layer = self.layer
@@ -74,14 +74,17 @@ class UnicodeData(BaseDictObject):
             return None
         return layer.layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this object belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this object belongs to.")
 
     def _get_layer(self):
         if self._layer is None:
             return None
         return self._layer()
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this object belongs to.")
+    layer = property(_get_layer,
+                     doc="The :class:`Layer` that this object belongs to.")
 
     # -----------
     # set and get
@@ -188,7 +191,7 @@ class UnicodeData(BaseDictObject):
                 self._forcedUnicodeToGlyphName[value] = glyphName
             elif value >= _privateUse2Min and value <= _privateUse2Max:
                 self._forcedUnicodeToGlyphName[value] = glyphName
-            elif value >= _privateUse3Min  and value <= _privateUse3Max:
+            elif value >= _privateUse3Min and value <= _privateUse3Max:
                 self._forcedUnicodeToGlyphName[value] = glyphName
 
     def _loadForcedUnicodeValue(self, glyphName):
@@ -199,7 +202,8 @@ class UnicodeData(BaseDictObject):
         if self.unicodeForGlyphName(glyphName) is not None:
             return
         # start at the highest point, falling back to the bottom of the PUA
-        startPoint = max(list(self._forcedUnicodeToGlyphName.keys()) + [_privateUse1Min])
+        startPoint = max(list(self._forcedUnicodeToGlyphName.keys()) +
+                         [_privateUse1Min])
         # find the value and store it
         value = _findAvailablePUACode(self._forcedUnicodeToGlyphName)
         self._forcedUnicodeToGlyphName[value] = glyphName
@@ -327,7 +331,9 @@ class UnicodeData(BaseDictObject):
             return "Cn"
         return unicodeTools.category(value)
 
-    def decompositionBaseForGlyphName(self, glyphName, allowPseudoUnicode=True):
+    def decompositionBaseForGlyphName(self,
+                                      glyphName,
+                                      allowPseudoUnicode=True):
         """
         Get the decomposition base for **glyphName**. If **allowPseudoUnicode**
         is True, a pseudo-Unicode value will be used if needed. This will
@@ -362,7 +368,8 @@ class UnicodeData(BaseDictObject):
         value will be used if needed. This will return *None* if nothing
         can be found.
         """
-        return self._openCloseSearch(glyphName, allowPseudoUnicode, unicodeTools.closeRelative)
+        return self._openCloseSearch(glyphName, allowPseudoUnicode,
+                                     unicodeTools.closeRelative)
 
     def openRelativeForGlyphName(self, glyphName, allowPseudoUnicode=True):
         """
@@ -373,7 +380,8 @@ class UnicodeData(BaseDictObject):
         value will be used if needed. This will return *None* if nothing
         can be found.
         """
-        return self._openCloseSearch(glyphName, allowPseudoUnicode, unicodeTools.openRelative)
+        return self._openCloseSearch(glyphName, allowPseudoUnicode,
+                                     unicodeTools.openRelative)
 
     def _openCloseSearch(self, glyphName, allowPseudoUnicode, lookup):
         if allowPseudoUnicode:
@@ -409,7 +417,9 @@ class UnicodeData(BaseDictObject):
     # Sorting
     # -------
 
-    def sortGlyphNames(self, glyphNames, sortDescriptors=[dict(type="unicode")]):
+    def sortGlyphNames(self,
+                       glyphNames,
+                       sortDescriptors=[dict(type="unicode")]):
         """
         This sorts the list of **glyphNames** following the sort descriptors
         provided in the **sortDescriptors** list. Ths works by iterating over
@@ -548,18 +558,19 @@ class UnicodeData(BaseDictObject):
             _whitespaceCategory=self._sortByWhitespace,
             _containerPartners=self._sortByContainerPartners,
             _manualGroups=self._sortByManualGroups,
-            _notdef=self._sortByNotdef,
-        )
+            _notdef=self._sortByNotdef, )
         for sortDescriptor in sortDescriptors:
             sortType = sortDescriptor["type"]
             ascending = sortDescriptor.get("ascending", True)
-            allowPseudoUnicode = sortDescriptor.get("allowPseudoUnicode", False)
+            allowPseudoUnicode = sortDescriptor.get("allowPseudoUnicode",
+                                                    False)
             function = sortDescriptor.get("function", None)
             sortMethod = typeToMethod[sortType]
 
             newBlocks = []
             for block in blocks:
-                sortedBlock = self._sortRecurse(blocks, sortMethod, ascending, allowPseudoUnicode, function)
+                sortedBlock = self._sortRecurse(blocks, sortMethod, ascending,
+                                                allowPseudoUnicode, function)
                 newBlocks.append(sortedBlock)
             blocks = newBlocks
         return self._flattenSortResult(blocks)
@@ -573,18 +584,21 @@ class UnicodeData(BaseDictObject):
                 final.append(i)
         return final
 
-    def _sortRecurse(self, blocks, sortMethod, ascending, allowPseudoUnicode, function):
+    def _sortRecurse(self, blocks, sortMethod, ascending, allowPseudoUnicode,
+                     function):
         if not blocks:
             return []
         if not isinstance(list(blocks)[0], str):
             sortedBlocks = []
             for block in blocks:
-                block = self._sortRecurse(block, sortMethod, ascending, allowPseudoUnicode, function)
+                block = self._sortRecurse(block, sortMethod, ascending,
+                                          allowPseudoUnicode, function)
                 sortedBlocks.append(block)
             return sortedBlocks
         else:
             if sortMethod == self._sortByCustomFunction:
-                return sortMethod(blocks, ascending, allowPseudoUnicode, function)
+                return sortMethod(blocks, ascending, allowPseudoUnicode,
+                                  function)
             else:
                 return sortMethod(blocks, ascending, allowPseudoUnicode)
 
@@ -598,7 +612,7 @@ class UnicodeData(BaseDictObject):
         return result
 
     def _sortBySuffix(self, glyphNames, ascending, allowPseudoUnicode):
-        suffixToGlyphs = {None : []}
+        suffixToGlyphs = {None: []}
         for glyphName in glyphNames:
             if "." not in glyphName or glyphName.startswith("."):
                 suffix = None
@@ -635,15 +649,22 @@ class UnicodeData(BaseDictObject):
         return result
 
     def _sortByScript(self, glyphNames, ascending, allowPseudoUnicode):
-        return self._sortByUnicodeLookup(glyphNames, ascending, allowPseudoUnicode, self.scriptForGlyphName, unicodeTools.orderedScripts)
+        return self._sortByUnicodeLookup(
+            glyphNames, ascending, allowPseudoUnicode, self.scriptForGlyphName,
+            unicodeTools.orderedScripts)
 
     def _sortByBlock(self, glyphNames, ascending, allowPseudoUnicode):
-        return self._sortByUnicodeLookup(glyphNames, ascending, allowPseudoUnicode, self.blockForGlyphName, unicodeTools.orderedBlocks)
+        return self._sortByUnicodeLookup(
+            glyphNames, ascending, allowPseudoUnicode, self.blockForGlyphName,
+            unicodeTools.orderedBlocks)
 
     def _sortByCategory(self, glyphNames, ascending, allowPseudoUnicode):
-        return self._sortByUnicodeLookup(glyphNames, ascending, allowPseudoUnicode, self.categoryForGlyphName, unicodeTools.orderedCategories)
+        return self._sortByUnicodeLookup(
+            glyphNames, ascending, allowPseudoUnicode,
+            self.categoryForGlyphName, unicodeTools.orderedCategories)
 
-    def _sortByUnicodeLookup(self, glyphNames, ascending, allowPseudoUnicode, tagLookup, orderedTags):
+    def _sortByUnicodeLookup(self, glyphNames, ascending, allowPseudoUnicode,
+                             tagLookup, orderedTags):
         tagToGlyphs = {}
         for glyphName in glyphNames:
             tag = tagLookup(glyphName, allowPseudoUnicode)
@@ -662,8 +683,9 @@ class UnicodeData(BaseDictObject):
             sortedResult = list(reversed(sortedResult))
         return sortedResult
 
-    def _sortByDecompositionBase(self, glyphNames, ascending, allowPseudoUnicode):
-        baseToGlyphNames = {None:[]}
+    def _sortByDecompositionBase(self, glyphNames, ascending,
+                                 allowPseudoUnicode):
+        baseToGlyphNames = {None: []}
         for glyphName in glyphNames:
             if allowPseudoUnicode:
                 value = self.pseudoUnicodeForGlyphName(glyphName)
@@ -718,7 +740,8 @@ class UnicodeData(BaseDictObject):
 
     # custom sorts
 
-    def _sortByCustomFunction(self, glyphNames, ascending, allowPseudoUnicode, function):
+    def _sortByCustomFunction(self, glyphNames, ascending, allowPseudoUnicode,
+                              function):
         return function(self.font, glyphNames, ascending, allowPseudoUnicode)
 
     # complex sorts
@@ -735,7 +758,8 @@ class UnicodeData(BaseDictObject):
         if not suffixed:
             return noSuffix
         # magnetize the suffixes
-        allSuffixes = set([glyphName.split(".", 1)[-1] for glyphName in suffixed])
+        allSuffixes = set(
+            [glyphName.split(".", 1)[-1] for glyphName in suffixed])
         allSuffixes = list(sorted(allSuffixes))
         magnets = {}
         while allSuffixes:
@@ -761,7 +785,8 @@ class UnicodeData(BaseDictObject):
                     else:
                         diffLength = len(suffix) - len(toMatch)
                         misMatch = suffix[:-diffLength]
-                        allDigits = False not in [c.isdigit() for c in misMatch]
+                        allDigits = False not in [c.isdigit()
+                                                  for c in misMatch]
                         if allDigits:
                             matches.append(suffix)
             for suffix in matches:
@@ -783,12 +808,19 @@ class UnicodeData(BaseDictObject):
             # get the magnet group
             suffix = suffixToMagnet[suffix]
             if suffix not in suffixMap:
-                suffixMap[suffix] = dict(glyphNames=[], letter=0, mark=0, number=0, punctuation=0, symbol=0, space=0)
+                suffixMap[suffix] = dict(glyphNames=[],
+                                         letter=0,
+                                         mark=0,
+                                         number=0,
+                                         punctuation=0,
+                                         symbol=0,
+                                         space=0)
             suffixData = suffixMap[suffix]
             # add the glyph name
             suffixData["glyphNames"].append(glyphName)
             # update the category flags
-            category = self.categoryForGlyphName(glyphName, allowPseudoUnicode=allowPseudoUnicode)
+            category = self.categoryForGlyphName(
+                glyphName, allowPseudoUnicode=allowPseudoUnicode)
             if category in "Lu Ll Lt":
                 suffixData["letter"] = True
             elif category in "Lm Mn Mc Me":
@@ -804,20 +836,14 @@ class UnicodeData(BaseDictObject):
         # rank the suffixes
         sorter = []
         for suffix, suffixData in list(suffixMap.items()):
-            sortable = (
-                suffixData["letter"],
-                suffixData["number"],
-                suffixData["symbol"],
-                suffixData["punctuation"],
-                suffixData["mark"],
-                suffixData["space"],
-                -len(suffixData["glyphNames"]),
-                len(suffix),
-                suffix,
-                suffixData
-            )
+            sortable = (suffixData["letter"], suffixData["number"],
+                        suffixData["symbol"], suffixData["punctuation"],
+                        suffixData["mark"], suffixData["space"],
+                        -len(suffixData["glyphNames"]), len(suffix), suffix,
+                        suffixData)
             sorter.append(sortable)
-        suffixSortedGlyphsNames = [item[-1]["glyphNames"] for item in sorted(sorter)]
+        suffixSortedGlyphsNames = [item[-1]["glyphNames"]
+                                   for item in sorted(sorter)]
         if not ascending:
             for i in suffixSortedGlyphsNames:
                 i.reverse()
@@ -833,9 +859,11 @@ class UnicodeData(BaseDictObject):
             base = glyphName.split(".")[0]
             if "_" in base and base not in _notReallyLigatures:
                 ligature.append(glyphName)
-            elif not allowPseudoUnicode and self.unicodeForGlyphName(glyphName) in _ligatureUniValues:
+            elif not allowPseudoUnicode and self.unicodeForGlyphName(
+                    glyphName) in _ligatureUniValues:
                 ligature.append(glyphName)
-            elif allowPseudoUnicode and self.pseudoUnicodeForGlyphName(glyphName) in _ligatureUniValues:
+            elif allowPseudoUnicode and self.pseudoUnicodeForGlyphName(
+                    glyphName) in _ligatureUniValues:
                 ligature.append(glyphName)
             elif base in ("ff", "fi", "fl", "ffi", "ffl"):
                 ligature.append(glyphName)
@@ -852,21 +880,33 @@ class UnicodeData(BaseDictObject):
 
     def _cannedSortDesign(self, glyphNames, ascending, allowPseudoUnicode):
         sortDescriptors = [
-            dict(type="weightedSuffix", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="ligature", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="_generalType", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="_whitespaceCategory", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="alphabetical", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="unicode", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="category", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="script", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="decompositionBase", allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="weightedSuffix",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="ligature",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="_generalType",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="_whitespaceCategory",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="alphabetical",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="unicode",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="category",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="script",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="decompositionBase",
+                 allowPseudoUnicode=allowPseudoUnicode),
         ]
         glyphNames = self.sortGlyphNames(glyphNames, sortDescriptors)
         sortDescriptors = [
-            dict(type="_containerPartners", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="_manualGroups", allowPseudoUnicode=allowPseudoUnicode),
-            dict(type="_notdef", allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="_containerPartners",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="_manualGroups",
+                 allowPseudoUnicode=allowPseudoUnicode),
+            dict(type="_notdef",
+                 allowPseudoUnicode=allowPseudoUnicode),
         ]
         glyphNames = self.sortGlyphNames(glyphNames, sortDescriptors)
         if not ascending:
@@ -900,7 +940,8 @@ class UnicodeData(BaseDictObject):
         space = []
         notSpace = []
         for glyphName in glyphNames:
-            if self.categoryForGlyphName(glyphName, allowPseudoUnicode=allowPseudoUnicode) == "Zs":
+            if self.categoryForGlyphName(
+                    glyphName, allowPseudoUnicode=allowPseudoUnicode) == "Zs":
                 space.append(glyphName)
             else:
                 notSpace.append(glyphName)
@@ -911,14 +952,16 @@ class UnicodeData(BaseDictObject):
             final.reverse()
         return final
 
-    def _sortByContainerPartners(self, glyphNames, ascending, allowPseudoUnicode):
+    def _sortByContainerPartners(self, glyphNames, ascending,
+                                 allowPseudoUnicode):
         glyphOrder = []
         while glyphNames:
             glyphName = glyphNames[0]
             glyphOrder.append(glyphName)
             glyphNames = glyphNames[1:]
             # get the close relative
-            closeRelative = self.closeRelativeForGlyphName(glyphName, allowPseudoUnicode=allowPseudoUnicode)
+            closeRelative = self.closeRelativeForGlyphName(
+                glyphName, allowPseudoUnicode=allowPseudoUnicode)
             if closeRelative is not None:
                 if closeRelative not in glyphOrder:
                     glyphOrder.append(closeRelative)
@@ -971,7 +1014,8 @@ class UnicodeData(BaseDictObject):
                     for glyphName in matched[1:]:
                         glyphNames.remove(glyphName)
                     insertionPoint = glyphNames.index(matched[0])
-                    glyphNames = glyphNames[:insertionPoint + 1] + matched[1:] + glyphNames[insertionPoint + 1:]
+                    glyphNames = glyphNames[:insertionPoint + 1] + matched[
+                        1:] + glyphNames[insertionPoint + 1:]
         return glyphNames
 
     # ------------------------
@@ -981,7 +1025,6 @@ class UnicodeData(BaseDictObject):
     def endSelfNotificationObservation(self):
         super(UnicodeData, self).endSelfNotificationObservation()
         self._layer = None
-
 
 # -----
 # Tools
@@ -995,7 +1038,9 @@ _privateUse2Min = int("F0000", 16)
 _privateUse2Max = int("FFFFD", 16)
 _privateUse3Min = int("100000", 16)
 _privateUse3Max = int("10FFFD", 16)
-_viablePUACount = (_privateUse1Max - _privateUse1Min) + (_privateUse2Max - _privateUse2Min) + (_privateUse3Max - _privateUse3Min)
+_viablePUACount = (_privateUse1Max - _privateUse1Min) + (
+    _privateUse2Max - _privateUse2Min) + (_privateUse3Max - _privateUse3Min)
+
 
 def _findAvailablePUACode(existing, code=None):
     assert len(existing) < _viablePUACount
@@ -1037,7 +1082,8 @@ def _findAvailablePUACode(existing, code=None):
 # -----------------
 
 _notReallyLigatures = "space_uni0326".split(" ")
-_ligatureUniValues = [int(i, 16) for i in "FB00 FB01 FB02 FB03 FB04 FB05 FB06".split(" ")]
+_ligatureUniValues = [int(i, 16)
+                      for i in "FB00 FB01 FB02 FB03 FB04 FB05 FB06".split(" ")]
 
 _manualSortGroups = """
 percent
@@ -1163,6 +1209,7 @@ _manualSortGroups = _parsed
 # Tests
 # -----
 
+
 def _testRemoveGlyphData():
     """
     >>> from defcon.objects.font import Font
@@ -1175,6 +1222,7 @@ def _testRemoveGlyphData():
     >>> font.unicodeData[65]
     ['XXX']
     """
+
 
 def _testAddGlyphData():
     """
@@ -1191,6 +1239,7 @@ def _testAddGlyphData():
     ['A', 'XXX']
     """
 
+
 def _testDelitem():
     """
     >>> from defcon.objects.font import Font
@@ -1202,6 +1251,7 @@ def _testDelitem():
     False
     >>> font.unicodeData.glyphNameForUnicode(65)
     """
+
 
 def _testSetitem():
     """
@@ -1218,6 +1268,7 @@ def _testSetitem():
     ['A', 'YYY']
     """
 
+
 def _testUnicodeForGlyphName():
     """
     >>> from defcon.objects.font import Font
@@ -1228,6 +1279,7 @@ def _testUnicodeForGlyphName():
     65
     """
 
+
 def _testGlyphNameForUnicode():
     """
     >>> from defcon.objects.font import Font
@@ -1237,6 +1289,7 @@ def _testGlyphNameForUnicode():
     >>> font.unicodeData.glyphNameForUnicode(65)
     'A'
     """
+
 
 def _testPseudoUnicodeForGlyphName():
     """
@@ -1254,6 +1307,7 @@ def _testPseudoUnicodeForGlyphName():
     66
     """
 
+
 def _testScriptForGlyphName():
     """
     >>> from defcon.objects.font import Font
@@ -1268,6 +1322,7 @@ def _testScriptForGlyphName():
     >>> font.unicodeData.scriptForGlyphName("A.alt", False)
     'Unknown'
     """
+
 
 def _testBlockForGlyphName():
     """
@@ -1284,6 +1339,7 @@ def _testBlockForGlyphName():
     'No_Block'
     """
 
+
 def _testCategoryForGlyphName():
     """
     >>> from defcon.objects.font import Font
@@ -1298,6 +1354,7 @@ def _testCategoryForGlyphName():
     >>> font.unicodeData.categoryForGlyphName("A.alt", False)
     'Cn'
     """
+
 
 def _testDecompositionBaseForGlyphName():
     """
@@ -1321,6 +1378,7 @@ def _testDecompositionBaseForGlyphName():
     'A.alt'
     """
 
+
 def _testCloseReleativeForGlyphName():
     """
     >>> from defcon.objects.font import Font
@@ -1340,6 +1398,7 @@ def _testCloseReleativeForGlyphName():
     'parenright'
     """
 
+
 def _testOpenRelativeForGlyphName():
     """
     >>> from defcon.objects.font import Font
@@ -1358,6 +1417,7 @@ def _testOpenRelativeForGlyphName():
     >>> font.unicodeData.openRelativeForGlyphName("parenright.alt", True)
     'parenleft'
     """
+
 
 if __name__ == "__main__":
     import doctest

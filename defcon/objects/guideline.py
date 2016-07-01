@@ -5,7 +5,6 @@ from defcon.tools.identifiers import makeRandomIdentifier
 
 
 class Guideline(BaseDictObject):
-
     """
     This object represents a guideline.
 
@@ -77,7 +76,8 @@ class Guideline(BaseDictObject):
             font = self._font()
         return font
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     def _get_fontInfo(self):
         if self._fontInfo is not None:
@@ -91,7 +91,10 @@ class Guideline(BaseDictObject):
             fontInfo = weakref.ref(fontInfo)
         self._fontInfo = fontInfo
 
-    fontInfo = property(_get_fontInfo, _set_fontInfo, doc="The :class:`Info` that this object belongs to (if it is a font info guideline). This should not be set externally.")
+    fontInfo = property(
+        _get_fontInfo,
+        _set_fontInfo,
+        doc="The :class:`Info` that this object belongs to (if it is a font info guideline). This should not be set externally.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -105,7 +108,9 @@ class Guideline(BaseDictObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this object belongs to (if it isn't a font info guideline).")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this object belongs to (if it isn't a font info guideline).")
 
     def _get_layer(self):
         layer = None
@@ -119,7 +124,9 @@ class Guideline(BaseDictObject):
             layer = self._layer()
         return layer
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this object belongs to (if it isn't a font info guideline).")
+    layer = property(
+        _get_layer,
+        doc="The :class:`Layer` that this object belongs to (if it isn't a font info guideline).")
 
     def _get_glyph(self):
         if self._glyph is not None:
@@ -133,7 +140,10 @@ class Guideline(BaseDictObject):
             glyph = weakref.ref(glyph)
         self._glyph = glyph
 
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this object belongs to (if it isn't a font info guideline). This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this object belongs to (if it isn't a font info guideline). This should not be set externally.")
 
     # ----------
     # Attributes
@@ -149,9 +159,14 @@ class Guideline(BaseDictObject):
         if value == old:
             return
         self["x"] = value
-        self.postNotification("Guideline.XChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Guideline.XChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    x = property(_get_x, _set_x, doc="The x coordinate. Setting this will post *Guideline.XChanged* and *Guideline.Changed* notifications.")
+    x = property(
+        _get_x,
+        _set_x,
+        doc="The x coordinate. Setting this will post *Guideline.XChanged* and *Guideline.Changed* notifications.")
 
     # y
 
@@ -163,9 +178,14 @@ class Guideline(BaseDictObject):
         if value == old:
             return
         self["y"] = value
-        self.postNotification("Guideline.YChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Guideline.YChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    y = property(_get_y, _set_y, doc="The y coordinate. Setting this will post *Guideline.YChanged* and *Guideline.Changed* notifications.")
+    y = property(
+        _get_y,
+        _set_y,
+        doc="The y coordinate. Setting this will post *Guideline.YChanged* and *Guideline.Changed* notifications.")
 
     # angle
 
@@ -177,9 +197,14 @@ class Guideline(BaseDictObject):
         if value == old:
             return
         self["angle"] = value
-        self.postNotification("Guideline.AngleChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Guideline.AngleChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    angle = property(_get_angle, _set_angle, doc="The angle. Setting this will post *Guideline.AngleChanged* and *Guideline.Changed* notifications.")
+    angle = property(
+        _get_angle,
+        _set_angle,
+        doc="The angle. Setting this will post *Guideline.AngleChanged* and *Guideline.Changed* notifications.")
 
     # name
 
@@ -191,9 +216,14 @@ class Guideline(BaseDictObject):
         if value == old:
             return
         self["name"] = value
-        self.postNotification("Guideline.NameChanged", data=dict(oldValue=old, newValue=value))
+        self.postNotification("Guideline.NameChanged",
+                              data=dict(oldValue=old,
+                                        newValue=value))
 
-    name = property(_get_name, _set_name, doc="The name. Setting this will post *Guideline.NameChanged* and *Guideline.Changed* notifications.")
+    name = property(
+        _get_name,
+        _set_name,
+        doc="The name. Setting this will post *Guideline.NameChanged* and *Guideline.Changed* notifications.")
 
     # color
 
@@ -209,9 +239,14 @@ class Guideline(BaseDictObject):
         if newColor == oldColor:
             return
         self["color"] = newColor
-        self.postNotification("Guideline.ColorChanged", data=dict(oldValue=oldColor, newValue=newColor))
+        self.postNotification("Guideline.ColorChanged",
+                              data=dict(oldValue=oldColor,
+                                        newValue=newColor))
 
-    color = property(_get_color, _set_color, doc="The guideline's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Guideline.ColorChanged* and *Guideline.Changed* notifications.")
+    color = property(
+        _get_color,
+        _set_color,
+        doc="The guideline's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Guideline.ColorChanged* and *Guideline.Changed* notifications.")
 
     # ----------
     # Identifier
@@ -228,7 +263,9 @@ class Guideline(BaseDictObject):
             identifiers = set()
         return identifiers
 
-    identifiers = property(_get_identifiers, doc="Set of identifiers for the object that this guideline belongs to. This is primarily for internal use.")
+    identifiers = property(
+        _get_identifiers,
+        doc="Set of identifiers for the object that this guideline belongs to. This is primarily for internal use.")
 
     def _get_identifier(self):
         return self.get("identifier")
@@ -248,9 +285,14 @@ class Guideline(BaseDictObject):
         if value is not None:
             identifiers.add(value)
         # post notifications
-        self.postNotification("Guideline.IdentifierChanged", data=dict(oldValue=oldIdentifier, newValue=value))
+        self.postNotification("Guideline.IdentifierChanged",
+                              data=dict(oldValue=oldIdentifier,
+                                        newValue=value))
 
-    identifier = property(_get_identifier, _set_identifier, doc="The identifier. Setting this will post *Guideline.IdentifierChanged* and *Guideline.Changed* notifications.")
+    identifier = property(
+        _get_identifier,
+        _set_identifier,
+        doc="The identifier. Setting this will post *Guideline.IdentifierChanged* and *Guideline.Changed* notifications.")
 
     def generateIdentifier(self):
         """
@@ -340,6 +382,7 @@ def _test():
     >>> g.x, g.y, g.angle, g.name, g.identifier, g.color
     (1, 2, 3, '4', '5', '1,1,1,1')
     """
+
 
 if __name__ == "__main__":
     import doctest

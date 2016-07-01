@@ -7,7 +7,6 @@ pngSignature = "\x89PNG\r\n\x1a\n"
 
 
 class DataSet(BaseObject):
-
     """
     This object manages all contents of the data directory in the font.
 
@@ -45,7 +44,8 @@ class DataSet(BaseObject):
             return self._font()
         return None
 
-    font = property(_get_font, doc="The :class:`Font` that this object belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this object belongs to.")
 
     # ----------
     # File Names
@@ -59,7 +59,10 @@ class DataSet(BaseObject):
         for fileName in fileNames:
             self._data[fileName] = _dataDict()
 
-    fileNames = property(_get_fileNames, _set_fileNames, doc="A list of all file names. This should not be set externally.")
+    fileNames = property(
+        _get_fileNames,
+        _set_fileNames,
+        doc="A list of all file names. This should not be set externally.")
 
     # -------------
     # Dict Behavior
@@ -72,7 +75,9 @@ class DataSet(BaseObject):
             path = os.path.join("data", fileName)
             data = reader.readBytesFromPath(path)
             onDiskModTime = reader.getFileModificationTime(path)
-            self._data[fileName] = _dataDict(data=data, onDisk=True, onDiskModTime=onDiskModTime)
+            self._data[fileName] = _dataDict(data=data,
+                                             onDisk=True,
+                                             onDiskModTime=onDiskModTime)
         return self._data[fileName]["data"]
 
     def __setitem__(self, fileName, data):
@@ -83,15 +88,19 @@ class DataSet(BaseObject):
             assert fileName not in self._data
             self._data[fileName] = self._scheduledForDeletion.pop(fileName)
         if fileName in self._data:
-            n = self[fileName] # force it to load so that the stamping is correct
+            n = self[
+                fileName]  # force it to load so that the stamping is correct
             onDisk = self._data[fileName]["onDisk"]
             onDiskModTime = self._data[fileName]["onDiskModTime"]
-            del self._data[fileName] # now remove it
-        self._data[fileName] = _dataDict(data=data, dirty=True, onDisk=onDisk, onDiskModTime=onDiskModTime)
+            del self._data[fileName]  # now remove it
+        self._data[fileName] = _dataDict(data=data,
+                                         dirty=True,
+                                         onDisk=onDisk,
+                                         onDiskModTime=onDiskModTime)
         self.dirty = True
 
     def __delitem__(self, fileName):
-        n = self[fileName] # force it to load so that the stamping is correct]
+        n = self[fileName]  # force it to load so that the stamping is correct]
         self._scheduledForDeletion[fileName] = dict(self._data.pop(fileName))
         self.dirty = True
 
@@ -114,7 +123,8 @@ class DataSet(BaseObject):
         """
         if saveAs:
             font = self.font
-            if font is not None and font.path is not None and os.path.exists(font.path):
+            if font is not None and font.path is not None and os.path.exists(
+                    font.path):
                 reader = UFOReader(font.path)
                 readerDataDirectoryListing = reader.getDataDirectoryListing()
                 for fileName, data in list(self._data.items()):
@@ -142,7 +152,8 @@ class DataSet(BaseObject):
             writer.writeBytesToPath(path, data["data"])
             data["dirty"] = False
             data["onDisk"] = True
-            data["onDiskModTime"] = reader.getFileModificationTime(os.path.join("data", fileName))
+            data["onDiskModTime"] = reader.getFileModificationTime(
+                os.path.join("data", fileName))
         self.dirty = False
 
     # ---------------------
@@ -162,7 +173,9 @@ class DataSet(BaseObject):
                 added.append(fileName)
             elif not self._scheduledForDeletion[fileName]["onDisk"]:
                 added.append(fileName)
-            elif self._scheduledForDeletion[fileName]["onDiskModTime"] != reader.getFileModificationTime(os.path.join("data", fileName)):
+            elif self._scheduledForDeletion[fileName][
+                    "onDiskModTime"] != reader.getFileModificationTime(
+                        os.path.join("data", fileName)):
                 added.append(fileName)
         for fileName, data in list(self._data.items()):
             # file on disk and has been loaded
@@ -217,12 +230,15 @@ class DataSet(BaseObject):
 
 
 def _dataDict(data=None, dirty=False, onDisk=True, onDiskModTime=None):
-    return dict(data=data, dirty=dirty, onDisk=onDisk, onDiskModTime=onDiskModTime)
-
+    return dict(data=data,
+                dirty=dirty,
+                onDisk=onDisk,
+                onDiskModTime=onDiskModTime)
 
 # -----
 # Tests
 # -----
+
 
 def _testRead():
     """
@@ -244,6 +260,7 @@ def _testRead():
     >>> font.data["com.typesupply.defcon.test.file"]
     'This is a top level test file.'
     """
+
 
 def _testWrite():
     """
@@ -268,6 +285,7 @@ def _testWrite():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testSaveAs():
     """
     >>> from defcon import Font
@@ -287,6 +305,7 @@ def _testSaveAs():
     True
     >>> tearDownTestFontCopy(saveAsPath)
     """
+
 
 def _testExternalChanges():
     """
@@ -355,6 +374,7 @@ def _testExternalChanges():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testReloadData():
     """
     >>> from ufoLib import UFOReader
@@ -375,6 +395,7 @@ def _testReloadData():
     True
     >>> tearDownTestFontCopy()
     """
+
 
 if __name__ == "__main__":
     import doctest

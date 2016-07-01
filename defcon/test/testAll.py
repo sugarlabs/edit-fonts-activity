@@ -19,23 +19,8 @@ from defcon.objects import image
 from defcon.objects import dataSet
 
 test = [
-    base,
-    font,
-    layerSet,
-    layer,
-    glyph,
-    contour,
-    point,
-    component,
-    anchor,
-    guideline,
-    lib,
-    kerning,
-    info,
-    groups,
-    imageSet,
-    image,
-    dataSet
+    base, font, layerSet, layer, glyph, contour, point, component, anchor,
+    guideline, lib, kerning, info, groups, imageSet, image, dataSet
 ]
 
 suite = unittest.TestSuite()

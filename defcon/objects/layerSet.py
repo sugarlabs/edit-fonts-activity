@@ -5,7 +5,6 @@ from defcon.objects.layer import Layer
 
 
 class LayerSet(BaseObject):
-
     """
     This object manages all layers in the font.
 
@@ -47,10 +46,18 @@ class LayerSet(BaseObject):
     changeNotificationName = "LayerSet.Changed"
     representationFactories = {}
 
-    def __init__(self, font=None, layerClass=None, libClass=None, unicodeDataClass=None,
-            guidelineClass=None, glyphClass=None,
-            glyphContourClass=None, glyphPointClass=None, glyphComponentClass=None, glyphAnchorClass=None,
-            glyphImageClass=None):
+    def __init__(self,
+                 font=None,
+                 layerClass=None,
+                 libClass=None,
+                 unicodeDataClass=None,
+                 guidelineClass=None,
+                 glyphClass=None,
+                 glyphContourClass=None,
+                 glyphPointClass=None,
+                 glyphComponentClass=None,
+                 glyphAnchorClass=None,
+                 glyphImageClass=None):
 
         if font is not None:
             font = weakref.ref(font)
@@ -93,7 +100,8 @@ class LayerSet(BaseObject):
             return None
         return self._font()
 
-    font = property(_get_font, doc="The :class:`Font` that this layer set belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this layer set belongs to.")
 
     # -------------
     # Default Layer
@@ -120,11 +128,18 @@ class LayerSet(BaseObject):
         if self._defaultLayer is not None:
             oldName = self._defaultLayer.name
         self._defaultLayer = layer
-        self._layerActionHistory.append(dict(action="default", newDefault=layer.name, oldDefault=oldName))
-        self.postNotification(notification="LayerSet.DefaultLayerChanged", data=dict(oldValue=oldName, newValue=layer.name))
+        self._layerActionHistory.append(dict(action="default",
+                                             newDefault=layer.name,
+                                             oldDefault=oldName))
+        self.postNotification(notification="LayerSet.DefaultLayerChanged",
+                              data=dict(oldValue=oldName,
+                                        newValue=layer.name))
         self.dirty = True
 
-    defaultLayer = property(_get_defaultLayer, _set_defaultLayer, doc="The default :class:`Layer` object. Setting this will post *LayerSet.DefaultLayerChanged* and *LayerSet.Changed* notifications.")
+    defaultLayer = property(
+        _get_defaultLayer,
+        _set_defaultLayer,
+        doc="The default :class:`Layer` object. Setting this will post *LayerSet.DefaultLayerChanged* and *LayerSet.Changed* notifications.")
 
     # -----------
     # Layer Order
@@ -140,34 +155,41 @@ class LayerSet(BaseObject):
         assert len(order) == len(self._layerOrder)
         assert set(order) == set(self._layerOrder)
         self._layerOrder = list(order)
-        self.postNotification(notification="LayerSet.LayerOrderChanged", data=dict(oldValue=oldOrder, newValue=order))
+        self.postNotification(notification="LayerSet.LayerOrderChanged",
+                              data=dict(oldValue=oldOrder,
+                                        newValue=order))
         self.dirty = True
 
-    layerOrder = property(_get_layerOrder, _set_layerOrder, doc="The layer order from top to bottom. Setting this will post *LayerSet.LayerOrderChanged* and *LayerSet.Changed* notifications.")
+    layerOrder = property(
+        _get_layerOrder,
+        _set_layerOrder,
+        doc="The layer order from top to bottom. Setting this will post *LayerSet.LayerOrderChanged* and *LayerSet.Changed* notifications.")
 
     # -------------
     # Layer Creation
     # -------------
 
     def instantiateLayer(self, glyphSet):
-        layer = self._layerClass(
-            layerSet=self,
-            glyphSet=glyphSet,
-            libClass=self._libClass,
-            unicodeDataClass=self._unicodeDataClass,
-            glyphClass=self._glyphClass,
-            glyphContourClass=self._glyphContourClass,
-            glyphPointClass=self._glyphPointClass,
-            glyphComponentClass=self._glyphComponentClass,
-            glyphAnchorClass=self._glyphAnchorClass,
-            guidelineClass=self._guidelineClass,
-            glyphImageClass=self._glyphImageClass
-        )
+        layer = self._layerClass(layerSet=self,
+                                 glyphSet=glyphSet,
+                                 libClass=self._libClass,
+                                 unicodeDataClass=self._unicodeDataClass,
+                                 glyphClass=self._glyphClass,
+                                 glyphContourClass=self._glyphContourClass,
+                                 glyphPointClass=self._glyphPointClass,
+                                 glyphComponentClass=self._glyphComponentClass,
+                                 glyphAnchorClass=self._glyphAnchorClass,
+                                 guidelineClass=self._guidelineClass,
+                                 glyphImageClass=self._glyphImageClass)
         return layer
 
     def beginSelfLayerNotificationObservation(self, layer):
-        layer.addObserver(observer=self, methodName="_layerDirtyStateChange", notification="Layer.Changed")
-        layer.addObserver(observer=self, methodName="_layerNameChange", notification="Layer.NameChanged")
+        layer.addObserver(observer=self,
+                          methodName="_layerDirtyStateChange",
+                          notification="Layer.Changed")
+        layer.addObserver(observer=self,
+                          methodName="_layerNameChange",
+                          notification="Layer.NameChanged")
 
     def endSelfLayerNotificationObservation(self, layer):
         if layer.dispatcher is None:
@@ -227,7 +249,8 @@ class LayerSet(BaseObject):
             name = self._defaultLayerName
         if name not in self:
             raise KeyError("%s not in layers" % name)
-        self.postNotification("LayerSet.LayerWillBeDeleted", data=dict(name=name))
+        self.postNotification("LayerSet.LayerWillBeDeleted",
+                              data=dict(name=name))
         layer = self._layers[name]
         self.endSelfLayerNotificationObservation(layer)
         del self._layers[name]
@@ -258,7 +281,8 @@ class LayerSet(BaseObject):
         count = 0
         if formatVersion < 3:
             count += 1
-            count += self.defaultLayer.getSaveProgressBarTickCount(formatVersion)
+            count += self.defaultLayer.getSaveProgressBarTickCount(
+                formatVersion)
         else:
             for layer in self:
                 count += 1
@@ -310,10 +334,13 @@ class LayerSet(BaseObject):
         else:
             for layerName in self.layerOrder:
                 if progressBar is not None:
-                    progressBar.update(text="Saving layer \"%s\"..." % layerName, increment=0)
+                    progressBar.update(text="Saving layer \"%s\"..." %
+                                       layerName,
+                                       increment=0)
                 layer = self[layerName]
                 isDefaultLayer = layer == self.defaultLayer
-                glyphSet = writer.getGlyphSet(layerName=layerName, defaultLayer=isDefaultLayer)
+                glyphSet = writer.getGlyphSet(layerName=layerName,
+                                              defaultLayer=isDefaultLayer)
                 layer.save(glyphSet, saveAs=saveAs, progressBar=progressBar)
                 # this prevents us from saving when the color was deleted
                 #if layer.lib or layer.color:
@@ -330,7 +357,8 @@ class LayerSet(BaseObject):
         for layer in self:
             if layer == defaultLayer:
                 continue
-            self._layerActionHistory.append(dict(action="new", name=layer.name))
+            self._layerActionHistory.append(dict(action="new",
+                                                 name=layer.name))
 
     # ------------------------
     # Notification Observation
@@ -356,7 +384,9 @@ class LayerSet(BaseObject):
         index = self._layerOrder.index(oldName)
         self._layerOrder.pop(index)
         self._layerOrder.insert(index, newName)
-        self._layerActionHistory.append(dict(action="rename", oldName=oldName, newName=newName))
+        self._layerActionHistory.append(dict(action="rename",
+                                             oldName=oldName,
+                                             newName=newName))
 
     # ---------------------
     # External Edit Support
@@ -404,22 +434,19 @@ class LayerSet(BaseObject):
             if layer._glyphSet is not None:
                 layer._glyphSet.readLayerInfo(newLayerInfo)
                 layerInfoChanged = layer._dataOnDisk != newLayerInfo.pack()
-            modifiedGlyphs, addedGlyphs, deletedGlyphs = layer.testForExternalChanges()
+            modifiedGlyphs, addedGlyphs, deletedGlyphs = layer.testForExternalChanges(
+            )
             if modifiedGlyphs or addedGlyphs or deletedGlyphs or layerInfoChanged:
-                modifiedLayers[layerName] = dict(
-                    info=layerInfoChanged,
-                    modified=modifiedGlyphs,
-                    added=addedGlyphs,
-                    deleted=deletedGlyphs
-                )
+                modifiedLayers[layerName] = dict(info=layerInfoChanged,
+                                                 modified=modifiedGlyphs,
+                                                 added=addedGlyphs,
+                                                 deleted=deletedGlyphs)
         # pack
-        result = dict(
-            defaultLayer=defaultLayerChanged,
-            order=layerOrderChanged,
-            added=addedLayers,
-            deleted=deletedLayers,
-            modified=modifiedLayers
-        )
+        result = dict(defaultLayer=defaultLayerChanged,
+                      order=layerOrderChanged,
+                      added=addedLayers,
+                      deleted=deletedLayers,
+                      modified=modifiedLayers)
         # cross your fingers
         return result
 
@@ -464,7 +491,7 @@ class LayerSet(BaseObject):
     # -----------------------------
 
     def getDataForSerialization(self, **kwargs):
-        serialize = lambda item: item.getDataForSerialization();
+        serialize = lambda item: item.getDataForSerialization()
 
         def get_layers(k):
             layers = []
@@ -482,15 +509,15 @@ class LayerSet(BaseObject):
         from functools import partial
 
         if 'layers' not in data:
-            return;
+            return
         for name, data, isDefault in data['layers']:
             layer = self.newLayer(name)
             layer.setDataFromSerialization(data)
             if isDefault:
-                self.defaultLayer = layer;
+                self.defaultLayer = layer
+
 
 class _StaticLayerInfoMaker(object):
-
     def __init__(self):
         self.lib = {}
         self.color = None
@@ -508,6 +535,7 @@ class _StaticLayerInfoMaker(object):
 # Tests
 # -----
 
+
 def _testSetParentDataInLayer():
     """
     >>> from defcon import Font
@@ -518,6 +546,7 @@ def _testSetParentDataInLayer():
     >>> id(layer.getParent()) == id(layers)
     True
     """
+
 
 def _testLayerOrder():
     """
@@ -531,6 +560,7 @@ def _testLayerOrder():
     >>> layers.layerOrder
     ['Layer 1', 'public.background', 'public.default']
     """
+
 
 def _testDefaultLayer():
     """
@@ -546,6 +576,7 @@ def _testDefaultLayer():
     >>> layer == layers.defaultLayer
     True
     """
+
 
 def _testNewLayer():
     """
@@ -564,6 +595,7 @@ def _testNewLayer():
     ['public.default', 'public.background', 'Layer 1', 'Test']
     """
 
+
 def _testIter():
     """
     >>> from defcon import Font
@@ -574,6 +606,7 @@ def _testIter():
     ['public.default', 'public.background', 'Layer 1']
     """
 
+
 def _testGetitem():
     """
     >>> from defcon import Font
@@ -583,6 +616,7 @@ def _testGetitem():
     >>> layers["public.default"].name
     'public.default'
     """
+
 
 def _testDelItem():
     """
@@ -625,6 +659,7 @@ def _testDelItem():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testLayerInfo():
     """
     >>> import os
@@ -653,6 +688,7 @@ def _testLayerInfo():
     >>> tearDownTestFontCopy()
     """
 
+
 def _testLen():
     """
     >>> from defcon import Font
@@ -668,6 +704,7 @@ def _testLen():
     1
     """
 
+
 def _testContains():
     """
     >>> from defcon import Font
@@ -679,6 +716,7 @@ def _testContains():
     >>> 'NotInFont' in layers
     False
     """
+
 
 def _testNameChange():
     """
@@ -697,6 +735,7 @@ def _testNameChange():
     >>> layers.dirty
     True
     """
+
 
 def _testExternalChanges():
     """
@@ -789,6 +828,7 @@ def _testExternalChanges():
     >>> tearDownTestFontCopy(font.path)
     """
 
+
 def _testReloadLayers():
     """
     >>> import os
@@ -854,6 +894,7 @@ def _testReloadLayers():
     'test'
     >>> tearDownTestFontCopy(font.path)
     """
+
 
 if __name__ == "__main__":
     import doctest

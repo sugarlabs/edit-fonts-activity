@@ -1,5 +1,4 @@
 class Color(str):
-
     """
     This object represents a color. This object is immutable.
 
@@ -21,7 +20,9 @@ class Color(str):
         color = (("r", r), ("g", g), ("b", b), ("a", a))
         for component, v in color:
             if v < 0 or v > 1:
-                raise ValueError("The color for %s (%s) is not between 0 and 1." % (component, str(v)))
+                raise ValueError(
+                    "The color for %s (%s) is not between 0 and 1." %
+                    (component, str(v)))
         # convert back to a normalized string
         r = _stringify(r)
         g = _stringify(g)
@@ -118,6 +119,7 @@ def _stringify(v):
         # otherwise return the float
         return s
 
+
 def _test():
     """
     From String:
@@ -191,6 +193,7 @@ def _test():
         ...
     ValueError: The color for a (2) is not between 0 and 1.
     """
+
 
 if __name__ == "__main__":
     import doctest

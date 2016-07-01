@@ -1,5 +1,4 @@
 class FuzzyNumber(object):
-
     def __init__(self, value, threshold):
         self.value = value
         self.threshold = threshold

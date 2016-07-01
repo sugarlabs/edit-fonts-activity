@@ -1975,6 +1975,7 @@ import unicodedata
 
 # load the data
 
+
 def _parseRangeText(text):
     result = []
     orderedTags = []
@@ -1997,6 +1998,7 @@ def _parseRangeText(text):
             orderedTags.append(name)
     result = list(sorted(result))
     return result, orderedTags
+
 
 scriptRanges, orderedScripts = _parseRangeText(_scriptsText)
 orderedScripts.append("Unknown")
@@ -2055,6 +2057,7 @@ for line in _openClosePairText.splitlines():
 
 # functions
 
+
 def decompositionBase(value):
     letterCategories = ("Ll", "Lu", "Lt", "Lo")
     try:
@@ -2069,25 +2072,30 @@ def decompositionBase(value):
         return -1
     parts = decomposition.split(" ")
     unichrs = [chr(int(i, 16)) for i in parts if i]
-    letters = [ord(i) for i in unichrs if unicodedata.category(i) in letterCategories]
+    letters = [ord(i) for i in unichrs
+               if unicodedata.category(i) in letterCategories]
     letterCount = len(letters)
     if letterCount != 1:
         return -1
     decomposedUniValue = letters[0]
     furtherDecomposedUniValue = decompositionBase(decomposedUniValue)
     if furtherDecomposedUniValue != -1:
-        furtherFurtherDecomposedUniValue = decompositionBase(furtherDecomposedUniValue)
+        furtherFurtherDecomposedUniValue = decompositionBase(
+            furtherDecomposedUniValue)
         if furtherFurtherDecomposedUniValue != -1:
             decomposedUniValue = furtherFurtherDecomposedUniValue
         else:
             decomposedUniValue = furtherDecomposedUniValue
     return decomposedUniValue
 
+
 def openRelative(value):
     return _closeToOpen.get(value)
 
+
 def closeRelative(value):
     return _openToClose.get(value)
+
 
 def category(value):
     try:
@@ -2099,17 +2107,20 @@ def category(value):
     except ValueError:
         return "Cn"
 
+
 def script(value):
     scriptName = _searchRanges(value, scriptRanges)
     if scriptName is None:
         scriptName = "Unknown"
     return scriptName
 
+
 def block(value):
     blockName = _searchRanges(value, blockRanges)
     if blockName is None:
         blockName = "No_Block"
     return blockName
+
 
 def _searchRanges(value, available):
     count = len(available)
@@ -2130,5 +2141,3 @@ def _searchRanges(value, available):
         return _searchRanges(value, greaterRange)
     else:
         return name
-
-

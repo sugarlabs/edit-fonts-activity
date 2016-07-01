@@ -3,7 +3,6 @@ from defcon.objects.base import BaseDictObject
 
 
 class Lib(BaseDictObject):
-
     """
     This object contains arbitrary data.
 
@@ -102,7 +101,10 @@ class Lib(BaseDictObject):
             font = weakref.ref(font)
         self._font = font
 
-    font = property(_get_font, _set_font, doc="The :class:`Font` that this object belongs to. This should not be set externally.")
+    font = property(
+        _get_font,
+        _set_font,
+        doc="The :class:`Font` that this object belongs to. This should not be set externally.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -116,7 +118,9 @@ class Lib(BaseDictObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this object belongs to (if it isn't a font lib).")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this object belongs to (if it isn't a font lib).")
 
     def _get_layer(self):
         layer = None
@@ -138,7 +142,10 @@ class Lib(BaseDictObject):
             layer = weakref.ref(layer)
         self._layer = layer
 
-    layer = property(_get_layer, _set_layer, doc="The :class:`Layer` that this object belongs to (if it isn't a font lib). This should not be set externally.")
+    layer = property(
+        _get_layer,
+        _set_layer,
+        doc="The :class:`Layer` that this object belongs to (if it isn't a font lib). This should not be set externally.")
 
     def _get_glyph(self):
         if self._glyph is not None:
@@ -153,7 +160,10 @@ class Lib(BaseDictObject):
             glyph = weakref.ref(glyph)
         self._glyph = glyph
 
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this object belongs to (if it isn't a font or layer lib). This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this object belongs to (if it isn't a font or layer lib). This should not be set externally.")
 
     # ------------------------
     # Notification Observation

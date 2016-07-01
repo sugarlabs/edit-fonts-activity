@@ -8,7 +8,6 @@ from defcon.tools.representations import contourBoundsRepresentationFactory,\
 
 
 class Contour(BaseObject):
-
     """
     This object represents a contour and it contains a list of points.
 
@@ -42,18 +41,16 @@ class Contour(BaseObject):
 
     changeNotificationName = "Contour.Changed"
     representationFactories = {
-        "defcon.contour.bounds" : dict(
-            factory=contourBoundsRepresentationFactory,
-            destructiveNotifications=("Contour.PointsChanged")
-        ),
-        "defcon.contour.controlPointBounds" : dict(
-            factory=contourControlPointBoundsRepresentationFactory,
-            destructiveNotifications=("Contour.PointsChanged")
-        ),
-        "defcon.contour.clockwise" : dict(
-            factory=contourClockwiseRepresentationFactory,
-            destructiveNotifications=("Contour.PointsChanged", "Contour.WindingDirectionChanged")
-        ),
+        "defcon.contour.bounds":
+        dict(factory=contourBoundsRepresentationFactory,
+             destructiveNotifications=("Contour.PointsChanged")),
+        "defcon.contour.controlPointBounds":
+        dict(factory=contourControlPointBoundsRepresentationFactory,
+             destructiveNotifications=("Contour.PointsChanged")),
+        "defcon.contour.clockwise":
+        dict(factory=contourClockwiseRepresentationFactory,
+             destructiveNotifications=("Contour.PointsChanged",
+                                       "Contour.WindingDirectionChanged")),
     }
 
     def __init__(self, glyph=None, pointClass=None):
@@ -94,7 +91,8 @@ class Contour(BaseObject):
             font = self._font()
         return font
 
-    font = property(_get_font, doc="The :class:`Font` that this contour belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this contour belongs to.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -108,7 +106,9 @@ class Contour(BaseObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this contour belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this contour belongs to.")
 
     def _get_layer(self):
         layer = None
@@ -122,7 +122,8 @@ class Contour(BaseObject):
             layer = self._layer()
         return layer
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this contour belongs to.")
+    layer = property(_get_layer,
+                     doc="The :class:`Layer` that this contour belongs to.")
 
     def _get_glyph(self):
         if self._glyph is None:
@@ -138,7 +139,10 @@ class Contour(BaseObject):
         self._layer = None
         self._glyph = glyph
 
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this contour belongs to. This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this contour belongs to. This should not be set externally.")
 
     # ------
     # Points
@@ -152,7 +156,9 @@ class Contour(BaseObject):
     def _get_onCurvePoints(self):
         return [point for point in self._points if point.segmentType]
 
-    onCurvePoints = property(_get_onCurvePoints, doc="A list of all on curve points in the contour.")
+    onCurvePoints = property(
+        _get_onCurvePoints,
+        doc="A list of all on curve points in the contour.")
 
     def appendPoint(self, point):
         """
@@ -292,7 +298,9 @@ class Contour(BaseObject):
         otherContour.drawPoints(self)
         self.enableNotifications()
         # post a notification
-        self.postNotification("Contour.WindingDirectionChanged", data=dict(oldValue=oldDirection, newValue=self.clockwise))
+        self.postNotification("Contour.WindingDirectionChanged",
+                              data=dict(oldValue=oldDirection,
+                                        newValue=self.clockwise))
         self.postNotification("Contour.PointsChanged")
         self.dirty = True
 
@@ -321,7 +329,9 @@ class Contour(BaseObject):
             segments.append(segment)
         return segments
 
-    segments = property(_get_segments, doc="A list of all points in the contour organized into segments.")
+    segments = property(
+        _get_segments,
+        doc="A list of all points in the contour organized into segments.")
 
     def removeSegment(self, segmentIndex, preserveCurve=False):
         """
@@ -367,7 +377,8 @@ class Contour(BaseObject):
                 offCurve2Y = onCurveY
             else:
                 # XXX could be a quad. in that case, we can't handle it.
-                raise NotImplementedError("unknown segment type: %s" % segment[-1].segmentType)
+                raise NotImplementedError("unknown segment type: %s" %
+                                          segment[-1].segmentType)
             if nextSegment[-1].segmentType == "curve":
                 nextOffCurve1X = nextSegment[0].x
                 nextOffCurve1Y = nextSegment[0].y
@@ -380,11 +391,14 @@ class Contour(BaseObject):
                 nextOffCurve2Y = nextOnCurveY
             else:
                 # XXX could be a quad. in that case, we can't handle it.
-                raise NotImplementedError("unknown segment type: %s" % nextSegment[-1].segmentType)
+                raise NotImplementedError("unknown segment type: %s" %
+                                          nextSegment[-1].segmentType)
             # now do the math
-            result = bezierMath.joinSegments((previousOnCurveX, previousOnCurveY),
-                (offCurve1X, offCurve1Y), (offCurve2X, offCurve2Y), (onCurveX, onCurveY),
-                (nextOffCurve1X, nextOffCurve1Y), (nextOffCurve2X, nextOffCurve2Y), (nextOnCurveX, nextOnCurveY))
+            result = bezierMath.joinSegments(
+                (previousOnCurveX, previousOnCurveY), (offCurve1X, offCurve1Y),
+                (offCurve2X, offCurve2Y), (onCurveX, onCurveY),
+                (nextOffCurve1X, nextOffCurve1Y),
+                (nextOffCurve2X, nextOffCurve2Y), (nextOnCurveX, nextOnCurveY))
             # remove the segment
             for point in segment:
                 self._points.remove(point)
@@ -392,11 +406,14 @@ class Contour(BaseObject):
             if not nextSegment[-1].segmentType == "curve":
                 nextSegment[-1].segmentType = "curve"
                 pointIndex = self._points.index(nextSegment[-1])
-                newPoints = [self._pointClass((result[0][0], result[0][1])), self._pointClass((result[1][0], result[1][1]))]
+                newPoints = [self._pointClass((result[0][0], result[0][1])),
+                             self._pointClass((result[1][0], result[1][1]))]
                 if pointIndex == 0:
                     self._points.extend(newPoints)
                 else:
-                    self._points = self._points[:pointIndex] + newPoints + self._points[pointIndex:]
+                    self._points = self._points[:
+                                                pointIndex] + newPoints + self._points[
+                                                    pointIndex:]
             # otherwise, set the point positions
             else:
                 nextSegment[0].x = result[0][0]
@@ -420,7 +437,10 @@ class Contour(BaseObject):
             self.reverse()
             self._clockwiseCache = None
 
-    clockwise = property(_get_clockwise, _set_clockwise, doc="A boolean representing if the contour has a clockwise direction. Setting this posts *Contour.WindingDirectionChanged* and *Contour.Changed* notifications.")
+    clockwise = property(
+        _get_clockwise,
+        _set_clockwise,
+        doc="A boolean representing if the contour has a clockwise direction. Setting this posts *Contour.WindingDirectionChanged* and *Contour.Changed* notifications.")
 
     # open
 
@@ -429,7 +449,8 @@ class Contour(BaseObject):
             return True
         return self._points[0].segmentType == 'move'
 
-    open = property(_get_open, doc="A boolean indicating if the contour is open or not.")
+    open = property(_get_open,
+                    doc="A boolean indicating if the contour is open or not.")
 
     # ------
     # Bounds
@@ -438,12 +459,16 @@ class Contour(BaseObject):
     def _get_bounds(self):
         return self.getRepresentation("defcon.contour.bounds")
 
-    bounds = property(_get_bounds, doc="The bounds of the contour's outline expressed as a tuple of form (xMin, yMin, xMax, yMax).")
+    bounds = property(
+        _get_bounds,
+        doc="The bounds of the contour's outline expressed as a tuple of form (xMin, yMin, xMax, yMax).")
 
     def _get_controlPointBounds(self):
         return self.getRepresentation("defcon.contour.controlPointBounds")
 
-    controlPointBounds = property(_get_controlPointBounds, doc="The control bounds of all points in the contour. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured.")
+    controlPointBounds = property(
+        _get_controlPointBounds,
+        doc="The control bounds of all points in the contour. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured.")
 
     # ----
     # Move
@@ -474,7 +499,8 @@ class Contour(BaseObject):
                 bounds = (xMin, yMin, xMax, yMax)
             self._representations["defcon.contour.bounds"][None] = bounds
         if "defcon.contour.controlPointBounds" in self._representations:
-            bounds = self._representations["defcon.contour.controlPointBounds"][None]
+            bounds = self._representations[
+                "defcon.contour.controlPointBounds"][None]
             if bounds is not None:
                 xMin, yMin, xMax, yMax = bounds
                 xMin += x
@@ -482,7 +508,8 @@ class Contour(BaseObject):
                 xMax += x
                 yMax += y
                 bounds = (xMin, yMin, xMax, yMax)
-            self._representations["defcon.contour.controlPointBounds"][None] = bounds
+            self._representations["defcon.contour.controlPointBounds"][
+                None] = bounds
         self.disableNotifications(observer=self)
         self.postNotification("Contour.PointsChanged")
         self.enableNotifications(observer=self)
@@ -507,7 +534,8 @@ class Contour(BaseObject):
     # Splitting
     # ---------
 
-    def positionForProspectivePointInsertionAtSegmentAndT(self, segmentIndex, t):
+    def positionForProspectivePointInsertionAtSegmentAndT(self, segmentIndex,
+                                                          t):
         """
         Get the precise coordinates and a boolean indicating
         if the point will be smooth for the given **segmentIndex**
@@ -527,7 +555,7 @@ class Contour(BaseObject):
     def _splitAndInsertAtSegmentAndT(self, segmentIndex, t, insert):
         segments = self.segments
         segment = segments[segmentIndex]
-        segment.insert(0, segments[segmentIndex-1][-1])
+        segment.insert(0, segments[segmentIndex - 1][-1])
         firstPoint = segment[0]
         lastPoint = segment[-1]
         segmentType = lastPoint.segmentType
@@ -537,12 +565,16 @@ class Contour(BaseObject):
             x = x1 + (x2 - x1) * t
             y = y1 + (y2 - y1) * t
             pointsToInsert = [((x, y), "line", False)]
-            insertionPoint =  (x, y)
+            insertionPoint = (x, y)
             pointWillBeSmooth = False
         elif segmentType == "curve":
             pt1, pt2, pt3, pt4 = segment
-            (pt1, pt2, pt3, pt4), (pt5, pt6, pt7, pt8) = bezierTools.splitCubicAtT(pt1, pt2, pt3, pt4, t)
-            pointsToInsert = [(pt2, None, False), (pt3, None, False), (pt4, "curve", True), (pt6, None, False), (pt7, None, False)]
+            (pt1, pt2, pt3, pt4), (
+                pt5, pt6, pt7, pt8) = bezierTools.splitCubicAtT(pt1, pt2, pt3,
+                                                                pt4, t)
+            pointsToInsert = [(pt2, None, False), (pt3, None, False),
+                              (pt4, "curve", True), (pt6, None, False),
+                              (pt7, None, False)]
             insertionPoint = tuple(pt4)
             pointWillBeSmooth = True
         else:
@@ -559,7 +591,10 @@ class Contour(BaseObject):
                 lastPoints = []
             else:
                 lastPoints = self._points[lastPointIndex:]
-            newPoints = [self._pointClass(pos, segmentType=segmentType, smooth=smooth) for pos, segmentType, smooth in pointsToInsert]
+            newPoints = [self._pointClass(pos,
+                                          segmentType=segmentType,
+                                          smooth=smooth)
+                         for pos, segmentType, smooth in pointsToInsert]
             self._points = firstPoints + newPoints + lastPoints
             self.dirty = True
         return insertionPoint, pointWillBeSmooth
@@ -582,13 +617,23 @@ class Contour(BaseObject):
         """
         pass
 
-    def addPoint(self, xxx_todo_changeme2, segmentType=None, smooth=False, name=None, identifier=None, **kwargs):
+    def addPoint(self,
+                 xxx_todo_changeme2,
+                 segmentType=None,
+                 smooth=False,
+                 name=None,
+                 identifier=None,
+                 **kwargs):
         """
         Standard point pen *addPoint* method.
         This should not be used externally.
         """
         (x, y) = xxx_todo_changeme2
-        point = self._pointClass((x, y), segmentType=segmentType, smooth=smooth, name=name, identifier=identifier)
+        point = self._pointClass((x, y),
+                                 segmentType=segmentType,
+                                 smooth=smooth,
+                                 name=name,
+                                 identifier=identifier)
         self.insertPoint(len(self._points), point)
 
     def draw(self, pen):
@@ -607,13 +652,24 @@ class Contour(BaseObject):
             pointPen.beginPath(identifier=self.identifier)
         except TypeError:
             pointPen.beginPath()
-            warn("The beginPath method needs an identifier kwarg. The contour's identifier value has been discarded.", DeprecationWarning)
+            warn(
+                "The beginPath method needs an identifier kwarg. The contour's identifier value has been discarded.",
+                DeprecationWarning)
         for point in self._points:
             try:
-                pointPen.addPoint((point.x, point.y), segmentType=point.segmentType, smooth=point.smooth, name=point.name, identifier=point.identifier)
+                pointPen.addPoint((point.x, point.y),
+                                  segmentType=point.segmentType,
+                                  smooth=point.smooth,
+                                  name=point.name,
+                                  identifier=point.identifier)
             except TypeError:
-                pointPen.addPoint((point.x, point.y), segmentType=point.segmentType, smooth=point.smooth, name=point.name)
-                warn("The addPoint method needs an identifier kwarg. The point's identifier value has been discarded.", DeprecationWarning)
+                pointPen.addPoint((point.x, point.y),
+                                  segmentType=point.segmentType,
+                                  smooth=point.smooth,
+                                  name=point.name)
+                warn(
+                    "The addPoint method needs an identifier kwarg. The point's identifier value has been discarded.",
+                    DeprecationWarning)
         pointPen.endPath()
 
     # ----------
@@ -629,7 +685,9 @@ class Contour(BaseObject):
             identifiers = set()
         return identifiers
 
-    identifiers = property(_get_identifiers, doc="Set of identifiers for the glyph that this contour belongs to. This is primarily for internal use.")
+    identifiers = property(
+        _get_identifiers,
+        doc="Set of identifiers for the glyph that this contour belongs to. This is primarily for internal use.")
 
     def _get_identifier(self):
         return self._identifier
@@ -649,10 +707,15 @@ class Contour(BaseObject):
         if value is not None:
             identifiers.add(value)
         # post notifications
-        self.postNotification("Contour.IdentifierChanged", data=dict(oldValue=oldIdentifier, newValue=value))
+        self.postNotification("Contour.IdentifierChanged",
+                              data=dict(oldValue=oldIdentifier,
+                                        newValue=value))
         self.dirty = True
 
-    identifier = property(_get_identifier, _set_identifier, doc="The identifier. Setting this will post *Contour.IdentifierChanged* and *Contour.Changed* notifications.")
+    identifier = property(
+        _get_identifier,
+        _set_identifier,
+        doc="The identifier. Setting this will post *Contour.IdentifierChanged* and *Contour.Changed* notifications.")
 
     def generateIdentifier(self):
         """
@@ -691,15 +754,15 @@ class Contour(BaseObject):
             # store the point pen protocol calls
             # this will store the identifier and the point data
             pointData = []
-            self.drawPoints(Recorder(pointData));
-            return pointData;
+            self.drawPoints(Recorder(pointData))
+            return pointData
 
         getters = [('pen', get_points)]
         return self._serialize(getters, **kwargs)
 
     def setDataFromSerialization(self, data):
         self.clear()
-        self.identifier = None;
+        self.identifier = None
         if 'pen' in data:
             # play back
             Recorder(data['pen'])._play(self)
@@ -748,15 +811,16 @@ class Recorder(object):
         # The recorder behaves like glyphA.draw
         recorderPen._play(glyphB)
     """
+
     def __init__(self, data=None):
-        self.__dict__['_data'] = data if data is not None else [];
+        self.__dict__['_data'] = data if data is not None else []
 
     def _play(self, target):
         """ Replay all methof calls this Recorder to target.
             Public Method(!)
         """
         for cmd, args, kwds in self._data:
-            getattr(target, cmd)(*args, **kwds);
+            getattr(target, cmd)(*args, **kwds)
 
     def __setattr__(self, name, value):
         raise AttributeError('It\'s not allowed to set attributes here.', name)
@@ -764,15 +828,17 @@ class Recorder(object):
     def __getattr__(self, name):
         if name.startswith('_'):
             raise AttributeError(name)
+
         def command(*args, **kwds):
             self._data.append((name, args, kwds))
         # cache the method, don't use __setattr__
         self.__dict__[name] = command
-        return command;
+        return command
 
 # -----
 # Tests
 # -----
+
 
 def _testIdentifier():
     """
@@ -805,6 +871,7 @@ def _testIdentifier():
     ['contour 1']
     """
 
+
 def _testBounds():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -815,6 +882,7 @@ def _testBounds():
     (0, 0, 700, 700)
     """
 
+
 def _testControlPointBounds():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -824,6 +892,7 @@ def _testControlPointBounds():
     >>> contour.controlPointBounds
     (0, 0, 700, 700)
     """
+
 
 def _testClockwise():
     """
@@ -860,6 +929,7 @@ def _testClockwise():
     True
     """
 
+
 def _testOpen():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -875,6 +945,7 @@ def _testOpen():
     >>> glyph[3].open
     False
     """
+
 
 def _testOnCurvePoints():
     """
@@ -896,6 +967,7 @@ def _testOnCurvePoints():
     [(0, 350), (350, 0), (700, 350), (350, 700)]
     """
 
+
 def _testSegments():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -913,6 +985,7 @@ def _testSegments():
     [[(0, 157, None), (157, 0, None), (350, 0, 'curve')], [(543, 0, None), (700, 157, None), (700, 350, 'curve')], [(700, 543, None), (543, 700, None), (350, 700, 'curve')], [(157, 700, None), (0, 543, None), (0, 350, 'curve')]]
     """
 
+
 def _testLen():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -926,6 +999,7 @@ def _testLen():
     12
     """
 
+
 def _testIter():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -935,6 +1009,7 @@ def _testIter():
     >>> [(point.x, point.y) for point in contour]
     [(0, 0), (700, 0), (700, 700), (0, 700)]
     """
+
 
 def _testReverse():
     """
@@ -950,6 +1025,7 @@ def _testReverse():
     [(0, 0), (700, 0), (700, 700), (0, 700)]
     """
 
+
 def _testMove():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -961,6 +1037,7 @@ def _testMove():
     (100, 100, 800, 800)
     >>> contour.dirty = True
     """
+
 
 def _testPointInside():
     """
@@ -976,6 +1053,7 @@ def _testPointInside():
     False
     """
 
+
 def _testIndex():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -985,6 +1063,7 @@ def _testIndex():
     >>> 2 == contour.index(contour[2])
     True
     """
+
 
 def _testSetStartPoint():
     """
@@ -1016,6 +1095,7 @@ def _testSetStartPoint():
     True
     """
 
+
 def _testPositionForProspectivePointInsertionAtSegmentAndT():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1032,6 +1112,7 @@ def _testPositionForProspectivePointInsertionAtSegmentAndT():
     ((226.125, 473.5), True)
     """
 
+
 def _testSplitAndInsertPointAtSegmentAndT():
     """
     >>> from defcon.test.testTools import getTestFontPath
@@ -1046,6 +1127,7 @@ def _testSplitAndInsertPointAtSegmentAndT():
     >>> [(point.x, point.y, point.segmentType) for point in contour]
     [(0, 350, 'curve'), (0.0, 253.5, None), (39.25, 166.0, None), (102.625, 102.625, 'curve'), (166.0, 39.25, None), (253.5, 0.0, None), (350, 0, 'curve'), (543, 0, None), (700, 157, None), (700, 350, 'curve'), (700, 543, None), (543, 700, None), (350, 700, 'curve'), (157, 700, None), (0, 543, None)]
     """
+
 
 def _testRemoveSegment():
     """

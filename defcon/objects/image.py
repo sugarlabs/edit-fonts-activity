@@ -3,17 +3,16 @@ from defcon.objects.base import BaseDictObject
 from defcon.objects.color import Color
 
 _defaultTransformation = {
-    "xScale"  : 1,
-    "xyScale" : 0,
-    "yxScale" : 0,
-    "yScale"  : 1,
-    "xOffset" : 0,
-    "yOffset" : 0
+    "xScale": 1,
+    "xyScale": 0,
+    "yxScale": 0,
+    "yScale": 1,
+    "xOffset": 0,
+    "yOffset": 0
 }
 
 
 class Image(BaseDictObject):
-
     """
     This object represents an image reference in a glyph.
 
@@ -83,7 +82,8 @@ class Image(BaseDictObject):
             font = self._font()
         return font
 
-    font = property(_get_font, doc="The :class:`Font` that this image belongs to.")
+    font = property(_get_font,
+                    doc="The :class:`Font` that this image belongs to.")
 
     def _get_layerSet(self):
         layerSet = None
@@ -97,7 +97,9 @@ class Image(BaseDictObject):
             layerSet = self._layerSet()
         return layerSet
 
-    layerSet = property(_get_layerSet, doc="The :class:`LayerSet` that this image belongs to.")
+    layerSet = property(
+        _get_layerSet,
+        doc="The :class:`LayerSet` that this image belongs to.")
 
     def _get_layer(self):
         layer = None
@@ -111,7 +113,8 @@ class Image(BaseDictObject):
             layer = self._layer()
         return layer
 
-    layer = property(_get_layer, doc="The :class:`Layer` that this image belongs to.")
+    layer = property(_get_layer,
+                     doc="The :class:`Layer` that this image belongs to.")
 
     def _get_glyph(self):
         if self._glyph is None:
@@ -127,7 +130,10 @@ class Image(BaseDictObject):
         self._layer = None
         self._glyph = glyph
 
-    glyph = property(_get_glyph, _set_glyph, doc="The :class:`Glyph` that this image belongs to. This should not be set externally.")
+    glyph = property(
+        _get_glyph,
+        _set_glyph,
+        doc="The :class:`Glyph` that this image belongs to. This should not be set externally.")
 
     # ----------
     # Attributes
@@ -143,16 +149,22 @@ class Image(BaseDictObject):
         if fileName == oldFileName:
             return
         self["fileName"] = fileName
-        self.postNotification("Image.FileNameChanged", data=dict(oldValue=oldFileName, newValue=fileName))
+        self.postNotification("Image.FileNameChanged",
+                              data=dict(oldValue=oldFileName,
+                                        newValue=fileName))
 
-    fileName = property(_get_fileName, _set_fileName, doc="The file name the image. Setting this will posts *Image.Changed* and *Image.FileNameChanged* notifications.")
+    fileName = property(
+        _get_fileName,
+        _set_fileName,
+        doc="The file name the image. Setting this will posts *Image.Changed* and *Image.FileNameChanged* notifications.")
 
     # transformation
 
     def _get_transformation(self):
         if "xScale" not in self:
             return
-        return (self["xScale"], self["xyScale"], self["yxScale"], self["yScale"], self["xOffset"], self["yOffset"])
+        return (self["xScale"], self["xyScale"], self["yxScale"],
+                self["yScale"], self["xOffset"], self["yOffset"])
 
     def _set_transformation(self, transformation):
         oldTransformation = self.transformation
@@ -168,9 +180,14 @@ class Image(BaseDictObject):
         self["xOffset"] = xOffset
         self["yOffset"] = yOffset
         self.releaseHeldNotifications()
-        self.postNotification("Image.TransformationChanged", data=dict(oldValue=oldTransformation, newValue=transformation))
+        self.postNotification("Image.TransformationChanged",
+                              data=dict(oldValue=oldTransformation,
+                                        newValue=transformation))
 
-    transformation = property(_get_transformation, _set_transformation, doc="The transformation matrix for the image. Setting this will posts *Image.Changed* and *Image.TransformationChanged* notifications.")
+    transformation = property(
+        _get_transformation,
+        _set_transformation,
+        doc="The transformation matrix for the image. Setting this will posts *Image.Changed* and *Image.TransformationChanged* notifications.")
 
     # color
 
@@ -186,9 +203,14 @@ class Image(BaseDictObject):
         if newColor == oldColor:
             return
         self["color"] = newColor
-        self.postNotification("Image.ColorChanged", data=dict(oldValue=oldColor, newValue=newColor))
+        self.postNotification("Image.ColorChanged",
+                              data=dict(oldValue=oldColor,
+                                        newValue=newColor))
 
-    color = property(_get_color, _set_color, doc="The image's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Image.ColorChanged* and *Image.Changed* notifications.")
+    color = property(
+        _get_color,
+        _set_color,
+        doc="The image's :class:`Color` object. When setting, the value can be a UFO color string, a sequence of (r, g, b, a) or a :class:`Color` object. Setting this posts *Image.ColorChanged* and *Image.Changed* notifications.")
 
     # ----
     # Move
@@ -208,7 +230,9 @@ class Image(BaseDictObject):
         self["xOffset"] += xOffset
         self["yOffset"] += yOffset
         self.releaseHeldNotifications()
-        self.postNotification("Image.TransformationChanged", data=dict(oldValue=oldTransformation, newValue=self.transformation))
+        self.postNotification("Image.TransformationChanged",
+                              data=dict(oldValue=oldTransformation,
+                                        newValue=self.transformation))
 
     # ------------------------
     # Notification Observation
@@ -231,11 +255,15 @@ class Image(BaseDictObject):
         if font is None:
             return
         imageSet = font.images
-        imageSet.addObserver(self, "imageSetImageAddedNotificationCallback", "ImageSet.ImageAdded")
-        imageSet.addObserver(self, "imageSetImageDeletedNotificationCallback", "ImageSet.ImageDeleted")
-        imageSet.addObserver(self, "imageSetImageChangedNotificationCallback", "ImageSet.ImageChanged")
+        imageSet.addObserver(self, "imageSetImageAddedNotificationCallback",
+                             "ImageSet.ImageAdded")
+        imageSet.addObserver(self, "imageSetImageDeletedNotificationCallback",
+                             "ImageSet.ImageDeleted")
+        imageSet.addObserver(self, "imageSetImageChangedNotificationCallback",
+                             "ImageSet.ImageChanged")
         layer = self.layer
-        layer.addObserver(self, "layerColorChangedNotificationCallback", "Layer.ColorChanged")
+        layer.addObserver(self, "layerColorChangedNotificationCallback",
+                          "Layer.ColorChanged")
 
     def endImageSetNotificationObservation(self):
         font = self.font
@@ -302,6 +330,7 @@ def _testAttributes():
     ('foo.png', ('1', '2', '3', '4', '5', '6'), '0,0,0,0')
     """
 
+
 def _testRead():
     """
     >>> from defcon import Font
@@ -316,6 +345,7 @@ def _testRead():
     >>> image.transformation
     (0.5, 0, 0, 0.5, 0, 0)
     """
+
 
 def _testWrite():
     """
@@ -335,6 +365,7 @@ def _testWrite():
     [('color', '1,1,1,1'), ('fileName', 'foo.png'), ('xOffset', 5), ('xScale', 1), ('xyScale', 2), ('yOffset', 6), ('yScale', 4), ('yxScale', 3)]
     >>> tearDownTestFontCopy()
     """
+
 
 if __name__ == "__main__":
     import doctest
