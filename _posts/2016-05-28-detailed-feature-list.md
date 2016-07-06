@@ -5,22 +5,6 @@ category: article
 author: Yash Agarwal
 ---
 
-__This was Last Updated on 28th June, Monday__
-
-* *This is a tentative list and will be updated regularly as more progress is made on the project*
-* *This file contains elements like*
-
-```
-* Feature 1
-	* mini feature
-	* task 1 required to implement the feature
-		* subtask 1
-	* task 2
-* Feature 2
-	* task 1
-```
-_all elements are arranged in the __decreasing order__ of their __priorities__ within every main heading_
-
 ### Font Manager
 ---
 * [ ] Convert .ttf to .ufo
