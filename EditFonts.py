@@ -58,22 +58,28 @@ from defcon import Font
 from ufo2ft import compileOTF, compileTTF
 import extractor
 
-from pages.summary_page import SummaryPage
-from pages.editor_page import EditorPage
-from pages.manager_page import ManagerPage
-from pages.welcome_page import WelcomePage
+from editfonts.pages.summary_page import SummaryPage
+from editfonts.pages.editor_page import EditorPage
+from editfonts.pages.manager_page import ManagerPage
+from editfonts.pages.welcome_page import WelcomePage
+from editfonts.pages.create_font_page import CreateFontPage
+
 
 """ 
-This List contains all the class types for pages the activity will ever be needing with a 
+This Dictionary contains all the class types for pages the activity will ever be needing with a 
 key(eg. "MANAGER") that will be used to access the class type for that page 
 
 """
-PAGE = [{'SUMMARY': SummaryPage}, 
-        {'EDITOR': EditorPage}, 
-        {'MANAGER': ManagerPage},
-        {'WELCOME': WelcomePage}]
+PAGE = {'SUMMARY': SummaryPage, 
+        'EDITOR': EditorPage, 
+        'MANAGER': ManagerPage,
+        'WELCOME': WelcomePage,
+        'CREATEFONT': CreateFontPage}
 
 page_list = []
+
+#Max number of pages stored in memory
+MAX_PAGE_NUM = 3
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -110,7 +116,6 @@ class EditFonts(activity.Activity):
         share_button = ShareButton(self)
         toolbar_box.toolbar.insert(share_button, -1)
         share_button.show()
-
 
         separator_2 = Gtk.SeparatorToolItem()
         separator_2.show()
@@ -191,7 +196,7 @@ class EditFonts(activity.Activity):
         #a gtk notebook object will manage all the pages for this activity
         self.notebook = Gtk.Notebook()
 
-        self.notebook.set_show_tabs(False)
+        self.notebook.set_show_tabs(True)
 
         self.set_page("WELCOME")
 
@@ -200,32 +205,27 @@ class EditFonts(activity.Activity):
 
     def set_page(self, page_name):
 
-        page_num = next(index for (index, d) in enumerate(PAGE)
-                        if page_name in d)
-        self.create_page(page_name)
-        self.notebook.set_current_page(page_num)
+        self.notebook.set_current_page(self.create_page(page_name))
 
     def create_page(self, page_name):
 
         global page_list
 
-        page_num = next(index for (index, d) in enumerate(PAGE)
-                        if page_name in d)
-        #page_type = PAGE[page_num][page_name]
-
         #check if page already exists
         try:
             l = next(index for (index, page) in enumerate(page_list)
-                     if isinstance(page, PAGE[page_num][page_name]))
+                     if isinstance(page, PAGE[page_name]))
 
-        except Exception, e:
-            print page_name + " doesn't exist, let me create one"
+        except StopIteration:
+            logging.debug(page_name + " doesn't exist, let me create one")
             #create a new instance and add it to page_list
-            self.page = PAGE[page_num][page_name](self)
+            self.page = PAGE[page_name](self)
 
-            #first delete the first element of the page_list
-            page_list = page_list[1:]
+            if len(page_list) > MAX_PAGE_NUM - 1:
+                page_list.remove(page_list[0])
+                self.notebook.remove_page(0)
             page_list.append(self.page)
+            self.notebook.append_page(self.page, Gtk.Label(page_name))
 
         else:
             print page_name + " already exists, just updating it"
@@ -235,8 +235,13 @@ class EditFonts(activity.Activity):
             self.page.update(self)
 
         self.page.set_border_width(10)
-        self.notebook.remove_page(page_num)
-        self.notebook.insert_page(self.page, Gtk.Label(page_name), page_num)
+        
+        page_num = self.notebook.page_num(self.page)
+
+        if page_num == -1:
+            logging.error("ERROR: Unable to Create the Page <%s>" % page_name)
+                    
+        return page_num
 
     def _load_binary(self, filePath=None):
 
@@ -468,3 +473,6 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
+
+    def create_font(self):
+        self.set_page("CREATEFONT")
