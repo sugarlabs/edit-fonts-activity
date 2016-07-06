@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Detailed Feature and Task List
+title: Detailed Feature and Task List Week 5
 category: article
 author: Yash Agarwal
 ---
 
 ### Font Manager
----
+
 * [ ] Convert .ttf to .ufo
 	*	[x] Load a ttf file if file path is hardcoded
 	*	[x] Load a ttf using the Object Chooser Dialog
@@ -76,7 +76,7 @@ author: Yash Agarwal
 * [ ] Caps Curve Offsetting- Glyph editing interface
 
 ### A Testing interface for the Font Manager
----
+
 * [ ] A separate more functional testing screen will be made apart from the live preview box.
 * [ ] A textbox in which the text is rendered using the font, to get visual feedback.
 * [ ] Provide predefined text templates eg. "the quick brown fox jumps over the lazy dog," and
