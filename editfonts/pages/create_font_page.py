@@ -59,17 +59,21 @@ class CreateFontPage(Gtk.VBox):
         #a container box for the form
         form_container = Gtk.HBox()
 
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER,
+                                   Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_border_width(10)
+
         alignment_box = Gtk.Alignment(xalign=0.5,
                       yalign=0.5,
                       xscale=0,
                       yscale=0)
+        scrolled_window.add_with_viewport(alignment_box)
+        self.pack_start(scrolled_window, True, True, 0)
 
         #a vbox to store the form fields 
         form_box = Gtk.VBox()
         alignment_box.add(form_box)
-        form_container.pack_start(alignment_box, True, True, 50)
-
-        self.pack_start(form_container, True, True, 0)
 
         #Adding the form fields
 
