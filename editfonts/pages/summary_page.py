@@ -3,12 +3,12 @@ import cairo
 import math
 from defcon import Font
 
-from editfonts.widgets.custom_box import PageHeading, FontInfoBox
-from editfonts.widgets.character_map import CharacterMap
-#import pager
-
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
+
+from editfonts.widgets.custom_box import PageHeading, FontInfoBox
+from editfonts.widgets.character_map import CharacterMap
+import x
 
 class SummaryPage(Gtk.Box):
     """This Class Creates the "Font:<familyName>" Page that loads up on
@@ -16,17 +16,9 @@ class SummaryPage(Gtk.Box):
     
     """
 
-    def __init__(self, activity):
-        
+    def __init__(self):        
         super(SummaryPage, self).__init__()        
-        self.activity = activity
-        self.font = activity.main_font
         self._init_ui()
-
-    def update(self, activity):
-        self.activity = activity
-        self.font = activity.main_font
-        self.glyphName = activity.glyphName        
 
     def _init_ui(self):
         
@@ -40,7 +32,7 @@ class SummaryPage(Gtk.Box):
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
         
-        self.heading = PageHeading("Font: " + self.font.info.familyName )
+        self.heading = PageHeading("Font: " + x.FONT.info.familyName)
 
         self.infoBoxExpander = Gtk.Expander()
 
@@ -49,7 +41,7 @@ class SummaryPage(Gtk.Box):
         self.infoBoxExpander.set_property("use-markup", True)
         self.infoBoxExpander.set_label(TEMP_STRING)
 
-        self.infoBox = FontInfoBox(self.font)
+        self.infoBox = FontInfoBox(x.FONT)
         self.infoBoxExpander.add(self.infoBox)
 
         self.characterMap = CharacterMap(self, 15, 5, 'SCROLL')
@@ -131,9 +123,9 @@ class SummaryPage(Gtk.Box):
 
     def _clickDelete(self, handle):
         pass
+
     def _clickEdit(self, handle):
-        #create a new page
-        self.activity.set_page("EDITOR")
+        x.A.set_page("EDITOR")
 
     def _clickInstall(self, handle):
         pass

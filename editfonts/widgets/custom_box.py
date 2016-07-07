@@ -94,7 +94,6 @@ class DisplayData(Gtk.Alignment):
         self.add(self.box)
         self.show_all()
 
-
 #Making a font info box
 class FontInfoBox(Gtk.VBox):
     """
@@ -114,4 +113,3 @@ class FontInfoBox(Gtk.VBox):
 
         fontTrademark = DisplayData("Trademark", font.info.trademark)
         self.pack_start(fontTrademark, False, False, 5)
-

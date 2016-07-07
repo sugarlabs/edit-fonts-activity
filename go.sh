@@ -1,10 +1,6 @@
-#!/bin/sh
-
-echo "Deleting .pyc files"
+#!/bin/bash  
 find . -name "*.pyc" -exec rm -rf {} \;
-
-echo "git add ."
-git add .
-
-echo "git commit"
-git commit -m $1
+git add .  
+read -p "Commit description: " desc  
+git commit -m "$desc"  
+git push origin master

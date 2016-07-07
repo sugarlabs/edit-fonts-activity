@@ -8,10 +8,10 @@ from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-
+import x
 
 class CharacterMap(Gtk.Box):
-    def __init__(self, pageHandle, w=10, h=80, ui_type='BUTTON'):
+    def __init__(self, w=10, h=80, ui_type='BUTTON'):
 
         super(CharacterMap, self).__init__()
 
@@ -23,12 +23,10 @@ class CharacterMap(Gtk.Box):
         self.GRID_ROW_SPACING = 5
         self.GRID_COLUMN_SPACING = self.GRID_ROW_SPACING
 
-        self.pageHandle = pageHandle
-        self.font = self.pageHandle.font
-        self.h = self.font.info.ascender - self.font.info.descender
-        self.b = -self.font.info.descender
+        self.h = x.FONT.info.ascender - x.FONT.info.descender
+        self.b = -x.FONT.info.descender
 
-        self.glyphList = self.font.keys()
+        self.glyphList = x.FONT.keys()
         self.marker = 0
         self.gridSize = self.GRID_HEIGHT * self.GRID_WIDTH
 
@@ -53,25 +51,29 @@ class CharacterMap(Gtk.Box):
         self.grid.set_row_spacing(self.GRID_ROW_SPACING)
         self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
 
-        #add buttons
-
+        #creating a back button
         self.backButton = Gtk.EventBox()
         backIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
         backIcon.props.icon_name = 'go-previous'
         self.backButton.add(backIcon)
         self.backButton.connect("button-press-event", self._update_marker, -1)
 
+        #creating a next button
         self.nextButton = Gtk.EventBox()
         nextIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
         nextIcon.props.icon_name = 'go-next'
         self.nextButton.add(nextIcon)
         self.nextButton.connect("button-press-event", self._update_marker, 1)
 
+        #adding the buttons to the character map
         self.set_border_width(10)
         self.pack_start(self.backButton, True, False, 0)
         self.pack_start(self.align, False, False, 0)
         self.pack_end(self.nextButton, True, False, 0)
 
+        #making a separate function for filling the grid so that this can be
+        #used to update without destroying and rebuilding the entire grid every time
+        #the user clicks on the side arrows
         self._fill_grid()
 
     def init_ui_scrollable(self):
@@ -119,8 +121,8 @@ class CharacterMap(Gtk.Box):
                     self.grid.remove(child)
 
                 if glyphName is not None:
-
                     self._draw_box(glyphName, i, j)
+                
                 """
                 else:
 
@@ -152,14 +154,14 @@ class CharacterMap(Gtk.Box):
         alignment = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         box.pack_start(alignment, True, False, 0)
 
-        glyphBox = RenderGlyph(self.font[glyphName], self.GRID_BOX_SIZE,
+        glyphBox = RenderGlyph(x.FONT[glyphName], self.GRID_BOX_SIZE,
                                self.GRID_BOX_SIZE, self.h, self.b)
         alignment.add(glyphBox)
 
     def _glyph_clicked(self, handle, event, glyphName):
 
-        self.pageHandle.activity.glyphName = glyphName
-        self.pageHandle.activity.set_page("EDITOR")
+        x.GLYPH_NAME = glyphName
+        x.A.set_page("EDITOR")
 
     def _update_marker(self, handle, event, increment):
 
@@ -167,9 +169,9 @@ class CharacterMap(Gtk.Box):
 
         if self.marker < 0:
             self.marker = 0
-        elif self.marker > len(self.glyphList) - len(
-                self.glyphList) % self.gridSize:
-            self.marker = len(self.glyphList) - len(
-                self.glyphList) % self.gridSize
+        elif self.marker > len(self.glyphList) - \
+                len(self.glyphList) % self.gridSize:
+            self.marker = len(self.glyphList) - \
+                len(self.glyphList) % self.gridSize
 
         self._fill_grid()

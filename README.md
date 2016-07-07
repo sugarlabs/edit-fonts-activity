@@ -17,6 +17,7 @@ Fonts are fun to make, and Sugar needs a font editor activity so learners can ma
 * [Week 2+3 Work](https://sugarlabs.github.io/edit-fonts-activity/week-3-work)
 * [Week 4 Work](https://sugarlabs.github.io/edit-fonts-activity/week-4-work)
 * [Week 5 Work](https://sugarlabs.github.io/edit-fonts-activity/week-5-work)
+* [Week 6 Work](https://sugarlabs.github.io/edit-fonts-activity/week-6-work)
 
 ## Following is the feature list of the application:
 

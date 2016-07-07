@@ -21,23 +21,39 @@ class BaseFont(Font):
         super(BaseFont, self).__init__(*args, **kwargs)
         
     @classmethod
-    def new_standard_font(cls, data):
+    def new_standard_font(cls, data = None):
         font = cls()
 
-        font.info.familyName = data["familyName"]
-        font.info.ascender = data["ascender"]
-        font.info.descender = data["descender"]
-        font.info.copyright = data["copyright"]
-        font.info.trademark = data["trademark"]
-        font.info.styleName = data["styleName"]
-        
-        font.info.capHeight = data["capHeight"]
-        font.info.unitsPerEm = data["unitsPerEm"]
-        font.info.xHeight = data["xHeight"]
-        font.info.year = data["year"]
-        font.info.versionMajor = data["versionMajor"]
-        font.info.versionMinor = data["versionMinor"]
-        
+        if data is not None:
+            font.info.familyName = data["familyName"]
+            font.info.ascender = data["ascender"]
+            font.info.descender = data["descender"]
+            font.info.copyright = data["copyright"]
+            font.info.trademark = data["trademark"]
+            font.info.styleName = data["styleName"]
+            
+            font.info.capHeight = data["capHeight"]
+            font.info.unitsPerEm = data["unitsPerEm"]
+            font.info.xHeight = data["xHeight"]
+            font.info.year = data["year"]
+            font.info.versionMajor = data["versionMajor"]
+            font.info.versionMinor = data["versionMinor"]
+            
+        else:
+            font.info.familyName = "Untitled Font"
+            font.info.ascender = 800
+            font.info.descender = -200
+            font.info.copyright = ""
+            font.info.trademark = ""
+            font.info.styleName = "Regular"
+            
+            font.info.capHeight = 800
+            font.info.unitsPerEm = 1000
+            font.info.xHeight = 500
+            font.info.year = 2016
+            font.info.versionMajor = 1
+            font.info.versionMinor = 0
+            
         default_glyph_set = settings.get_default_glyph_set()
         for glyph_name in default_glyph_set:
             font.new_standard_glyph(glyph_name)

@@ -29,7 +29,8 @@ gi.require_version('WebKit', '3.0')
 
 from gi.repository import WebKit, GLib, GdkPixbuf
 
-from editfonts.widgets.localIcon import *
+import editfonts.widgets.localIcon as localIcon
+
 
 QUERY = ''
 
@@ -210,7 +211,7 @@ class FontsTreeView(Gtk.TreeView):
         #activate/deactivate button
         cell_activate_button = CellRendererClickablePixbuf()
         loader = GdkPixbuf.PixbufLoader()
-        loader.write(activate.encode())
+        loader.write(localIcon.activate.encode())
         loader.close()  
         cell_activate_button.props.pixbuf = loader.get_pixbuf()
         cell_activate_button.props.mode = Gtk.CellRendererMode.ACTIVATABLE        
@@ -224,7 +225,7 @@ class FontsTreeView(Gtk.TreeView):
         #load font button, this will open font summary page
         cell_edit_font = CellRendererClickablePixbuf()
         loader = GdkPixbuf.PixbufLoader()
-        loader.write(edit.encode())
+        loader.write(localIcon.edit.encode())
         loader.close()  
         cell_edit_font.props.pixbuf = loader.get_pixbuf()
         cell_edit_font.connect('clicked', self.__load_font)
@@ -298,7 +299,7 @@ class FontsTreeView(Gtk.TreeView):
     
         if is_activated is 1:
             loader = GdkPixbuf.PixbufLoader()
-            loader.write(activate.encode())
+            loader.write(localIcon.activate.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
         

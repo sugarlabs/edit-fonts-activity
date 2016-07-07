@@ -27,6 +27,9 @@ from gi.repository import Gdk
 from gi.repository import Gio
 from gi.repository import Pango
 
+import cairo
+import math
+
 from sugar3 import env
 from sugar3.graphics import style
 from sugar3.graphics.icon import CellRendererIcon
@@ -51,9 +54,6 @@ from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
 from sugar3.graphics.palette import Palette
 
-import cairo
-
-import math
 from defcon import Font
 from ufo2ft import compileOTF, compileTTF
 import extractor
@@ -63,13 +63,15 @@ from editfonts.pages.editor_page import EditorPage
 from editfonts.pages.manager_page import ManagerPage
 from editfonts.pages.welcome_page import WelcomePage
 from editfonts.pages.create_font_page import CreateFontPage
-
+from editfonts.objects.basefont import BaseFont
+import x
 
 """ 
 This Dictionary contains all the class types for pages the activity will ever be needing with a 
 key(eg. "MANAGER") that will be used to access the class type for that page 
 
 """
+
 PAGE = {'SUMMARY': SummaryPage, 
         'EDITOR': EditorPage, 
         'MANAGER': ManagerPage,
@@ -88,11 +90,8 @@ class EditFonts(activity.Activity):
         """Set up the EditFonts activity."""
         activity.Activity.__init__(self, handle)
 
-        #self.modify_bg(Gtk.StateType.NORMAL,
-        #                        style.Color('#D6EAF8').get_gdk_color())
-
-        # we do not have collaboration features
-        # make the share option insensitive
+        x.A = self
+        
         self.max_participants = 1
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(levelname)s %(message)s',
@@ -168,7 +167,6 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.bt_open_editor, -1)
         self.bt_open_editor.show()
 
-
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
@@ -184,19 +182,12 @@ class EditFonts(activity.Activity):
         
         """Toolbar ends here"""
         
-        """Loading Font"""
-
-        self.main_path = "test_fonts/sample.ufo"
-        self.main_font = Font(self.main_path)
-
-        self.glyphName = 'A'
-        
         """Starting the Main Canvas Design"""
 
         #a gtk notebook object will manage all the pages for this activity
         self.notebook = Gtk.Notebook()
 
-        self.notebook.set_show_tabs(True)
+        self.notebook.set_show_tabs(False)
 
         self.set_page("WELCOME")
 
@@ -219,7 +210,7 @@ class EditFonts(activity.Activity):
         except StopIteration:
             logging.debug(page_name + " doesn't exist, let me create one")
             #create a new instance and add it to page_list
-            self.page = PAGE[page_name](self)
+            self.page = PAGE[page_name]()
 
             if len(page_list) > MAX_PAGE_NUM - 1:
                 page_list.remove(page_list[0])
@@ -232,7 +223,6 @@ class EditFonts(activity.Activity):
 
             #update the previous instance
             self.page = page_list[l]
-            self.page.update(self)
 
         self.page.set_border_width(10)
         
@@ -273,7 +263,7 @@ class EditFonts(activity.Activity):
                         logging.error("tempfile_name: %s", tempfile_name)
                         newFont = Font()
                         extractor.extractUFO(tempfile_name, newFont)
-                        self.main_font = newFont
+                        x.FONT = newFont
                         self.set_page("SUMMARY")
             finally:
                 chooser.destroy()
@@ -290,7 +280,7 @@ class EditFonts(activity.Activity):
                 extractor.extractUFO(filePath, newFont)
                 #print Gio.content_type_guess(filePath, None)[0]
                 #FIX ME: Check that if main_font has unsaved changes
-                self.main_font = newFont
+                x.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
                 raise e
@@ -336,7 +326,7 @@ class EditFonts(activity.Activity):
                         logging.error("tempfile_name: %s", tempfile_name)
                         newFont = Font()
                         extractor.extractUFO(tempfile_name, newFont)
-                        self.main_font = newFont
+                        x.FONT = newFont
                         self.set_page("SUMMARY")
                         
             finally:
@@ -354,7 +344,7 @@ class EditFonts(activity.Activity):
                 extractor.extractUFO(filePath, newFont)
                 #print Gio.content_type_guess(filePath, None)[0]
                 #FIX ME: Check that if main_font has unsaved changes
-                self.main_font = newFont
+                x.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
                 raise e
@@ -370,7 +360,7 @@ class EditFonts(activity.Activity):
         #file_name = "a.ttf"
         #file_name = self.metadata['title'] + '.ttf'
 
-        ttf = compileTTF(self.main_font)
+        ttf = compileTTF(x.FONT)
         ttf.save(file_name)
 
         jobject = datastore.create()
@@ -401,7 +391,7 @@ class EditFonts(activity.Activity):
 
         #file_name = self.metadata['title'] + '.ttf'
         print "Printing UFO"
-        self.main_font.save(file_name)
+        x.FONT.save(file_name)
         print "Printing UFO Done"
 
         #file_obj.close()
@@ -435,7 +425,7 @@ class EditFonts(activity.Activity):
         file_name = os.path.join(self.get_activity_root(), 'instance',
                                  '%s.otf' % self.metadata['title'])
 
-        otf = compileTTF(self.main_font)
+        otf = compileTTF(x.FONT)
         otf.save(file_name)
 
         jobject = datastore.create()
