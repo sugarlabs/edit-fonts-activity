@@ -387,7 +387,7 @@ class EditFonts(activity.Activity):
         #                         '%s.ufo' % self.metadata['title'])
         #file_obj = open(file_name, 'w')
 
-        file_name = "~/Documents/UFOs/abc1.ufo"
+        file_name = "Sample/Documents/UFOs/abc1.ufo"
 
         #file_name = self.metadata['title'] + '.ttf'
         print "Printing UFO"
