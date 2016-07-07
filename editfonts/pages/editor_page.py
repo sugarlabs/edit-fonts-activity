@@ -39,7 +39,7 @@ class EditorPage(Gtk.Box):
         self.pack_start(self.vbox, True, True, 10)
         self.heading = PageHeading("Let's Edit Font:" + x.FONT.info.familyName, fontSize = '20000')
 
-        self.characterMap = CharacterMap(self, 15, 1, 'BUTTON')
+        self.characterMap = CharacterMap(15, 1, 'BUTTON')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         self.vbox.pack_start(Gtk.HSeparator(),
