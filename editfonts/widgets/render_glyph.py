@@ -3,7 +3,6 @@ import cairo
 import math
 from defcon import Font
 
-
 class RenderGlyph(Gtk.Box):
     def __init__(self,
                  glyph,
@@ -14,9 +13,6 @@ class RenderGlyph(Gtk.Box):
         super(RenderGlyph, self).__init__()
         self.boxHeight = boxHeight
         self.boxWidth = boxWidth
-
-        #bounds = self.glyph.bounds;
-        #self.glyphHeight = bounds[3] - bounds[1]
 
         self.glyph = glyph
 

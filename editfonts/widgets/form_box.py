@@ -7,7 +7,6 @@ from gi.repository import Gdk
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-
 class NumberEntry(Gtk.Entry):
     
     def __init__(self):
@@ -17,7 +16,6 @@ class NumberEntry(Gtk.Entry):
     def on_changed(self, *args):
         text = self.get_text().strip()
         self.set_text(''.join([i for i in text if i in '-0123456789']))
-
 
 class InlineTextInputBox(Gtk.HBox):
     
@@ -39,7 +37,6 @@ class InlineTextInputBox(Gtk.HBox):
         
     def set_text(self, data):
         self.entry.set_text(data)
-
 
 class TextInputBox(Gtk.VBox):
     

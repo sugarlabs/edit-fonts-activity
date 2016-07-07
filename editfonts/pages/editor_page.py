@@ -3,34 +3,23 @@ import cairo
 import math
 from defcon import Font
 
-from editfonts.widgets.custom_box import PageHeading, FontInfoBox
-from editfonts.widgets.character_map import CharacterMap
-from editfonts.widgets.editor_box import EditorBox
-
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
+from editfonts.widgets.custom_box import PageHeading, FontInfoBox
+from editfonts.widgets.character_map import CharacterMap
+from editfonts.widgets.editor_box import EditorBox
+import x
 
 class EditorPage(Gtk.Box):
     """
     This Class Creates the "Let's Edit Font:<familyName>" Page that loads up on clicking any Glyph in the Character Map or when the edit font button is clicked on the Font Summary page
     """
 
-    def __init__(self, activity):
+    def __init__(self):
         super(EditorPage, self).__init__()    
-
-        self.id = "EDITOR"
-    
-        self.activity= activity
-        self.font = activity.main_font
-        self.glyphName = activity.glyphName
         self._init_ui()
 
-    def update(self, activity):
-        self.activity = activity
-        self.font = activity.main_font
-        self.glyphName = activity.glyphName
-        
     def _init_ui(self):
         
         self.set_property("orientation", Gtk.Orientation.HORIZONTAL)
@@ -48,7 +37,7 @@ class EditorPage(Gtk.Box):
         #create Central main area
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
-        self.heading = PageHeading("Let's Edit Font:" + self.font.info.familyName, fontSize = '20000')
+        self.heading = PageHeading("Let's Edit Font:" + x.FONT.info.familyName, fontSize = '20000')
 
         self.characterMap = CharacterMap(self, 15, 1, 'BUTTON')
 
@@ -66,7 +55,7 @@ class EditorPage(Gtk.Box):
                               xscale=0,
                               yscale=0)
 
-        self.editor_area = EditorBox(self.font, self.glyphName)
+        self.editor_area = EditorBox()
         self.editor_alignment.add(self.editor_area)
         self.vbox.pack_start(self.editor_alignment, True, True, 30)
         
@@ -202,9 +191,9 @@ class EditorPage(Gtk.Box):
 
     def _clickDelete(self, handle):
         pass
+
     def _clickEdit(self, handle):
-        #create a new page
-        self.activity.set_page("SUMMARY")
+        x.A.set_page("SUMMARY")
 
     def _clickInstall(self, handle):
         pass

@@ -6,31 +6,14 @@ from gettext import gettext as _
 
 import gi
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import GObject
 from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import Pango
 
 from editfonts.widgets.custom_box import PageHeading
 from editfonts.widgets.custom_box import ImageButton
 from editfonts.widgets.form_box import InlineTextInputBox
 from editfonts.widgets.form_box import InlineNumberInputBox
 from editfonts.objects.basefont import BaseFont
-
-from sugar3.activity.widgets import StopButton
-from sugar3.activity.widgets import TitleEntry
-from sugar3.activity.widgets import ShareButton
-from sugar3.activity.widgets import DescriptionItem
-from sugar3.graphics.objectchooser import ObjectChooser
-from sugar3.graphics.objectchooser import FILTER_TYPE_MIME_BY_ACTIVITY
-from sugar3.datastore import datastore
-from sugar3 import profile
-from sugar3.graphics import style
-from sugar3.graphics.alert import Alert
-from sugar3.graphics.icon import Icon
-from sugar3.graphics.palette import Palette
+import x
 
 class CreateFontPage(Gtk.VBox):
     """
@@ -38,18 +21,9 @@ class CreateFontPage(Gtk.VBox):
     
     """
 
-    def __init__(self, activity):
-
+    def __init__(self):
         super(CreateFontPage, self).__init__()
-        self.activity = activity
-
         self._init_ui()
-
-    def update(self, activity):
-        #FIX ME: this shouldn't destroy anything
-        #just update all the information in this class
-
-        self.activity = activity
 
     def _init_ui(self):
 
@@ -200,15 +174,8 @@ class CreateFontPage(Gtk.VBox):
                                         "1000", "")
         form_box.pack_start(self.unit_per_em, False, False, 10)
 
-
-        image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
-                              icon_name='dialog-ok-active',
-                              stroke_color=style.COLOR_BLACK.get_svg(),
-                              fill_color=style.Color('#32B232').get_svg())
-
-        submit_button = Gtk.Button()
-        submit_button.add(image_icon)
-        submit_button.props.relief = Gtk.ReliefStyle.NONE
+        submit_button = ImageButton(icon_name='dialog-ok-active',
+                                    fill_color='#32B232')
         submit_button.connect("clicked",self._submit_form)
         
         form_box.pack_start(submit_button, False, False, 10)
@@ -237,7 +204,7 @@ class CreateFontPage(Gtk.VBox):
         data["versionMajor"] = int(version[0])
         data["versionMinor"] = int(version[1])
          
-        self.activity.main_font = BaseFont.new_standard_font(data = data)
+        x.FONT = BaseFont.new_standard_font(data = data)
         
         ##FIXME: Check if font was created or not 
-        self.activity.set_page("SUMMARY")
+        x.A.set_page("SUMMARY")
