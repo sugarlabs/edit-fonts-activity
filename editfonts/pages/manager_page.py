@@ -31,7 +31,6 @@ from gi.repository import WebKit, GLib, GdkPixbuf
 
 import editfonts.widgets.localIcon as localIcon
 
-
 QUERY = ''
 
 #favorite fonts config file
@@ -62,23 +61,13 @@ class ManagerPage(Gtk.Box):
     
     """
 
-    def __init__(self, activity):
-        
+    def __init__(self):        
         super(ManagerPage, self).__init__()    
-        self.activity = activity
-
         self._init_ui()
 
-    def update(self, activity):
-        #FIX ME: this shouldn't destroy anything
-        #just update all the information in the modal 
-
-        self.activity = activity
-        
     def _init_ui(self):
         
         self.init_fonts()
-
         self.font_list = FontsList()
         self.pack_start(self.font_list, True, True, 0)
         self.show_all()
@@ -161,7 +150,7 @@ class FontsTreeView(Gtk.TreeView):
         #stars column
         cell_favorite = CellRendererClickablePixbuf()
         loader = GdkPixbuf.PixbufLoader()
-        loader.write(svg_active.encode())
+        loader.write(localIcon.svg_active.encode())
         loader.close()  
         cell_favorite.props.pixbuf = loader.get_pixbuf()
         cell_favorite.props.mode = Gtk.CellRendererMode.ACTIVATABLE        
@@ -279,12 +268,12 @@ class FontsTreeView(Gtk.TreeView):
         favorite = font_name in fav_fonts
         if favorite:
             loader = GdkPixbuf.PixbufLoader()
-            loader.write(svg_active.encode())
+            loader.write(localIcon.svg_active.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
         else:
             loader = GdkPixbuf.PixbufLoader()
-            loader.write(svg_inactive.encode())
+            loader.write(localIcon.svg_inactive.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
 
@@ -305,13 +294,13 @@ class FontsTreeView(Gtk.TreeView):
         
         elif is_activated is 0:
             loader = GdkPixbuf.PixbufLoader()
-            loader.write(deactivate.encode())
+            loader.write(localIcon.deactivate.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
         
         else:
             loader = GdkPixbuf.PixbufLoader()
-            loader.write(lock.encode())
+            loader.write(localIcon.lock.encode())
             loader.close()  
             cell.props.pixbuf = loader.get_pixbuf()
     

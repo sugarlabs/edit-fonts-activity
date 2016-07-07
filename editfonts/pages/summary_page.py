@@ -44,7 +44,7 @@ class SummaryPage(Gtk.Box):
         self.infoBox = FontInfoBox(x.FONT)
         self.infoBoxExpander.add(self.infoBox)
 
-        self.characterMap = CharacterMap(self, 15, 5, 'SCROLL')
+        self.characterMap = CharacterMap(15, 5, 'SCROLL')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         

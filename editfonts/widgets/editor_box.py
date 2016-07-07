@@ -14,7 +14,7 @@ class EditorBox(Gtk.Box):
         self.boxHeight = 400
 
         #The advance width of the glyph
-        self.w = x.GLYPH_NAME.width
+        self.w = x.FONT[x.GLYPH_NAME].width
 
         #The difference in the ascender and the descender values
         self.h = x.FONT.info.ascender - x.FONT.info.descender
@@ -46,7 +46,7 @@ class EditorBox(Gtk.Box):
 
         cr.set_source_rgb(0, 0, 0)
         
-        for contour in x.GLYPH_NAME:
+        for contour in x.FONT[x.GLYPH_NAME]:
 
             #move to initial point
             point = contour[0]
