@@ -16,33 +16,34 @@
 """Edit Fonts Activity: Kids make fonts!"""
 
 import os
-import shutil
+# import shutil
 import logging
 import time
 from gettext import gettext as _
 
-gi.require_version('GConf', '2.0')
-from gi.repository import GConf
+import gi
+# gi.require_version('GConf', '2.0')
+# from gi.repository import GConf
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import Pango
+# from gi.repository import Gdk
+# from gi.repository import Gio
+# from gi.repository import Pango
 
-import cairo
-import math
+# import cairo
+# import math
 
-from sugar3 import env
-from sugar3.graphics import style
-from sugar3.graphics.icon import CellRendererIcon
-from sugar3.graphics.xocolor import XoColor
+# from sugar3 import env
+# from sugar3.graphics import style
+# from sugar3.graphics.icon import CellRendererIcon
+# from sugar3.graphics.xocolor import XoColor
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityButton
-from sugar3.graphics.toggletoolbutton import ToggleToolButton
-
+# from sugar3.graphics.toggletoolbutton import ToggleToolButton
+from sugar3 import mime
 from sugar3.activity.widgets import StopButton
 from sugar3.activity.widgets import TitleEntry
 from sugar3.activity.widgets import ShareButton
@@ -51,13 +52,13 @@ from sugar3.graphics.objectchooser import ObjectChooser
 from sugar3.graphics.objectchooser import FILTER_TYPE_MIME_BY_ACTIVITY
 from sugar3.datastore import datastore
 from sugar3 import profile
-from sugar3.graphics import style
 from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
-from sugar3.graphics.palette import Palette
+# from sugar3.graphics.palette import Palette
 
 from defcon import Font
-from ufo2ft import compileOTF, compileTTF
+# from ufo2ft import compileOTF
+from ufo2ft import compileTTF
 import extractor
 
 from editfonts.pages.summary_page import SummaryPage
@@ -65,25 +66,26 @@ from editfonts.pages.editor_page import EditorPage
 from editfonts.pages.manager_page import ManagerPage
 from editfonts.pages.welcome_page import WelcomePage
 from editfonts.pages.create_font_page import CreateFontPage
-from editfonts.objects.basefont import BaseFont
+# from editfonts.objects.basefont import BaseFont
 import x
 
-""" 
-This Dictionary contains all the class types for pages the activity will ever be needing with a 
-key(eg. "MANAGER") that will be used to access the class type for that page 
-
+"""
+This Dictionary contains all the class types for pages the activity will
+ever be needing with a key(eg. "MANAGER") that will be used to access
+the class type for that page
 """
 
-PAGE = {'SUMMARY': SummaryPage, 
-        'EDITOR': EditorPage, 
+PAGE = {'SUMMARY': SummaryPage,
+        'EDITOR': EditorPage,
         'MANAGER': ManagerPage,
         'WELCOME': WelcomePage,
         'CREATEFONT': CreateFontPage}
 
 page_list = []
 
-#Max number of pages stored in memory
+# Max number of pages stored in memory
 MAX_PAGE_NUM = 3
+
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
@@ -93,7 +95,7 @@ class EditFonts(activity.Activity):
         activity.Activity.__init__(self, handle)
 
         x.A = self
-        
+
         self.max_participants = 1
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(levelname)s %(message)s',
@@ -181,12 +183,12 @@ class EditFonts(activity.Activity):
 
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
-        
+
         """Toolbar ends here"""
-        
+
         """Starting the Main Canvas Design"""
 
-        #a gtk notebook object will manage all the pages for this activity
+        # a gtk notebook object will manage all the pages for this activity
         self.notebook = Gtk.Notebook()
 
         self.notebook.set_show_tabs(False)
@@ -204,14 +206,14 @@ class EditFonts(activity.Activity):
 
         global page_list
 
-        #check if page already exists
+        # check if page already exists
         try:
             l = next(index for (index, page) in enumerate(page_list)
                      if isinstance(page, PAGE[page_name]))
 
         except StopIteration:
             logging.debug(page_name + " doesn't exist, let me create one")
-            #create a new instance and add it to page_list
+            # create a new instance and add it to page_list
             self.page = PAGE[page_name]()
 
             if len(page_list) > MAX_PAGE_NUM - 1:
@@ -223,23 +225,23 @@ class EditFonts(activity.Activity):
         else:
             print page_name + " already exists, just updating it"
 
-            #update the previous instance
+            # update the previous instance
             self.page = page_list[l]
 
         self.page.set_border_width(10)
-        
+
         page_num = self.notebook.page_num(self.page)
 
         if page_num == -1:
             logging.error("ERROR: Unable to Create the Page <%s>" % page_name)
-                    
+
         return page_num
 
     def _load_binary(self, filePath=None):
 
         if filePath is None:
 
-            #FIX ME: Add compatibility for earlier versions
+            # FIX ME: Add compatibility for earlier versions
             try:
                 chooser = ObjectChooser(
                     parent=self,
@@ -274,14 +276,14 @@ class EditFonts(activity.Activity):
         else:
 
             filePath = 'test_fonts/Noto.ttf'
-            #path = "test_fonts/Noto.ttf"
-            #file_name = os.path.join(self.get_activity_root(),path)
+            # path = "test_fonts/Noto.ttf"
+            # file_name = os.path.join(self.get_activity_root(),path)
             newFont = Font()
 
             try:
                 extractor.extractUFO(filePath, newFont)
-                #print Gio.content_type_guess(filePath, None)[0]
-                #FIX ME: Check that if main_font has unsaved changes
+                # print Gio.content_type_guess(filePath, None)[0]
+                # FIX ME: Check that if main_font has unsaved changes
                 x.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
@@ -290,15 +292,15 @@ class EditFonts(activity.Activity):
     def load_ufo(self, filePath=None):
         """
         If the filePath is None this function opens the Object Chooser Dialog
-        for choosing a .plist type file 
-        If the file is named metainfo.plist and in contained within a *.ufo folder
-        than that ufo will be loaded using defcon
+        for choosing a .plist type file
+        If the file is named metainfo.plist and in contained within a *.ufo
+        folder than that ufo will be loaded using defcon
         and the current page will be set to Font Summary Page
         if the filepath is specified than the ufo from that filepath is opened
         """
         if filePath is None:
 
-            #FIX ME: Add compatibility for earlier versions
+            # FIX ME: Add compatibility for earlier versions
             try:
                 chooser = ObjectChooser(
                     parent=self,
@@ -315,12 +317,12 @@ class EditFonts(activity.Activity):
                                   chooser.get_selected_object())
                     jobject = chooser.get_selected_object()
                     print jobject.file_path
-                    
+
                     if jobject and jobject.file_path:
-                        
+
                         logging.error("Selected File: %s",
                                       jobject.file_path)
-                        
+
                         tempfile_name = \
                             os.path.join(self.get_activity_root(),
                                          'instance', 'tmp%i' % time.time())
@@ -330,7 +332,7 @@ class EditFonts(activity.Activity):
                         extractor.extractUFO(tempfile_name, newFont)
                         x.FONT = newFont
                         self.set_page("SUMMARY")
-                        
+
             finally:
                 chooser.destroy()
                 del chooser
@@ -338,29 +340,28 @@ class EditFonts(activity.Activity):
         else:
 
             filePath = 'test_fonts/Noto.ttf'
-            #path = "test_fonts/Noto.ttf"
-            #file_name = os.path.join(self.get_activity_root(),path)
+            # path = "test_fonts/Noto.ttf"
+            # file_name = os.path.join(self.get_activity_root(),path)
             newFont = Font()
 
             try:
                 extractor.extractUFO(filePath, newFont)
-                #print Gio.content_type_guess(filePath, None)[0]
-                #FIX ME: Check that if main_font has unsaved changes
+                # print Gio.content_type_guess(filePath, None)[0]
+                # FIX ME: Check that if main_font has unsaved changes
                 x.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
                 raise e
 
-
     def _write_ttf(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
+        # # NOT WORKING# #
+        # # Error: defcon.errors.DefconError: the kerning data is not valid# #
 
         file_name = os.path.join(self.get_activity_root(), 'data',
                                  '%s.ttf' % self.metadata['title'])
 
-        #file_name = "a.ttf"
-        #file_name = self.metadata['title'] + '.ttf'
+        # file_name = "a.ttf"
+        # file_name = self.metadata['title'] + '.ttf'
 
         ttf = compileTTF(x.FONT)
         ttf.save(file_name)
@@ -373,7 +374,7 @@ class EditFonts(activity.Activity):
         jobject.file_path = file_name
 
         # jobject.metadata['preview'] = \
-        #    self._get_preview_image(file_name)
+        #   self._get_preview_image(file_name)
 
         datastore.write(jobject, transfer_ownership=True)
         self._object_id = jobject.object_id
@@ -382,21 +383,21 @@ class EditFonts(activity.Activity):
             _('Success'), _('A TTF Font file was created in the Journal'))
 
     def _write_ufo(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
+        # # NOT WORKING# #
+        # # Error: defcon.errors.DefconError: the kerning data is not valid# #
 
-        #file_name = os.path.join(self.get_activity_root(), 'data',
-        #                         '%s.ufo' % self.metadata['title'])
-        #file_obj = open(file_name, 'w')
+        # file_name = os.path.join(self.get_activity_root(), 'data',
+        #                        '%s.ufo' % self.metadata['title'])
+        # file_obj = open(file_name, 'w')
 
         file_name = "Sample/Documents/UFOs/abc1.ufo"
 
-        #file_name = self.metadata['title'] + '.ttf'
+        # file_name = self.metadata['title'] + '.ttf'
         print "Printing UFO"
         x.FONT.save(file_name)
         print "Printing UFO Done"
 
-        #file_obj.close()
+        # file_obj.close()
 
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()
@@ -407,7 +408,7 @@ class EditFonts(activity.Activity):
         jobject.file_path = os.path.join(file_name, "metainfo.plist")
 
         # jobject.metadata['preview'] = \
-        #    self._get_preview_image(file_name)
+        #   self._get_preview_image(file_name)
         print "b"
 
         datastore.write(jobject, transfer_ownership=True)
@@ -421,8 +422,8 @@ class EditFonts(activity.Activity):
         print "e"
 
     def _write_otf(self, button):
-        ##NOT WORKING##
-        ##Error: defcon.errors.DefconError: the kerning data is not valid##
+        # # NOT WORKING# #
+        # # Error: defcon.errors.DefconError: the kerning data is not valid# #
 
         file_name = os.path.join(self.get_activity_root(), 'instance',
                                  '%s.otf' % self.metadata['title'])
