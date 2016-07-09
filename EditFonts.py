@@ -363,7 +363,7 @@ class EditFonts(activity.Activity):
         # file_name = "a.ttf"
         # file_name = self.metadata['title'] + '.ttf'
 
-        ttf = compileTTF(x.FONT)
+        ttf = compileTTF(globals.FONT)
         ttf.save(file_name)
 
         jobject = datastore.create()
@@ -428,7 +428,7 @@ class EditFonts(activity.Activity):
         file_name = os.path.join(self.get_activity_root(), 'instance',
                                  '%s.otf' % self.metadata['title'])
 
-        otf = compileTTF(x.FONT)
+        otf = compileTTF(globals.FONT)
         otf.save(file_name)
 
         jobject = datastore.create()
