@@ -11,7 +11,7 @@ from editfonts.widgets.custom_box import PageHeading
 # from editfonts.widgets.custom_box import FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
-import x
+import editfonts.globals as globals
 
 
 class EditorPage(Gtk.Box):
@@ -204,8 +204,7 @@ class EditorPage(Gtk.Box):
         pass
 
     def _clickEdit(self, handle):
-        #create a new page
-        self.activity.set_page("SUMMARY")
+        globals.A.set_page("SUMMARY")
 
     def _clickInstall(self, handle):
         pass

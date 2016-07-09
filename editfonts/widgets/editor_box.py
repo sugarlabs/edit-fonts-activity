@@ -2,7 +2,7 @@ from gi.repository import Gtk  # Gdk
 import cairo
 # import math
 # from defcon import Font
-import x
+import editfonts.globals as globals
 
 # Making a glyph editor box
 
@@ -18,7 +18,7 @@ class EditorBox(Gtk.Box):
         self.w = globals.FONT[globals.GLYPH_NAME].width
 
         # The difference in the ascender and the descender values
-        self.h = x.FONT.info.ascender - x.FONT.info.descender
+        self.h = globals.FONT.info.ascender - globals.FONT.info.descender
 
         # the distance between the baseline and the descender
         self.b = -globals.FONT.info.descender

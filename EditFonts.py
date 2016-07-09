@@ -71,7 +71,7 @@ from editfonts.pages.manager_page import ManagerPage
 from editfonts.pages.welcome_page import WelcomePage
 from editfonts.pages.create_font_page import CreateFontPage
 # from editfonts.objects.basefont import BaseFont
-import x
+import editfonts.globals as globals
 
 """
 This Dictionary contains all the class types for pages the activity will
@@ -281,7 +281,7 @@ class EditFonts(activity.Activity):
                         logging.error("tempfile_name: %s", tempfile_name)
                         newFont = Font()
                         extractor.extractUFO(tempfile_name, newFont)
-                        x.FONT = newFont
+                        globals.FONT = newFont
                         self.set_page("SUMMARY")
             finally:
                 chooser.destroy()
@@ -298,7 +298,7 @@ class EditFonts(activity.Activity):
                 extractor.extractUFO(filePath, newFont)
                 # print Gio.content_type_guess(filePath, None)[0]
                 # FIX ME: Check that if main_font has unsaved changes
-                x.FONT = newFont
+                globals.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
                 raise e
@@ -344,7 +344,7 @@ class EditFonts(activity.Activity):
                         logging.error("tempfile_name: %s", tempfile_name)
                         newFont = Font()
                         extractor.extractUFO(tempfile_name, newFont)
-                        self.main_font = newFont
+                        globals.FONT = newFont
                         self.set_page("SUMMARY")
 
             finally:
@@ -362,7 +362,7 @@ class EditFonts(activity.Activity):
                 extractor.extractUFO(filePath, newFont)
                 # print Gio.content_type_guess(filePath, None)[0]
                 # FIX ME: Check that if main_font has unsaved changes
-                x.FONT = newFont
+                globals.FONT = newFont
                 self.set_page("SUMMARY")
             except Exception, e:
                 raise e
@@ -409,7 +409,7 @@ class EditFonts(activity.Activity):
 
         # file_name = self.metadata['title'] + '.ttf'
         print "Printing UFO"
-        self.main_font.save(file_name)
+        globals.FONT.save(file_name)
         print "Printing UFO Done"
 
         # file_obj.close()

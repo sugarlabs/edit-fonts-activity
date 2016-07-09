@@ -2,7 +2,7 @@ from gi.repository import Gtk, Gdk
 # from gi.repository import GLib, GdkPixbuf, Gio, GObject
 import math
 import cairo
-import x
+import editfonts.globals as globals
 
 
 class DragPoint(Gtk.EventBox):
