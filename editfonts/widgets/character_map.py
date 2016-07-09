@@ -1,30 +1,31 @@
 from gi.repository import Gtk, Gdk
 import cairo
 import pango
-import math
+# import math
 
-from defcon import Font
+# from defcon import Font
 from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 import x
 
+
 class CharacterMap(Gtk.Box):
     def __init__(self, w=10, h=80, ui_type='BUTTON'):
 
         super(CharacterMap, self).__init__()
 
-        #Grid Parameters
-        #default values
-        self.GRID_WIDTH = w  #number of columns
-        self.GRID_HEIGHT = h  #number of rows
+        # Grid Parameters
+        # default values
+        self.GRID_WIDTH = w  # number of columns
+        self.GRID_HEIGHT = h  # number of rows
         self.GRID_BOX_SIZE = 60
         self.GRID_ROW_SPACING = 5
         self.GRID_COLUMN_SPACING = self.GRID_ROW_SPACING
 
-        self.h = x.FONT.info.ascender - x.FONT.info.descender
-        self.b = -x.FONT.info.descender
+        self.h = globals.FONT.info.ascender - globals.FONT.info.descender
+        self.b = -globals.FONT.info.descender
 
         self.glyphList = x.FONT.keys()
         self.marker = 0
@@ -52,29 +53,29 @@ class CharacterMap(Gtk.Box):
         self.grid.set_row_spacing(self.GRID_ROW_SPACING)
         self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
 
-        #creating a back button
+        # creating a back button
         self.backButton = Gtk.EventBox()
         backIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
         backIcon.props.icon_name = 'go-previous'
         self.backButton.add(backIcon)
         self.backButton.connect("button-press-event", self._update_marker, -1)
 
-        #creating a next button
+        # creating a next button
         self.nextButton = Gtk.EventBox()
         nextIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
         nextIcon.props.icon_name = 'go-next'
         self.nextButton.add(nextIcon)
         self.nextButton.connect("button-press-event", self._update_marker, 1)
 
-        #adding the buttons to the character map
+        # adding the buttons to the character map
         self.set_border_width(10)
         self.pack_start(self.backButton, True, False, 0)
         self.pack_start(self.align, False, False, 0)
         self.pack_end(self.nextButton, True, False, 0)
 
-        #making a separate function for filling the grid so that this can be
-        #used to update without destroying and rebuilding the entire grid every time
-        #the user clicks on the side arrows
+        # making a separate function for filling the grid so that this can be
+        # used to update without destroying and rebuilding the entire grid
+        # every time the user clicks on the side arrows
         self._fill_grid()
 
     def init_ui_scrollable(self):
@@ -123,14 +124,14 @@ class CharacterMap(Gtk.Box):
 
                 if glyphName is not None:
                     self._draw_box(glyphName, i, j)
-                
+
                 """
                 else:
 
-                    #check whether there already is a child at this position
-                    child = self.grid.get_child_at(i,j)
+                    # check whether there already is a child at this position
+                    child = self.grid.get_child_at(i, j)
                     if child is not NULL:
-                        grid.remove(child)  
+                        grid.remove(child)
 
                 """
 
@@ -142,7 +143,7 @@ class CharacterMap(Gtk.Box):
         self.grid.attach(eventBox, i, j, 1, 1)
         eventBox.connect("button-press-event", self._glyph_clicked, glyphName)
         eventBox.modify_bg(Gtk.StateType.NORMAL,
-                           style.Color('#5DADE2').get_gdk_color())
+                           style.Color('# 5DADE2').get_gdk_color())
 
         box = Gtk.VBox()
         eventBox.add(box)
@@ -155,7 +156,7 @@ class CharacterMap(Gtk.Box):
         alignment = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         box.pack_start(alignment, True, False, 0)
 
-        glyphBox = RenderGlyph(x.FONT[glyphName], self.GRID_BOX_SIZE,
+        glyphBox = RenderGlyph(globals.FONT[glyphName], self.GRID_BOX_SIZE,
                                self.GRID_BOX_SIZE, self.h, self.b)
         alignment.add(glyphBox)
 
