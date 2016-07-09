@@ -21,7 +21,9 @@ import logging
 import time
 from gettext import gettext as _
 
+gi.require_version('GConf', '2.0')
 from gi.repository import GConf
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Gio
