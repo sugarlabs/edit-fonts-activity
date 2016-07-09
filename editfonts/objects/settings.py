@@ -30,5 +30,6 @@ _latinDefaultGlyphNames = \
      "dotlessi", "gravecomb", "acutecomb", "uni0302", "uni0308", "uni030A",
      "tildecomb", "uni0327", "quoteleft", "quoteright", "minus"]
 
+
 def get_default_glyph_set():
     return _latinDefaultGlyphNames
