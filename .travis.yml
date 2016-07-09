@@ -22,15 +22,17 @@ install:
   - "git clone -b master https://github.com/sugarlabs/edit-fonts-activity.git EditFonts.activity"
 
 script: 
-  - "flake8 EditFonts.activity"
-  - "cd .."
-  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
+  - "cd EditFonts.activity"
+  - "flake8 --exclude=defcon,extractor,fontTools,fontmake,robofab,ufo2ft,ufoLib,snippets"
+# TODO When building xo packages works, test that doing so works
+#  - "cd .."
+#  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
-#after_success:
+# TODO define this 
+# after_success:
 #  - "cd ~; ls -alFR"
   
-
-# TODO Set this up to auto-deloy tagged commits to the github releases page
+# TODO Set this up to auto-deploy tagged commits to the github releases page
 # deploy:
 #   provider: releases
 #   api_key: "GITHUB OAUTH TOKEN"
