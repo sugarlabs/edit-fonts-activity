@@ -21,6 +21,8 @@ FONT = BaseFont(DEFAULT_FONT_PATH)
 try:
 	GLYPH_NAME = FONT.keys()[0] 
 except Exception, e:
-	GLYPH_NAME = 'A' 
+	GLYPH_NAME = 'A'
 
 ACTIVITY_HANDLE = None
+EDITOR_BOX_WIDTH = 500
+EDITOR_BOX_HEIGHT = 500
