@@ -1,27 +1,29 @@
-from gi.repository import Gtk, Gdk
-import cairo
-import pango
-import math
+# from gi.repository import Gtk, Gdk
+# import cairo
+# import pango
+# import math
 
-from sugar3.graphics.icon import Icon
-from sugar3.graphics import style
+# from sugar3.graphics.icon import Icon
+# from sugar3.graphics import style
 
-from defcon import Font, Contour, Glyph, Layer, Anchor, Component, Point, Image
-from defcon.objects.base import BaseObject
-from fontTools.misc.transform import Identity
+from defcon import Font, Glyph
+# Contour, Layer, Anchor, Component, Point, Image
+# from defcon.objects.base import BaseObject
+# from fontTools.misc.transform import Identity
 from editfonts.objects import settings
 
-import extractor
+# import extractor
 import fontTools
+
 
 class BaseFont(Font):
 
     def __init__(self, *args, **kwargs):
         kwargs["glyphClass"] = BaseGlyph
         super(BaseFont, self).__init__(*args, **kwargs)
-        
+
     @classmethod
-    def new_standard_font(cls, data = None):
+    def new_standard_font(cls, data=None):
         font = cls()
 
         if data is not None:
@@ -31,14 +33,14 @@ class BaseFont(Font):
             font.info.copyright = data["copyright"]
             font.info.trademark = data["trademark"]
             font.info.styleName = data["styleName"]
-            
+
             font.info.capHeight = data["capHeight"]
             font.info.unitsPerEm = data["unitsPerEm"]
             font.info.xHeight = data["xHeight"]
             font.info.year = data["year"]
             font.info.versionMajor = data["versionMajor"]
             font.info.versionMinor = data["versionMinor"]
-            
+
         else:
             font.info.familyName = "Untitled Font"
             font.info.ascender = 800
@@ -46,43 +48,44 @@ class BaseFont(Font):
             font.info.copyright = ""
             font.info.trademark = ""
             font.info.styleName = "Regular"
-            
+
             font.info.capHeight = 800
             font.info.unitsPerEm = 1000
             font.info.xHeight = 500
             font.info.year = 2016
             font.info.versionMajor = 1
             font.info.versionMinor = 0
-            
+
         default_glyph_set = settings.get_default_glyph_set()
         for glyph_name in default_glyph_set:
             font.new_standard_glyph(glyph_name)
         font.dirty = False
 
-        #alert: new font created
+        # alert: new font created
         return font
 
     def new_standard_glyph(self, name, override=False, addUnicode=True,
-                         asTemplate=False, markColor=None, width=500):
+                           asTemplate=False, markColor=None, width=500):
         if not override:
             if name in self:
                 return None
         glyph = self.newGlyph(name)
-     
+
         glyph.width = width
-     
+
         if addUnicode:
             glyph.auto_unicodes()
         glyph.markColor = markColor
         return glyph
-    
+
+
 class BaseGlyph(Glyph):
 
     def __init__(self, *args, **kwargs):
         super(BaseGlyph, self).__init__(*args, **kwargs)
-        
+
     def auto_unicodes(self):
-        
+
         GL2UV = fontTools.agl.AGL2UV
         hexes = "ABCDEF0123456789"
         name = self.name
