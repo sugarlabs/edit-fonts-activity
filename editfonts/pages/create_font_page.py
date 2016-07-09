@@ -13,7 +13,7 @@ from editfonts.widgets.custom_box import ImageButton
 from editfonts.widgets.form_box import InlineTextInputBox
 from editfonts.widgets.form_box import InlineNumberInputBox
 from editfonts.objects.basefont import BaseFont
-import x
+import editfonts.globals as globals
 
 
 class CreateFontPage(Gtk.VBox):
@@ -177,7 +177,7 @@ class CreateFontPage(Gtk.VBox):
         form_box.pack_start(self.descender, False, False, 10)
 
         # Units per em
-        # Default Value: 1000
+        # Def globals.ault Value: 1000
         # Type: Number
         self.unit_per_em = InlineNumberInputBox("Units per em",
                                                 "",
@@ -214,7 +214,7 @@ class CreateFontPage(Gtk.VBox):
         data["versionMajor"] = int(version[0])
         data["versionMinor"] = int(version[1])
 
-        x.FONT = BaseFont.new_standard_font(data=data)
+        globals.FONT = BaseFont.new_standard_font(data=data)
 
         # # FIXME: Check if font was created or not
-        x.A.set_page("SUMMARY")
+        globals.A.set_page("SUMMARY")

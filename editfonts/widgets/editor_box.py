@@ -1,8 +1,8 @@
-from gi.repository import Gtk, # Gdk
+ globals.from gi.repository import Gtk, # Gdk
 import cairo
 # import math
 # from defcon import Font
-import x
+import editfonts.globals as globals
 
 # Making a glyph editor box
 
@@ -15,10 +15,10 @@ class EditorBox(Gtk.Box):
         self.boxHeight = 400
 
         # The advance width of the glyph
-        self.w = x.FONT[x.GLYPH_NAME].width
+        self.w = globals.FONT[x.GLYPH_NAME].width
 
         # The difference in the ascender and the descender values
-        self.h = x.FONT.info.ascender - x.FONT.info.descender
+        self.h = globals.FONT.info.ascender - globals.FONT.info.descender
 
         # the distance between the baseline and the descender
         self.b = -x.FONT.info.descender
@@ -47,7 +47,7 @@ class EditorBox(Gtk.Box):
 
         cr.set_source_rgb(0, 0, 0)
 
-        for contour in x.FONT[x.GLYPH_NAME]:
+        for contour in globals.FONT[x.GLYPH_NAME]:
 
             # move to initial point
             point = contour[0]

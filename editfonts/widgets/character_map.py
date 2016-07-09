@@ -1,4 +1,4 @@
-from gi.repository import Gtk, Gdk
+ globals.from gi.repository import Gtk, Gdk
 import cairo
 import pango
 import math
@@ -8,7 +8,7 @@ from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-import x
+import editfonts.globals as globals
 
 class CharacterMap(Gtk.Box):
     def __init__(self, w=10, h=80, ui_type='BUTTON'):
@@ -23,10 +23,10 @@ class CharacterMap(Gtk.Box):
         self.GRID_ROW_SPACING = 5
         self.GRID_COLUMN_SPACING = self.GRID_ROW_SPACING
 
-        self.h = x.FONT.info.ascender - x.FONT.info.descender
+        self.h = globals.FONT.info.ascender - globals.FONT.info.descender
         self.b = -x.FONT.info.descender
 
-        self.glyphList = x.FONT.keys()
+        self.glyphList = globals.FONT.keys()
         self.marker = 0
         self.gridSize = self.GRID_HEIGHT * self.GRID_WIDTH
 
@@ -161,8 +161,8 @@ class CharacterMap(Gtk.Box):
 
     def _glyph_clicked(self, handle, event, glyphName):
 
-        x.GLYPH_NAME = glyphName
-        x.A.set_page("EDITOR")
+        globals.GLYPH_NAME = glyphName
+        globals.A.set_page("EDITOR")
 
     def _update_marker(self, handle, event, increment):
 

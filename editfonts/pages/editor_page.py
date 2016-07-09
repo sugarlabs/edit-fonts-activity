@@ -9,7 +9,7 @@ from sugar3.graphics import style
 from editfonts.widgets.custom_box import PageHeading, FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
-import x
+import editfonts.globals as globals
 
 class EditorPage(Gtk.Box):
     """
@@ -37,7 +37,7 @@ class EditorPage(Gtk.Box):
         #create Central main area
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
-        self.heading = PageHeading("Let's Edit Font:" + x.FONT.info.familyName, fontSize = '20000')
+        self.heading = PageHeading("Let's Edit Font:" + globals.FONT.info.familyName, fontSize = '20000')
 
         self.characterMap = CharacterMap(15, 1, 'BUTTON')
 
@@ -193,7 +193,7 @@ class EditorPage(Gtk.Box):
         pass
 
     def _clickEdit(self, handle):
-        x.A.set_page("SUMMARY")
+        globals.A.set_page("SUMMARY")
 
     def _clickInstall(self, handle):
         pass

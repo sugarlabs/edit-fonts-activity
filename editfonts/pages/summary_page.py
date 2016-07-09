@@ -1,4 +1,4 @@
-from gi.repository import Gtk, Gdk
+ globals.from gi.repository import Gtk, Gdk
 import cairo
 import math
 from defcon import Font
@@ -8,7 +8,7 @@ from sugar3.graphics import style
 
 from editfonts.widgets.custom_box import PageHeading, FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
-import x
+import editfonts.globals as globals
 
 class SummaryPage(Gtk.Box):
     """This Class Creates the "Font:<familyName>" Page that loads up on
@@ -32,7 +32,7 @@ class SummaryPage(Gtk.Box):
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
         
-        self.heading = PageHeading("Font: " + x.FONT.info.familyName)
+        self.heading = PageHeading("Font: " + globals.FONT.info.familyName)
 
         self.infoBoxExpander = Gtk.Expander()
 
@@ -125,7 +125,7 @@ class SummaryPage(Gtk.Box):
         pass
 
     def _clickEdit(self, handle):
-        x.A.set_page("EDITOR")
+        globals.A.set_page("EDITOR")
 
     def _clickInstall(self, handle):
         pass

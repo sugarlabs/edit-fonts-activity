@@ -1,4 +1,4 @@
-import os
+ globals.import os
 import shutil
 import logging
 import subprocess
@@ -11,7 +11,7 @@ from gi.repository import Gtk
 
 from editfonts.widgets.custom_box import PageHeading
 from editfonts.widgets.custom_box import ImageButton
-import x
+import editfonts.globals as globals
 
 class WelcomePage(Gtk.VBox):
     """
@@ -41,7 +41,7 @@ class WelcomePage(Gtk.VBox):
         #open_button
         open_button = ImageButton('open-ufo')
         open_button.set_tooltip_text('Open a .ufo font file')
-        open_button.connect("clicked", lambda _: x.A.load_ufo())
+        open_button.connect("clicked", lambda _: globals.A.load_ufo())
 
         button_box.pack_start(open_button, False, False, 30)
 
@@ -49,7 +49,7 @@ class WelcomePage(Gtk.VBox):
         create_button = ImageButton('create-ufo')
         create_button.set_tooltip_text('Create a new .ufo font file')
 
-        create_button.connect("clicked", lambda _: x.A.create_font())
+        create_button.connect("clicked", lambda _: globals.A.create_font())
 
         button_box.pack_start(create_button, False, False, 30)
 
