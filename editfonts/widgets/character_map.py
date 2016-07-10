@@ -1,5 +1,5 @@
-from gi.repository import Gtk, Gdk
-import cairo
+from gi.repository import Gtk  # Gdk
+# import cairo
 import pango
 # import math
 
