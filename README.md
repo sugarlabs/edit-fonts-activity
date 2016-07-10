@@ -25,7 +25,7 @@ Fonts are fun to make, and Sugar needs a font editor activity so learners can ma
 
 The feature list of the application is documented on the project blog. 
 
-## How to run
+## Usage
 
 Download this repo to a Sugar desktop and set it up, then launch it from the Home screen. 
 
@@ -36,6 +36,10 @@ Download this repo to a Sugar desktop and set it up, then launch it from the Hom
     python setup.py dev
     # go to home, list view, search Fonts
 
+## Development
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ## License
 
-GPLv3
+[GPLv3](LICENSE.txt)
