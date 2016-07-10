@@ -5,27 +5,28 @@ branches:
     - master
 python:
   - "2.7"
-# TODO: See if this helps
+# TODO This may help building xo packages
 # cache:
 #  directories:
 #  - sugar-build
 
 before_install:
   - "pip install flake8"
-  - "git clone git://github.com/sugarlabs/sugar-build.git"
-  - "cd sugar-build"
-  - "./osbuild pull"
-  - "./osbuild build"
+# TODO This may be needed to build xo packages
+#  - "git clone git://github.com/sugarlabs/sugar-build.git"
+#  - "cd sugar-build"
+#  - "./osbuild pull"
+#  - "./osbuild build"
+#  - "cd activities/"
 
 install: 
-  - "cd activities/"
   - "git clone -b master https://github.com/sugarlabs/edit-fonts-activity.git EditFonts.activity"
 
 script: 
   - "cd EditFonts.activity"
   - "flake8 --statistics  --ignore=E402 --exclude=defcon,extractor,fontTools,fontmake,robofab,ufo2ft,ufoLib,snippets ."
-# TODO When building xo packages works, test that doing so works
-#  - "cd .."
+  - "cd .."
+# TODO This may be needed to build xo packages
 #  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
 # TODO define this 
