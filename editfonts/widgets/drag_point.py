@@ -79,8 +79,10 @@ class DragPoint(Gtk.EventBox):
             self.x += dx - self.r
             self.y += dy - self.r
 
-            self.x = (self.x + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
-            self.y = (self.y + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
+            self.x = (self.x + globals.EDITOR_BOX_WIDTH) % \
+                globals.EDITOR_BOX_WIDTH
+            self.y = (self.y + globals.EDITOR_BOX_WIDTH) % \
+                globals.EDITOR_BOX_WIDTH
 
             # print "M(%d,%d)" % (self.x, self.y)
             self.get_parent().move(self, self.get_corner_x(), self.get_corner_y())
@@ -89,5 +91,5 @@ class DragPoint(Gtk.EventBox):
 
     def _validate(self):
 
-        self.x = (self.x + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
-        self.y = (self.y + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
+        self.x = (self.x + globals.EDITOR_BOX_WIDTH) % globals.EDITOR_BOX_WIDTH
+        self.y = (self.y + globals.EDITOR_BOX_WIDTH) % globals.EDITOR_BOX_WIDTH
