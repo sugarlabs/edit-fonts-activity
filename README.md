@@ -25,7 +25,7 @@ Fonts are fun to make, and Sugar needs a font editor activity so learners can ma
 
 The feature list of the application is documented on the project blog. 
 
-## How to run
+## Usage
 
 Download this repo to a Sugar desktop and set it up, then launch it from the Home screen. 
 
@@ -35,6 +35,31 @@ Download this repo to a Sugar desktop and set it up, then launch it from the Hom
     cd edit-fonts-activity;
     python setup.py dev
     # go to home, list view, search Fonts
+
+## Development
+
+To develop the Activity, your changes must conform to the [PEP8 style guide](https://www.python.org/dev/peps/pep-0008/). 
+We use Travis CI to enforce this; the following command is run on every pull request and it must run without outputting any errors:
+
+    flake8 --ignore=E402 --statistics \
+     --exclude=defcon,extractor,fontTools,fontmake,robofab,\
+     ufo2ft,ufoLib,snippets,localIcon .
+
+The `--statistics` argument prints a list at the end showing the total count of each error category at the end. 
+
+To eliminate all errors, it is helpful to see the total number of errors for each file:
+
+    flake8 --ignore=E402 \
+    --exclude=defcon,extractor,fontTools,fontmake,robofab,\
+    ufo2ft,ufoLib,snippets,localIcon  . \
+    | cut -d: -f1 | sort | uniq -c | sort;
+
+To eliminate a specific error, it is helpful to filter the output using grep:
+
+    flake8 --ignore=E402 \
+    --exclude=defcon,extractor,fontTools,fontmake,robofab,\
+    ufo2ft,ufoLib,snippets,localIcon  . \
+    | grep W291; # trailing whitespace
 
 ## License
 
