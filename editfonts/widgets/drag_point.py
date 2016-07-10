@@ -1,95 +1,99 @@
-from gi.repository import Gtk, Gdk, GdkPixbuf, GLib, Gio, GObject
+from gi.repository import Gtk, Gdk
+# from gi.repository import GLib, GdkPixbuf, Gio, GObject
 import math
-import x
+import cairo
+import editfonts.globals as globals
+
 
 class DragPoint(Gtk.EventBox):
 
-	def __init__(self, x, y):
-		super(DragPoint, self).__init__()
-		self.x = x
-		self.y = y
+    def __init__(self, x, y):
+        super(DragPoint, self).__init__()
+        self.x = x
+        self.y = y
 
-		#radius of the point
-		self.r = 8
-		
-		self.set_size_request(self.r *2,self.r *2)		
+        # radius of the point
+        self.r = 8
 
-		WIDTH = self.r *2
-		HEIGHT = self.r *2		
+        self.set_size_request(self.r * 2, self.r * 2)
 
-		surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-		ctx = cairo.Context (surface)
-		ctx.scale (WIDTH, HEIGHT) # Normalizing the canvas
-		ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+        WIDTH = self.r * 2
+        HEIGHT = self.r * 2
 
-		ctx.set_line_width(0.1)
-		ctx.set_source_rgb(0.7, 0.2, 0.0)
-		ctx.translate (0.5, 0.5)
-		ctx.arc(0, 0, 0.3, 0, 2 * math.pi)
-		ctx.stroke_preserve()
-		
-		ctx.close_path ()
-		ctx.fill ()
-		ctx.stroke ()
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
+        ctx = cairo.Context(surface)
+        ctx.scale(WIDTH, HEIGHT)  # Normalizing the canvas
+        ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
 
-		pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, self.r * 2, self.r * 2);
-		transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
-		image = Gtk.Image.new_from_pixbuf(transparent)
-		self.add(image)
+        ctx.set_line_width(0.1)
+        ctx.set_source_rgb(0.7, 0.2, 0.0)
+        ctx.translate(0.5, 0.5)
+        ctx.arc(0, 0, 0.3, 0, 2 * math.pi)
+        ctx.stroke_preserve()
 
-		self.set_above_child(True)
+        ctx.close_path()
+        ctx.fill()
+        ctx.stroke()
 
-		self.connect("motion-notify-event", self._on_motion)
+        pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, self.r * 2,
+                                             self.r * 2)
+        transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
+        image = Gtk.Image.new_from_pixbuf(transparent)
+        self.add(image)
 
-		self.set_events(self.get_events()
-				| Gdk.EventMask.LEAVE_NOTIFY_MASK
-				| Gdk.EventMask.BUTTON_PRESS_MASK
-				| Gdk.EventMask.POINTER_MOTION_MASK
-				| Gdk.EventMask.POINTER_MOTION_HINT_MASK)
+        self.set_above_child(True)
 
-		self.show_all()
+        self.connect("motion-notify-event", self._on_motion)
 
-	def _on_point_press(self, widget, event):
-		if event.type == Gdk.EventType.BUTTON_PRESS:
-			self.drag_state = True
-			#print "P(%d,%d)" % (event.x,event.y)
-			return False    
+        self.set_events(self.get_events() | Gdk.EventMask.LEAVE_NOTIFY_MASK |
+                        Gdk.EventMask.BUTTON_PRESS_MASK |
+                        Gdk.EventMask.POINTER_MOTION_MASK |
+                        Gdk.EventMask.POINTER_MOTION_HINT_MASK)
 
-	def _on_point_release(self, widget, event):
-		if event.type == Gdk.EventType.BUTTON_RELEASE:
-			self.drag_state = False
-			#print "R(%d,%d)" % (event.x,event.y)
-			return False   
+        self.show_all()
 
-	def get_corner_x(self):
-		
-		return self.x - self.r
-	
+    def _on_point_press(self, widget, event):
+        if event.type == Gdk.EventType.BUTTON_PRESS:
+            self.drag_state = True
+            # print "P(%d,%d)" %(event.x,event.y)
+            return False
 
-	def get_corner_y(self):
-		
-		return self.y - self.r
+    def _on_point_release(self, widget, event):
+        if event.type == Gdk.EventType.BUTTON_RELEASE:
+            self.drag_state = False
+            # print "R(%d,%d)" %(event.x,event.y)
+            return False
 
-	def _on_motion(self, widget, event):
+    def get_corner_x(self):
 
-		(window, dx, dy, state) = event.window.get_pointer()
-		#print "motion event running at (%d,%d)" % (self.x + x, self.y + y)
-		#print state & Gdk.ModifierType.BUTTON1_MASK
-		if state & Gdk.ModifierType.BUTTON1_MASK:
-			#self.point.drag_state: 
-			self.x += dx - self.r
-			self.y += dy - self.r
-			
-			self.x = (self.x + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
-			self.y = (self.y + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
+        return self.x - self.r
 
-			#print "M(%d,%d)" % (self.x, self.y)
-			self.get_parent().move(self, self.get_corner_x(), self.get_corner_y())
+    def get_corner_y(self):
 
-		return True
+        return self.y - self.r
 
-	def _validate(self):
+    def _on_motion(self, widget, event):
 
-		self.x = (self.x + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
-		self.y = (self.y + EDITOR_BOX_WIDTH) % EDITOR_BOX_WIDTH
+        (window, dx, dy, state) = event.window.get_pointer()
+        # print "motion event running at(%d,%d)" %(self.x + x, self.y + y)
+        # print state & Gdk.ModifierType.BUTTON1_MASK
+        if state & Gdk.ModifierType.BUTTON1_MASK:
+            # self.point.drag_state:
+            self.x += dx - self.r
+            self.y += dy - self.r
 
+            self.x = (self.x + globals.EDITOR_BOX_WIDTH) % \
+                globals.EDITOR_BOX_WIDTH
+            self.y = (self.y + globals.EDITOR_BOX_WIDTH) % \
+                globals.EDITOR_BOX_WIDTH
+
+            # print "M(%d,%d)" %(self.x, self.y)
+            self.get_parent().move(self, self.get_corner_x(),
+                                   self.get_corner_y())
+
+        return True
+
+    def _validate(self):
+
+        self.x = (self.x + globals.EDITOR_BOX_WIDTH) % globals.EDITOR_BOX_WIDTH
+        self.y = (self.y + globals.EDITOR_BOX_WIDTH) % globals.EDITOR_BOX_WIDTH
