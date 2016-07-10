@@ -91,8 +91,10 @@ class ManagerPage(Gtk.Box):
         (_, _, active_fonts_path) = os.walk(active_fonts_file_path).next()
 
         # get all files in the folder
-        active_fonts_path = [val.strip('.ttf') for i, val in enumerate(active_fonts_path) if val.endswith('.ttf')]
-        # TODO replace list comprehension with for loop?
+        active_fonts_path = []
+        for i, val in enumerate(active_fonts_path):
+            if val.endswith('.ttf'):
+                active_fonts_path.append(val.strip('.ttf'))
         context = self.get_pango_context()
         # context = self.activity.get_pango_context()
 
@@ -108,11 +110,13 @@ class ManagerPage(Gtk.Box):
 
         # get all files in the folder
         (_, _, inactive_fonts_path) = os.walk(inactive_fonts_file_path).next()
+
         # Favorite Fonts
-        inactive_fonts_path = [val.strip('.ttf') for i, val in enumerate(inactive_fonts_path) if val.endswith('.ttf')]
-        # TODO replace list comprehension with for loop below?
-        # for i, val in enumerate(inactive_fonts_path):
-        #     inactive_fonts_path = val.strip('.ttf')
+
+        inactive_fonts_path = []
+        for i, val in enumerate(inactive_fonts_path):
+            if val.endswith('.ttf'):
+                inactive_fonts_path.append(val.strip('.ttf'))
 
         # open or write the favorite fonts file
         if not os.path.exists(fav_fonts_file_path):
