@@ -32,6 +32,7 @@ class CharacterMap(Gtk.Box):
 
         # The alignment keeps the grid center aligned
         self.align = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
+
         if ui_type == 'BUTTON':
             self.init_ui_button()
 
