@@ -1,8 +1,9 @@
 sudo: required
 language: python
-branches:
-  only:
-    - master
+# TODO Decide if we need this
+# branches:
+#  only:
+#    - master
 python:
   - "2.7"
 # TODO This may help building xo packages
@@ -10,7 +11,17 @@ python:
 #  directories:
 #  - sugar-build
 
+# Travis will run the following commands:
+# $ export DEBIAN_FRONTEND=noninteractive
+# $ git clone --depth=50 https://github.com/sugarlabs/edit-fonts-activity.git sugarlabs/edit-fonts-activity
+# $ cd sugarlabs/edit-fonts-activity
+# $ git fetch origin +refs/pull/65/merge:
+# $ git checkout -qf FETCH_HEAD
+# $ git submodule update --init --recursive
+# $ source ~/virtualenv/python2.7/bin/activate
+
 before_install:
+# flake8 is a code lint runner
   - "pip install flake8"
 # TODO This may be needed to build xo packages
 #  - "git clone git://github.com/sugarlabs/sugar-build.git"
@@ -19,13 +30,12 @@ before_install:
 #  - "./osbuild build"
 #  - "cd activities/"
 
-install: 
-  - "git clone -b master https://github.com/sugarlabs/edit-fonts-activity.git EditFonts.activity"
+# TODO decide if we need anything here
+# install: 
 
 script: 
-  - "cd EditFonts.activity"
+# check our code conforms to pep8
   - "flake8 --statistics  --ignore=E402 --exclude=defcon,extractor,fontTools,fontmake,robofab,ufo2ft,ufoLib,snippets ."
-  - "cd .."
 # TODO This may be needed to build xo packages
 #  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
