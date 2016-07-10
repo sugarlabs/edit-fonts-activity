@@ -1,17 +1,19 @@
 import os
-# import shutil  ** imported, but unused **
+# import shutil
 import logging
-import subprocess
-# from gettext import gettext as _ ** imported, but unused **
+# import subprocess
+# from gettext import gettext as _
 
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
 
 # from gi.repository import GConf
 from gi.repository import GObject
-from gi.repository import Gtk
+
 from gi.repository import Gdk
-# from gi.repository import Gio  ** imported, but unused **
+from gi.repository import GdkPixbuf
+# from gi.repository import Gio
 from gi.repository import Pango
 
 # from sugar3 import env
@@ -25,9 +27,9 @@ from gi.repository import Pango
 # from sugar3.activity.widgets import StopButton
 # from sugar3.graphics.icon import Icon
 
-gi.require_version('WebKit', '3.0')
-
-# from gi.repository import WebKit, GLib, GdkPixbuf ** imported, but unused **
+# gi.require_version('WebKit', '3.0')
+# from gi.repository import WebKit
+# from gi.repository import GLib
 
 import editfonts.widgets.localIcon as localIcon
 
@@ -151,7 +153,8 @@ class FontsTreeView(Gtk.TreeView):
         # if selection is not None:
         #    selection.set_mode(Gtk.SelectionMode.NONE)
 
-        model = self.get_model()
+        # TODO not used so commented out, can be moved?
+        # model = self.get_model()
 
         # stars column
         cell_favorite = CellRendererClickablePixbuf()
@@ -261,10 +264,12 @@ class FontsTreeView(Gtk.TreeView):
                 model.set_value(_iter, ListModel.COLUMN_SELECTED, True)
 
     def __row_activated_cb(self, treeview, path, col):
-
+        model = self.get_model()
+        row = model[path]
         if col is treeview.get_column(0):
-            iter_ = model.get_iter(path)
-            # is_fav = model.get_value(iter_, 0)  ** flake8 error, not used **
+            # TODO ** flake8 error, not used **
+            # iter_ = model.get_iter(path)
+            # is_fav = model.get_value(iter_, 0)
             model.set_value(row, 0, model[row][0] ^ 1)
             # print "Star clicked"
 
@@ -273,6 +278,7 @@ class FontsTreeView(Gtk.TreeView):
             pass
 
     def __favorite_set_data_cb(self, column, cell, model, tree_iter, data):
+        model = self.get_model()
         font_name = model[tree_iter][ListModel.COLUMN_FONT_NAME]
         favorite = font_name in fav_fonts
         if favorite:
@@ -328,8 +334,9 @@ class FontsTreeView(Gtk.TreeView):
         model = self.get_model()
         iter_ = model.get_iter(path)
         is_activated = model.get_value(iter_, ListModel.COLUMN_ACTIVATE)
-        row = model[path]
-        font_name = row[ListModel.COLUMN_FONT_NAME]
+        # TODO ** flake8 error, not used **
+        # row = model[path]
+        # font_name = row[ListModel.COLUMN_FONT_NAME]
 
         # change the value in the model
         if is_activated is 1:
@@ -342,23 +349,21 @@ class FontsTreeView(Gtk.TreeView):
 
         model.set_value(iter_, ListModel.COLUMN_ACTIVATE, is_activated)
 
+        # TODO ** flake8 error, not used **
         # update the fav_fonts list
-        if is_activated:
-
-            # activate font here
-            batcmd = "mv " + inactive_fonts_file_path + "/" + font_name + \
-                ".ttf " + active_fonts_file_path + "/" + font_name + ".ttf "
-            result = subprocess.check_output(batcmd, shell=True)
-            batcmd = "fc-cache -f -v"
-            result = subprocess.check_output(batcmd, shell=True)
-
-        else:
-            # deactivate font here
-            batcmd = "mv " + active_fonts_file_path + "/" + font_name + \
-                ".ttf " + inactive_fonts_file_path + "/" + font_name + ".ttf "
-            result = subprocess.check_output(batcmd, shell=True)
-            batcmd = "fc-cache -f -v"
-            result = subprocess.check_output(batcmd, shell=True)
+        # if is_activated:
+        #    activate font here
+        #    batcmd = "mv " + inactive_fonts_file_path + "/" + font_name + \
+        #       ".ttf " + active_fonts_file_path + "/" + font_name + ".ttf "
+        #    result = subprocess.check_output(batcmd, shell=True)
+        #    batcmd = "fc-cache -f -v"
+        # else:
+        #    TODO ** flake8 error, not used **
+        #    deactivate font here
+        #    batcmd = "mv " + active_fonts_file_path + "/" + font_name + \
+        #       ".ttf " + inactive_fonts_file_path + "/" + font_name + ".ttf "
+        #    result = subprocess.check_output(batcmd, shell=True)
+        #    batcmd = "fc-cache -f -v"
 
         context = self.get_pango_context()
         # context = self.activity.get_pango_context()
@@ -542,7 +547,8 @@ class FontsList(Gtk.VBox):
                 or self.current_filter_query == "None":
             return True
         else:
-            c = model[iter][ListModel.COLUMN_FONT_NAME].find(self.current_filter_query)
+            c = model[iter][ListModel.COLUMN_FONT_NAME]\
+                                               .find(self.current_filter_query)
             if c >= 0:
                 return True
             else:
