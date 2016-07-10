@@ -124,3 +124,93 @@ class EditorBox(Gtk.Box):
         t = 1 - float(self.b) / (self.h) - float(y) / self.h
         #print("Y=" + str(t))
         return t
+"""
+
+class EditorBox(Gtk.EventBox):
+
+    def __init__(self):
+        
+        super(EditorBox, self).__init__()
+        
+        self.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)
+        
+        self.fixed = Gtk.Fixed()
+        self.fixed.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)
+        self.add(self.fixed)
+
+        self.da = Gtk.DrawingArea()
+        self.da.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)
+
+        self.fixed.put(self.da,0,0)
+        
+        self.points = []
+        self.show_all()
+
+        self.contours = GLYPH[:]
+
+        #declare bezier curves for the above points
+        #self.curves = [Curve(self.points[:4]), Curve(self.points[3:])]
+        
+        #declare the bindings 
+        #bind(self.points[2], self.points[3], self.points[4])
+        
+        #connect the drawing area to the required events
+        self.da.connect('draw', self._draw)
+        #self.da.connect("button-press-event", self._on_button_press)
+
+    def add_contour(self, contour):
+
+        self.contours.append(contour)
+
+    def _on_button_press(self, w, e):
+
+        if e.type == Gdk.EventType.BUTTON_PRESS: 
+            #\
+            #and e.button == MouseButtons.LEFT_BUTTON:
+            print e.button
+            #self.coords.append([e.x, e.y])
+            
+            #if e.type == Gdk.EventType.BUTTON_PRESS \
+            #    and e.button == MouseButtons.RIGHT_BUTTON:
+            #    
+            #    self.darea.queue_draw()                                                                   
+
+    def draw_all_contours(self, cr):
+        for contour in self.contours:
+            pen = GPen(cr, 50)
+            cr.set_line_width(3)
+            contour.draw(pen)
+            #close the contour
+            cr.close_path()
+            cr.stroke()
+
+            #draw control points
+            for segment in contour.segments:
+                if segment[-1].segmentType == u'line':
+                    print "It's a line of " + str(len(segment))  
+                elif segment[-1].segmentType == u'curve':
+                    print "It's a curve of " + str(len(segment)) 
+                elif segment[-1].segmentType == u'move':
+                    print "It's a move of " + str(len(segment))
+                elif segment[-1].segmentType == u'qcurve':
+                    print "It's a qcurve of " + str(len(segment)) 
+ 
+    def _draw(self, da, cr):
+
+        #draw all contours with control points
+        self.draw_all_contours(cr)
+
+        #draw baseline, ascender, etc
+
+        return False
+
+    def add_point(self, x, y):
+        
+        point = DragPoint(x, y)
+        point.connect("notify", self.redraw)
+        self.fixed.put(point,point.get_corner_x(),point.get_corner_y())
+        self.points.append(point)
+
+    def redraw(self, point, property):
+        
+        self.da.queue_draw()

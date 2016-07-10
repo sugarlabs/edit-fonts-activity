@@ -189,8 +189,8 @@ class EditFonts(activity.Activity):
 
         self.notebook.set_show_tabs(False)
 
-        self.set_page("WELCOME")
-
+        self.set_page("MANAGER")
+        
         self.set_canvas(self.notebook)
         self.show_all()
 

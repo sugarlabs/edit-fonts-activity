@@ -110,12 +110,12 @@ class RenderGlyph(Gtk.Box):
             #close the contour
             cr.close_path()
 
-            #fill the contour
+        # fill the contour
         cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
         cr.fill()
         cr.stroke()
 
-    #define the transformations for the points here
+    # define the transformations for the points here
 
     def X(self, x):
         t = 0.5 - float(self.w) / (2 * self.h) + float(x) / self.h
