@@ -1,3 +1,5 @@
+import math
+
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk
@@ -5,10 +7,64 @@ import cairo
 from gi.repository import Gtk, Gdk, GdkPixbuf, GLib, Gio, GObject
 
 from defcon import Font, Point, Contour  
-import math
 
-EDITOR_BOX_WIDTH = 500
-EDITOR_BOX_HEIGHT = 500
+from fontTools.pens.basePen import BasePen
+
+EDITOR_BOX_WIDTH = 600
+EDITOR_BOX_HEIGHT = 600
+
+FONT = Font("../test_fonts/Noto.ufo")
+GLYPH = FONT["J"]
+
+class GPen(BasePen):
+	"""
+	This class is a subclass of the BasePen Class from fontTools 
+	which converts any segement type to simple moveto, lineto, curveto statements
+	"""
+
+	def __init__(self, cr, pos):
+		BasePen.__init__(self, glyphSet={})
+		self.cr = cr
+		
+		#the position the glyph is at while drawing it in a string of glyphs
+		self.pos = pos
+		
+		#The advance width of the glyph
+		self.w = GLYPH.width
+
+		#The difference in the ascender and the descender values
+		self.h = FONT.info.ascender - FONT.info.descender
+
+		#the distance between the baseline and the descender
+		self.b = 0 - FONT.info.descender
+
+	#define the transformations for the points here
+	def X(self, x):
+		t = self.pos + float(self.w - x) * EDITOR_BOX_HEIGHT/ self.h
+		#print("X=" + str(t))
+		return t
+
+	def Y(self, y):
+		t = float(self.h - y - self.b) * EDITOR_BOX_HEIGHT/ self.h
+		#print("Y=" + str(t))
+		return t
+
+	def _moveTo(self, p):
+		x, y = p
+		self.cr.move_to(self.X(x),self.Y(y))
+		print "move ->" + str(x) + "," + str(y)
+
+	def _lineTo(self, p):
+		x, y = p
+		self.cr.line_to(self.X(x),self.Y(y))
+		print "line ->" + str(x) + "," + str(y)
+
+	def _curveToOne(self, p1, p2, p3):
+		x1, y1 = p1
+		x2, y2 = p2
+		x3, y3 = p3
+		self.cr.curve_to(self.X(x1),self.Y(y1),self.X(x2),self.Y(y2),self.X(x3),self.Y(y3))
+		print "curve ->" + str(x1) + "," + str(y1) + "|" + str(x2) + "," + str(y2) + "|" + str(x3) + "," + str(y3)
 
 def distance(X, Y):
 
@@ -33,6 +89,14 @@ def bind(A, O, B):
 	O.set_type("OnCurveSmooth")
 	O.bind_to(A, B)
 
+"""
+class GContour(Contour):
+	
+	def __init__(self):
+
+"""
+
+
 class DragPoint(Gtk.EventBox):
 
 	def __init__(self, x, y, pointType = "onCurve"):
@@ -53,19 +117,19 @@ class DragPoint(Gtk.EventBox):
 		HEIGHT = self.r *2		
 
 		surface = cairo.ImageSurface (cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
-		ctx = cairo.Context (surface)
-		ctx.scale (WIDTH, HEIGHT) # Normalizing the canvas
-		ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+		cr = cairo.Context (surface)
+		cr.scale (WIDTH, HEIGHT) # Normalizing the canvas
+		cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
 
-		ctx.set_line_width(0.1)
-		ctx.set_source_rgb(0.7, 0.2, 0.0)
-		ctx.translate (0.5, 0.5)
-		ctx.arc(0, 0, 0.3, 0, 2 * math.pi)
-		ctx.stroke_preserve()
+		cr.set_line_width(0.1)
+		cr.set_source_rgb(0.7, 0.2, 0.0)
+		cr.translate (0.5, 0.5)
+		cr.arc(0, 0, 0.3, 0, 2 * math.pi)
+		cr.stroke_preserve()
 		
-		ctx.close_path ()
-		ctx.fill ()
-		ctx.stroke ()
+		cr.close_path ()
+		cr.fill ()
+		cr.stroke ()
 
 		pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, self.r * 2, self.r * 2);
 		transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
@@ -212,42 +276,40 @@ class Curve:
 
 		self.points = pointList[:]
 
-	def draw(self, ctx):
+	def draw(self, cr):
 
-		ctx.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+		cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
 
 		#setting the line style to solid
 
-		ctx.set_line_width(4)
-		ctx.set_source_rgb(0.1, 0.1, 0.1)
+		cr.set_line_width(4)
+		cr.set_source_rgb(0.1, 0.1, 0.1)
 
 		#Drawing the Bezier Curve
-		ctx.move_to(self.points[0].x, self.points[0].y)
-		ctx.curve_to(self.points[1].x, self.points[1].y, self.points[2].x \
+		cr.move_to(self.points[0].x, self.points[0].y)
+		cr.curve_to(self.points[1].x, self.points[1].y, self.points[2].x \
 				, self.points[2].y, self.points[3].x, self.points[3].y)
 		
-		ctx.stroke_preserve()
-		ctx.stroke ()
+		cr.stroke_preserve()
+		cr.stroke ()
 		
 		#Drawing the support lines
 		
 		#setting the line style to dashed
-		ctx.set_line_width(1)
-		ctx.set_source_rgb(0.3, 0.3, 0.3)
+		cr.set_line_width(1)
+		cr.set_source_rgb(0.3, 0.3, 0.3)
 
-		ctx.move_to(self.points[0].x, self.points[0].y)
-		ctx.line_to(self.points[1].x, self.points[1].y)
-		ctx.move_to(self.points[2].x, self.points[2].y)
-		ctx.line_to(self.points[3].x, self.points[3].y)
+		cr.move_to(self.points[0].x, self.points[0].y)
+		cr.line_to(self.points[1].x, self.points[1].y)
+		cr.move_to(self.points[2].x, self.points[2].y)
+		cr.line_to(self.points[3].x, self.points[3].y)
 				
-		ctx.stroke_preserve()
-		ctx.stroke()
+		cr.stroke_preserve()
+		cr.stroke()
 
-		#ctx.close_path ()
-		#ctx.fill ()
+		#cr.close_path ()
+		#cr.fill ()
 		return False
-
-
 
 class EditorBox(Gtk.EventBox):
 
@@ -265,21 +327,25 @@ class EditorBox(Gtk.EventBox):
 		self.da.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)
 
 		self.fixed.put(self.da,0,0)
+		
 		self.points = []
 		self.show_all()
 
-		for i in range(7):
-			self.add_point(i*40 + 100, i*20 + 50)
-		
+		self.contours = GLYPH[:]
+
 		#declare bezier curves for the above points
-		self.curves = [Curve(self.points[:4]), Curve(self.points[3:])]
+		#self.curves = [Curve(self.points[:4]), Curve(self.points[3:])]
 		
 		#declare the bindings 
-		bind(self.points[2], self.points[3], self.points[4])
+		#bind(self.points[2], self.points[3], self.points[4])
 		
 		#connect the drawing area to the required events
 		self.da.connect('draw', self._draw)
-		self.da.connect("button-press-event", self._on_button_press)
+		#self.da.connect("button-press-event", self._on_button_press)
+
+	def add_contour(self, contour):
+
+		self.contours.append(contour)
 
 	def _on_button_press(self, w, e):
 
@@ -294,14 +360,36 @@ class EditorBox(Gtk.EventBox):
 			#    
 			#    self.darea.queue_draw()                                                                   
 
-	def _draw(self, da, ctx):
+	def draw_all_contours(self, cr):
+		for contour in self.contours:
+			pen = GPen(cr, 50)
+			cr.set_line_width(3)
+			contour.draw(pen)
+			#close the contour
+			cr.close_path()
+			cr.stroke()
 
-		#draw all bezier curves
-		for curve in self.curves:
-			curve.draw(ctx) 
+			#draw control points
+			for segment in contour.segments:
+				if segment[-1].segmentType == u'line':
+					print "It's a line of " + str(len(segment))  
+				elif segment[-1].segmentType == u'curve':
+					print "It's a curve of " + str(len(segment)) 
+				elif segment[-1].segmentType == u'move':
+					print "It's a move of " + str(len(segment))
+				elif segment[-1].segmentType == u'qcurve':
+					print "It's a qcurve of " + str(len(segment)) 
+ 
+
+	def _draw(self, da, cr):
+
+		#draw all contours with control points
+		self.draw_all_contours(cr)
+
+		#draw baseline, ascender, etc
 
 		return False
-		
+
 	def add_point(self, x, y):
 		
 		point = DragPoint(x, y)
@@ -335,10 +423,7 @@ class MyWindow(Gtk.Window):
 
     def __init__(self):
 		Gtk.Window.__init__(self, title="Editor Area")
-		self.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)
-
-
-		
+		self.set_size_request(EDITOR_BOX_WIDTH, EDITOR_BOX_HEIGHT)		
 		self.editorBox = EditorBox()
 		self.add(self.editorBox)
 
