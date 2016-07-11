@@ -1,40 +1,24 @@
-language: python
+# route your build to the container-based infrastructure for a faster build
+sudo: false 
+# Use a Ruby build container, with Bundler, RubyGems, and Ruby v2.1
+language: ruby 
+rvm:
+- 2.1 
+# speed up installation of html-proofer, installed per Gemfile
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+
+# branch whitelist: only run on GitHub Pages branches
 branches:
   only:
-    - master
-python:
-  - "2.7"
-# TODO: See if this helps
-# cache:
-#  directories:
-#  - sugar-build
-
-before_install:
-  - pip install flake8
-  - "git clone git://github.com/sugarlabs/sugar-build.git"
-  - "cd sugar-build"
-  - "./osbuild pull"
-  - "./osbuild shell"
-  - "build"
-
-install: 
-  - cd sugar-build/activities/
-  - git clone https://github.com/davelab6/edit-fonts-activity.git edit-fonts.activity
+  # test the gh-pages branch
+  - gh-pages
+  # test every branch which includes the word "pages"
+  - (.*)pages(.*)
 
 script: 
-  - flake8 sugar-build/activities/edit-fonts.activity
-
-after_success:
-# TODO: Set up coveralls
-# - coveralls
-  - python setup.py dist_xo
-  - cd ~; ls -alFR
-
-# TODO Set this up to auto-deloy tagged commits to the github releases page
-# deploy:
-#   provider: releases
-#   api_key: "GITHUB OAUTH TOKEN"
-#   file: "FILE TO UPLOAD"
-#   skip_cleanup: true
-#   on:
-    tags: true
+# build the site
+- "jekyll build"
+# check the html is good
+- "htmlproofer --disable-external --assume-extension ./_site"
