@@ -20,6 +20,7 @@ branches:
 install:
   # install Gemfile gems
   - "bundle"
+  - "apt-get install -y tree"
 
 script: 
   # build the site
