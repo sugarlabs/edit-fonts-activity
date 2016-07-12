@@ -1,5 +1,5 @@
 # route your build to the container-based infrastructure for a faster build
-sudo: false 
+sudo: false
 # Use a Ruby build container, with Bundler, RubyGems, and Ruby v2.1
 language: ruby 
 rvm:
@@ -20,7 +20,6 @@ branches:
 install:
   # install Gemfile gems
   - "bundle"
-  - "apt-get install -y tree"
 
 script: 
   # build the site
@@ -28,4 +27,4 @@ script:
   # check the html is good
   - "htmlproofer --version"
   - "htmlproofer --disable-external --assume-extension ./_site"
-  - "tree _site/"
+  - "ls -alFR _site/"
