@@ -27,3 +27,4 @@ script:
   # check the html is good
   - "htmlproofer --version"
   - "htmlproofer --disable-external --assume-extension ./_site"
+  - "tree _site/"
