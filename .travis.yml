@@ -3,22 +3,27 @@ sudo: false
 # Use a Ruby build container, with Bundler, RubyGems, and Ruby v2.1
 language: ruby 
 rvm:
-- 2.1 
+  - 2.1 
 # speed up installation of html-proofer, installed per Gemfile
 env:
   global:
-  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 
 # branch whitelist: only run on GitHub Pages branches
 branches:
   only:
-  # test the gh-pages branch
-  - gh-pages
-  # test every branch which includes the word "pages"
-  - (.*)pages(.*)
+    # test the gh-pages branch
+    - gh-pages
+    # test every branch which includes the word "pages"
+    - (.*)pages(.*)
+
+install:
+  # install Gemfile gems
+  - "bundle"
 
 script: 
-# build the site
-- "jekyll build"
-# check the html is good
-- "htmlproofer --disable-external --assume-extension ./_site"
+  # build the site
+  - "jekyll build"
+  # check the html is good
+  - "htmlproofer --version"
+  - "htmlproofer --disable-external --assume-extension ./_site"
