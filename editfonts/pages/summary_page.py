@@ -56,7 +56,7 @@ class SummaryPage(Gtk.Box):
 
         self.infoBoxExpander.add(self.infoBox)
 
-        self.characterMap = CharacterMap(self, 15, 5, 'SCROLL')
+        self.characterMap = CharacterMap(15, 5, 'SCROLL')
 
         self.vbox.pack_start(self.heading, False, False, 30)
 
@@ -103,7 +103,7 @@ class SummaryPage(Gtk.Box):
         installButton = Gtk.Button()
         installButton.set_image(image_icon)
         installButton.modify_bg(Gtk.StateType.NORMAL,
-                                style.Color('# 34495E').get_gdk_color())
+                                style.Color('#34495E').get_gdk_color())
         installButton.props.relief = Gtk.ReliefStyle.NONE
         installButton.connect("clicked", self._clickInstall)
         grid.attach(installButton, 0, 0, 1, 1)
@@ -123,7 +123,7 @@ class SummaryPage(Gtk.Box):
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                           icon_name='delete',
                           stroke_color=style.COLOR_BLACK.get_svg(),
-                          fill_color=style.Color('# E74C3C').get_svg())
+                          fill_color=style.Color('#E74C3C').get_svg())
 
         deleteButton = Gtk.Button()
         deleteButton.add(image_icon)

@@ -1,127 +1,196 @@
-from gi.repository import Gtk  # Gdk
-import cairo
+from gi.repository import Gtk, Gdk
+# import cairo
 # import math
 # from defcon import Font
 import editfonts.globals as globals
 
 # Making a glyph editor box
+from editfonts.objects.gtkpen import GtkPen
+from editfonts.widgets.dragpoint import DragPoint
+# from editfonts.objects.basesegment import BaseSegment
+from editfonts.objects.bezierpen import BezierPenTool
 
 
-class EditorBox(Gtk.Box):
+def bind(A, O, B):
+
+    # FIX ME: a none type point shouldn't be bind to a curve
+    # type point with a line or curve type point next to it
+    # This currently shows an error
+    if A.point.segmentType != u'line' or A.point.segmentType != u'curve' \
+            or B.point.segmentType != u'line' \
+            or B.point.segmentType != u'curve':
+        A.bind_to(O, B)
+        B.bind_to(O, A)
+
+    O.bind_to(A, B)
+
+
+class EditorBox(Gtk.EventBox):
 
     def __init__(self):
+
         super(EditorBox, self).__init__()
-        self.boxWidth = 400
-        self.boxHeight = 400
 
-        # The advance width of the glyph
-        self.w = globals.FONT[globals.GLYPH_NAME].width
+        self.set_size_request(globals.EDITOR_BOX_WIDTH,
+                              globals.EDITOR_BOX_HEIGHT)
 
-        # The difference in the ascender and the descender values
-        self.h = globals.FONT.info.ascender - globals.FONT.info.descender
+        self.fixed = Gtk.Fixed()
+        self.fixed.set_size_request(globals.EDITOR_BOX_WIDTH,
+                                    globals.EDITOR_BOX_HEIGHT)
+        self.add(self.fixed)
 
-        # the distance between the baseline and the descender
-        self.b = -globals.FONT.info.descender
-
-        self.init_ui()
-
-    def init_ui(self):
         self.da = Gtk.DrawingArea()
-        self.da.connect("draw", self.drawGlyph)
-        self.da.set_size_request(self.boxWidth, self.boxHeight)
-        self.add(self.da)
+        self.da.set_size_request(globals.EDITOR_BOX_WIDTH,
+                                 globals.EDITOR_BOX_HEIGHT)
 
-        # find the bounds of the glyph to normalise the points later
+        self.fixed.put(self.da, 0, 0)
+
+        # declare the list for storing all the contours
+        self.contours = globals.GLYPH[:]
+
+        self.tool = {}
+
+        # declare the list for storing the drag points in the editing session
+        self.points = []
+
+        self.update_control_points()
 
         self.show_all()
 
-    def drawGlyph(self, widget, cr):
+        # connect the drawing area to the required events
+        self.da.connect('draw', self._draw)
 
-        # Normalizing the canvas
-        cr.scale(self.boxWidth, self.boxHeight)
-        cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+        self.connect("button-press-event", self._on_point_press)
 
-        cr.rectangle(0, 0, 1, 1)  # Rectangle(x0, y0, x1, y1)
-        cr.set_source_rgb(1, 1, 1)
-        cr.fill()
+        '''
+        self.da.set_events(self.get_events()
+                | Gdk.EventMask.LEAVE_NOTIFY_MASK
+                | Gdk.EventMask.BUTTON_PRESS_MASK
+                | Gdk.EventMask.POINTER_MOTION_MASK
+                | Gdk.EventMask.POINTER_MOTION_HINT_MASK)
+        '''
+        # self.connect('key-press-event',self._on_key_press)
+        # self.set_events(self.get_events() | Gdk.EventMask.KEY_PRESS_MASK)
 
-        cr.set_source_rgb(0, 0, 0)
+    def _draw(self, da, cr):
 
-        for contour in globals.FONT[globals.GLYPH_NAME]:
+        # draw all contours with control points
+        self.draw_all_contours(cr, 0)
 
-            # move to initial point
-            point = contour[0]
-            cr.move_to(self.X(point.x), self.Y(point.y))
-            # FIX ME: Validate the segments more thoroughly
+        # draw baseline, ascender, etc
 
-            for segment in contour.segments:
-                # first determine type of Segment
-                if len(segment) >= 3 and segment[-1].segmentType == u'qcurve':
-                    # its a Truetype quadractic B spline
+        # return False
 
-                    for i, point in enumerate(segment):
+    def _on_point_press(self, widget, event):
 
-                        if i is len(segment) - 2:
-                            cr.curve_to(
-                                self.X(point.x), self.Y(point.y),
-                                self.X(point.x), self.Y(point.y),
-                                self.X(segment[i + 1].x),
-                                self.Y(segment[i + 1].y))
+        if event.type == Gdk.EventType.BUTTON_PRESS\
+                and event.button == 3:
+            # toggle the bezier pen tool
+            print "a right click was noticed"
 
-                            break
+            try:
+                flag = isinstance(self.tool["BezierPen"], BezierPenTool)
 
-                        mid_point_x = (point.x + segment[i + 1].x) / 2
-                        mid_point_y = (point.x + segment[i + 1].x) / 2
-                        cr.curve_to(
-                            self.X(point.x), self.Y(point.y), self.X(point.x),
-                            self.Y(point.y), self.X(mid_point_x),
-                            self.Y(mid_point_y))
+            except Exception:
+                flag = False
 
-                elif len(segment) is 3 and segment[-1].segmentType == u'curve':
-                    # its a bezier
-                    cr.curve_to(
-                        self.X(segment[0].x), self.Y(segment[0].y),
-                        self.X(segment[1].x), self.Y(segment[1].y),
-                        self.X(segment[2].x), self.Y(segment[2].y))
-
-                # Adding the support for qcurve
-                elif len(segment) is 2 and segment[
-                        -1].segmentType == u'qcurve':
-                    # its a qcurve
-                    cr.curve_to(
-                        self.X(segment[0].x), self.Y(segment[0].y),
-                        self.X(segment[0].x), self.Y(segment[0].y),
-                        self.X(segment[1].x), self.Y(segment[1].y))
-
-                elif len(segment) is 1 and segment[-1].segmentType == u'line':
-                    # its a line
-                    cr.line_to(self.X(segment[0].x), self.Y(segment[0].y))
-
+            if flag:
+                if self.tool["BezierPen"].get_active():
+                    self.tool["BezierPen"].set_active(False)
+                    print "pen tool deactivated"
                 else:
-                    # its a higher order curve or something
-                    for point in segment:
-                        cr.line_to(self.X(point.x), self.Y(point.y))
+                    self.tool["BezierPen"].set_active(True)
+                    print "pen tool activated"
+            else:
+                self.tool["BezierPen"] = BezierPenTool(self)
+                print "pen tool activated"
 
-                    print("Error: Unknown Case Found")
-                    print(segment)
+    def update_control_points(self):
+        # delete the current set of drag points
+        for point in self.points:
+            point.destroy()
+            del point
 
-            # close the contour
-            cr.close_path()
+        self.points = []
 
-            # fill the contour
+        for contour in self.contours:
+            for point in contour:
+                self.add_point(point)
 
-        cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
-        cr.fill()
-        cr.stroke()
+        self.update_bindings()
 
-    # define the transformations for the points here
+    def update_bindings(self):
+        c = 0
+        for contour in self.contours:
+            for j, point in enumerate(contour):
+                if point.segmentType == u'curve' \
+                        and point.smooth is True:
+                    if j != 0:
+                        bind(self.points[c - 1], self.points[c],
+                             self.points[c + 1])
+                    else:
+                        bind(self.points[c + len(contour) - 1],
+                             self.points[c], self.points[c + 1])
+                c += 1
 
-    def X(self, x):
-        t = 0.5 - float(self.w) / (2 * self.h) + float(x) / self.h
-        # print("X=" + str(t))
-        return t
+    def add_contour(self, contour):
 
-    def Y(self, y):
-        t = 1 - float(self.b) / (self.h) - float(y) / self.h
-        # print("Y=" + str(t))
-        return t
+        self.contours.append(contour)
+        self.update_control_points()
+
+    def draw_all_contours(self, cr, pos):
+
+        pen = GtkPen(cr, pos)
+        for contour in self.contours:
+            if len(contour[:]) != 0:
+                cr.set_source_rgb(0, 0, 0)
+                cr.set_line_width(3)
+                contour.draw(pen)
+                # close the contour
+
+                cr.close_path()
+                cr.stroke()
+
+                # draw control points
+                cr.set_source_rgb(0.3, 0.3, 0.3)
+                cr.set_line_width(1)
+
+                for i, seg in enumerate(contour.segs):
+                    if seg[-1].segType == u'line' and len(seg) == 1:
+                        # print "line"
+                        # No construction lines required
+                        pass
+
+                    elif seg[-1].segType == u'move' and len(seg) == 1:
+                        # No construction lines required
+                        pass
+
+                    elif seg[-1].segType == u'curve' and len(seg) == 3:
+                        pen.moveTo((contour.segs[i - 1][-1].x,
+                                    contour.segs[i - 1][-1].y))
+                        pen.lineTo((seg[0].x, seg[0].y))
+                        pen.moveTo((seg[1].x, seg[1].y))
+                        pen.lineTo((seg[2].x, seg[2].y))
+
+                    else:
+                        print seg[-1].segType
+                        print len(seg)
+                        raise NotImplementedError
+
+                cr.close_path()
+                cr.stroke()
+
+    def add_point(self, p):
+
+        point = DragPoint(p)
+        point.connect("notify", self.redraw)
+        self.fixed.put(point, point.get_corner_x(), point.get_corner_y())
+        self.points.append(point)
+
+        # Bidirectional binding between the Defcon Point and the Drag Point
+        # point.is_appearance_for(p)
+        # point.connect("notify", lambda _: p.x = widget.x)
+
+    def redraw(self, point, property):
+
+        self.da.queue_draw()

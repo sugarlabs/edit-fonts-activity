@@ -143,7 +143,7 @@ class CharacterMap(Gtk.Box):
         self.grid.attach(eventBox, i, j, 1, 1)
         eventBox.connect("button-press-event", self._glyph_clicked, glyphName)
         eventBox.modify_bg(Gtk.StateType.NORMAL,
-                           style.Color('# 5DADE2').get_gdk_color())
+                           style.Color('#5DADE2').get_gdk_color())
 
         box = Gtk.VBox()
         eventBox.add(box)

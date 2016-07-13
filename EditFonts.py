@@ -17,33 +17,19 @@
 """Edit Fonts Activity: Kids make fonts!"""
 
 import os
-# import shutil
 import logging
 import time
 from gettext import gettext as _
 
 import gi
-# gi.require_version('GConf', '2.0')
-# from gi.repository import GConf
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-# from gi.repository import Gdk
-# from gi.repository import Gio
-# from gi.repository import Pango
-
-# import cairo
-# import math
-
-# from sugar3 import env
-# from sugar3.graphics import style
-# from sugar3.graphics.icon import CellRendererIcon
-# from sugar3.graphics.xocolor import XoColor
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityButton
-# from sugar3.graphics.toggletoolbutton import ToggleToolButton
 from sugar3 import mime
 from sugar3.activity.widgets import StopButton
 from sugar3.activity.widgets import TitleEntry
@@ -55,11 +41,7 @@ from sugar3.datastore import datastore
 from sugar3 import profile
 from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
-# from sugar3.graphics.palette import Palette
 
-# import cairo
-
-# import math
 from defcon import Font
 # from ufo2ft import compileOTF
 from ufo2ft import compileTTF
@@ -73,6 +55,7 @@ from editfonts.pages.create_font_page import CreateFontPage
 # from editfonts.objects.basefont import BaseFont
 import editfonts.globals as globals
 
+
 """
 This Dictionary contains all the class types for pages the activity will
 ever be needing with a key(eg. "MANAGER") that will be used to access
@@ -85,8 +68,9 @@ PAGE = {'SUMMARY': SummaryPage,
         'WELCOME': WelcomePage,
         'CREATEFONT': CreateFontPage}
 
-PAGE = [{'SUMMARY': SummaryPage}, {'EDITOR': EditorPage},
-        {'MANAGER': ManagerPage}]
+# PAGE = [{'SUMMARY': SummaryPage}, {'EDITOR': EditorPage},
+#         {'MANAGER': ManagerPage}]
+
 page_list = []
 
 # Max number of pages stored in memory
@@ -388,7 +372,7 @@ class EditFonts(activity.Activity):
         jobject.file_path = file_name
 
         # jobject.metadata['preview'] = \
-        #   self._get_preview_image(file_name)
+        # self._get_preview_image(file_name)
 
         datastore.write(jobject, transfer_ownership=True)
         self._object_id = jobject.object_id
@@ -402,7 +386,7 @@ class EditFonts(activity.Activity):
         # Error: defcon.errors.DefconError: the kerning data is not valid
 
         # file_name = os.path.join(self.get_activity_root(), 'data',
-        #                        '%s.ufo' % self.metadata['title'])
+        #                          '%s.ufo' % self.metadata['title'])
         # file_obj = open(file_name, 'w')
 
         file_name = "~/Documents/UFOs/abc1.ufo"
@@ -423,7 +407,7 @@ class EditFonts(activity.Activity):
         jobject.file_path = os.path.join(file_name, "metainfo.plist")
 
         # jobject.metadata['preview'] = \
-        #   self._get_preview_image(file_name)
+        # self._get_preview_image(file_name)
         print "b"
 
         datastore.write(jobject, transfer_ownership=True)
