@@ -2,11 +2,12 @@ from gi.repository import Gtk  # Gdk
 import cairo
 # import math
 # from defcon import Font
+from editfonts.globals import globals
 
 
 class RenderGlyph(Gtk.Box):
     def __init__(self,
-                 glyph,
+                 glyphName,
                  boxWidth=100,
                  boxHeight=100,
                  fontHeight=500,
@@ -15,7 +16,8 @@ class RenderGlyph(Gtk.Box):
         self.boxHeight = boxHeight
         self.boxWidth = boxWidth
 
-        self.glyph = glyph
+        self.glyph = globals.FONT[glyphName]
+        globals.connect("notify::FONT", self.redraw)
 
         # The advance width of the glyph
         self.w = self.glyph.width
@@ -117,6 +119,11 @@ class RenderGlyph(Gtk.Box):
         cr.stroke()
 
     # define the transformations for the points here
+
+    def redraw(self, point, property):
+
+        # print "Change Detected"
+        self.da.queue_draw()
 
     def X(self, x):
         t = 0.5 - float(self.w) / (2 * self.h) + float(x) / self.h

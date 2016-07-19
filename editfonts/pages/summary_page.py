@@ -11,7 +11,7 @@ from sugar3.graphics import style
 
 from editfonts.widgets.custom_box import PageHeading, FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class SummaryPage(Gtk.Box):
@@ -56,7 +56,7 @@ class SummaryPage(Gtk.Box):
 
         self.infoBoxExpander.add(self.infoBox)
 
-        self.characterMap = CharacterMap(15, 5, 'SCROLL')
+        self.characterMap = CharacterMap(10, 5, 'SCROLL')
 
         self.vbox.pack_start(self.heading, False, False, 30)
 

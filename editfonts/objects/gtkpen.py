@@ -1,20 +1,9 @@
-# import math
 
 import gi
 gi.require_version('Gtk', '3.0')
-# from gi.repository import Gtk
-# from gi.repository import Gdk
-# import cairo
-# from gi.repository import GdkPixbuf
-# from gi.repository import GLib
-# from gi.repository import Gio
-# from gi.repository import GObject
 
-# from defcon import Font
-# from defcon import Point
-# from defcon import Contour
 from fontTools.pens.basePen import BasePen
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class GtkPen(BasePen):

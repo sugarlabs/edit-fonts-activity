@@ -129,7 +129,7 @@ class ManagerPage(Gtk.Box):
         t = file.read()
         fav_fonts = t.split('\n')
         file.close()
-        print fav_fonts
+        # print fav_fonts
 
         # FIX ME: Automatic change monitoring not working
 
@@ -331,8 +331,8 @@ class FontsTreeView(Gtk.TreeView):
 
     def __activate_clicked_cb(self, cell, path):
         """
-        What happens when the user clicks on the activate/deactivate button
-
+        What happens when the user clicks
+        on the activate/deactivate button
         """
 
         model = self.get_model()
@@ -373,13 +373,14 @@ class FontsTreeView(Gtk.TreeView):
         # context = self.activity.get_pango_context()
 
         for family in context.list_families():
-            name = family.get_name()
-            print name
+            # FIX ME: Incomplete, variable 'name' is assigned to but never used
+            # name = family.get_name()
+            # print name
+            pass
 
     def __favorite_clicked_cb(self, cell, path):
         """
         What happens when the user clicks on any of the stars
-
         """
 
         model = self.get_model()
@@ -445,7 +446,7 @@ class ListModel(Gtk.ListStore):
         # load the system fonts
         for font_name in _all_system_fonts:
             favorite = font_name in fav_fonts
-            print favorite
+            # print favorite
             data = [favorite, font_name,
                     'The quick brown fox jumps over the lazy dog',
                     1.7, 1, True, -1, False]

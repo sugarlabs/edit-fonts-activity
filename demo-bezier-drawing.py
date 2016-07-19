@@ -4,7 +4,7 @@ from gi.repository import Gtk
 # from gi.repository import Gdk
 # import cairo
 from editfonts.widgets.editor_box import EditorBox
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class MyWindow(Gtk.Window):

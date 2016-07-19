@@ -11,7 +11,7 @@ from editfonts.widgets.custom_box import PageHeading
 # from editfonts.widgets.custom_box import FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class EditorPage(Gtk.Box):
@@ -40,9 +40,11 @@ class EditorPage(Gtk.Box):
         self.pack_end(self.side_toolbar_right, False, False, 10)
 
         # create Left Toolbar
+        """
         self.side_toolbar_left = self._create_left_toolbar()
         self.side_toolbar_left.set_property("border-width", 40)
         self.pack_start(self.side_toolbar_left, False, False, 10)
+        """
 
         # create Central main area
         self.vbox = Gtk.VBox()
@@ -51,7 +53,7 @@ class EditorPage(Gtk.Box):
                                    globals.FONT.info.familyName,
                                    fontSize='20000')
 
-        self.characterMap = CharacterMap(15, 1, 'BUTTON')
+        self.characterMap = CharacterMap(10, 1, 'BUTTON')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         self.vbox.pack_start(Gtk.HSeparator(),

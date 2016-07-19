@@ -1,14 +1,16 @@
 from gi.repository import Gtk, Gdk
 # import cairo
-# import math
+import math
+
+from sugar3.graphics import style
 # from defcon import Font
-import editfonts.globals as globals
 
 # Making a glyph editor box
 from editfonts.objects.gtkpen import GtkPen
-from editfonts.widgets.dragpoint import DragPoint
+from editfonts.widgets.drag_point import DragPoint
 # from editfonts.objects.basesegment import BaseSegment
 from editfonts.objects.bezierpen import BezierPenTool
+from editfonts.globals import globals
 
 
 def bind(A, O, B):
@@ -16,6 +18,7 @@ def bind(A, O, B):
     # FIX ME: a none type point shouldn't be bind to a curve
     # type point with a line or curve type point next to it
     # This currently shows an error
+    # This shows an error for glyph 'M' for TT Coats Light Font
     if A.point.segmentType != u'line' or A.point.segmentType != u'curve' \
             or B.point.segmentType != u'line' \
             or B.point.segmentType != u'curve':
@@ -42,6 +45,8 @@ class EditorBox(Gtk.EventBox):
         self.da = Gtk.DrawingArea()
         self.da.set_size_request(globals.EDITOR_BOX_WIDTH,
                                  globals.EDITOR_BOX_HEIGHT)
+        self.da.modify_bg(Gtk.StateType.NORMAL,
+                          style.Color('#FFFFFF').get_gdk_color())
 
         self.fixed.put(self.da, 0, 0)
 
@@ -78,7 +83,6 @@ class EditorBox(Gtk.EventBox):
         self.draw_all_contours(cr, 0)
 
         # draw baseline, ascender, etc
-
         # return False
 
     def _on_point_press(self, widget, event):
@@ -86,7 +90,7 @@ class EditorBox(Gtk.EventBox):
         if event.type == Gdk.EventType.BUTTON_PRESS\
                 and event.button == 3:
             # toggle the bezier pen tool
-            print "a right click was noticed"
+            # print "a right click was noticed"
 
             try:
                 flag = isinstance(self.tool["BezierPen"], BezierPenTool)
@@ -97,24 +101,29 @@ class EditorBox(Gtk.EventBox):
             if flag:
                 if self.tool["BezierPen"].get_active():
                     self.tool["BezierPen"].set_active(False)
-                    print "pen tool deactivated"
+                    # print "pen tool deactivated"
+                    self.update_control_points()
                 else:
                     self.tool["BezierPen"].set_active(True)
-                    print "pen tool activated"
+                    # print "pen tool activated"
             else:
                 self.tool["BezierPen"] = BezierPenTool(self)
-                print "pen tool activated"
+                # print "pen tool activated"
 
     def update_control_points(self):
         # delete the current set of drag points
         for point in self.points:
+            self.fixed.remove(point)
             point.destroy()
             del point
 
+        del self.points
         self.points = []
 
         for contour in self.contours:
+            # print len(contour)
             for point in contour:
+                # print "adding: " + str(point.x) + ", " + str(point.y)
                 self.add_point(point)
 
         self.update_bindings()
@@ -148,37 +157,54 @@ class EditorBox(Gtk.EventBox):
                 contour.draw(pen)
                 # close the contour
 
-                cr.close_path()
+                if contour.open is False:
+                    cr.close_path()
+                else:
+                    if contour.dirty is True:
+                        cr.stroke()
+                        cr.set_source_rgb(0.3, 0.3, 0.3)
+                        cr.set_line_width(1)
+
+                        r = globals.X(contour[0].x + globals.ZONE_R)\
+                            - globals.X(contour[0].x)
+                        pen.moveTo((contour[0].x + globals.ZONE_R,
+                                    contour[0].y))
+                        cr.arc(globals.X(contour[0].x),
+                               globals.Y(contour[0].y),
+                               r, 0, 2 * math.pi)
+
                 cr.stroke()
 
-                # draw control points
+                # draw construction lines
                 cr.set_source_rgb(0.3, 0.3, 0.3)
                 cr.set_line_width(1)
 
-                for i, seg in enumerate(contour.segs):
-                    if seg[-1].segType == u'line' and len(seg) == 1:
+                for i, segment in enumerate(contour.segments):
+                    if segment[-1].segmentType == u'line' and\
+                            len(segment) == 1:
                         # print "line"
                         # No construction lines required
                         pass
 
-                    elif seg[-1].segType == u'move' and len(seg) == 1:
+                    elif segment[-1].segmentType == u'move' and\
+                            len(segment) == 1:
                         # No construction lines required
                         pass
 
-                    elif seg[-1].segType == u'curve' and len(seg) == 3:
-                        pen.moveTo((contour.segs[i - 1][-1].x,
-                                    contour.segs[i - 1][-1].y))
-                        pen.lineTo((seg[0].x, seg[0].y))
-                        pen.moveTo((seg[1].x, seg[1].y))
-                        pen.lineTo((seg[2].x, seg[2].y))
+                    elif segment[-1].segmentType == u'curve' and\
+                            len(segment) == 3:
+                        pen.moveTo((contour.segments[i - 1][-1].x,
+                                    contour.segments[i - 1][-1].y))
+                        pen.lineTo((segment[0].x, segment[0].y))
+                        pen.moveTo((segment[1].x, segment[1].y))
+                        pen.lineTo((segment[2].x, segment[2].y))
 
                     else:
-                        print seg[-1].segType
-                        print len(seg)
+                        # print segment[-1].segmentType
+                        # print len(segment)
                         raise NotImplementedError
 
-                cr.close_path()
-                cr.stroke()
+                    cr.stroke()
 
     def add_point(self, p):
 
