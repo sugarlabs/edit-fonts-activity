@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BaseFont &mdash; Edit Fonts Activity 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Edit Fonts Activity 1.0 documentation" href="../index.html" />
+    <link rel="next" title="BezierPenTool" href="bezierpen.html" />
+    <link rel="prev" title="Welcome to Edit Fonts Activity’s documentation!" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="basefont">
+<h1>BaseFont<a class="headerlink" href="#basefont" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><span class="xref std std-ref">globals</span>:</dt>
+<dd>the globals class contains a BaseFont object</dd>
+</dl>
+</div>
+<div class="section" id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-font">
+<h3>Create Font<a class="headerlink" href="#create-font" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="xref py py-meth docutils literal"><span class="pre">new_standard_font()</span></code></li>
+</ul>
+</div>
+<div class="section" id="create-glyph">
+<h3>Create Glyph<a class="headerlink" href="#create-glyph" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="xref py py-meth docutils literal"><span class="pre">new_standard_glyph()</span></code></li>
+</ul>
+<div class="section" id="id1">
+<h4>BaseFont<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-editfonts.objects.basefont"></span><dl class="class">
+<dt id="editfonts.objects.basefont.BaseFont">
+<em class="property">class </em><code class="descclassname">editfonts.objects.basefont.</code><code class="descname">BaseFont</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.addObserver">
+<code class="descname">addObserver</code><span class="sig-paren">(</span><em>observer</em>, <em>methodName</em>, <em>notification</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.addObserver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an observer to this object&#8217;s notification dispatcher.</p>
+<ul class="simple">
+<li><strong>observer</strong> An object that can be referenced with weakref.</li>
+<li><strong>methodName</strong> A string epresenting the method to be called
+when the notification is posted.</li>
+<li><strong>notification</strong> The notification that the observer should
+be notified of.</li>
+</ul>
+<p>The method that will be called as a result of the action
+must accept a single <em>notification</em> argument. This will
+be a <code class="xref py py-class docutils literal"><span class="pre">defcon.tools.notifications.Notification</span></code> object.</p>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">addObserver</span><span class="p">(</span><span class="n">observer</span><span class="o">=</span><span class="n">observer</span><span class="p">,</span> <span class="n">methodName</span><span class="o">=</span><span class="n">methodName</span><span class="p">,</span>
+    <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.bounds">
+<code class="descname">bounds</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>The bounds of all glyphs in the font&#8217;s main layer. This can be an expensive operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.componentReferences">
+<code class="descname">componentReferences</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.componentReferences" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of describing the component relationships in the font&#8217;s main layer. The dictionary is of form <code class="docutils literal"><span class="pre">{base</span> <span class="pre">glyph</span> <span class="pre">:</span> <span class="pre">[references]}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.controlPointBounds">
+<code class="descname">controlPointBounds</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.controlPointBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>The control bounds of all glyphs in the font&#8217;s main layer. This only measures the point positions, it does not measure curves. So, curves without points at the extrema will not be properly measured. This is an expensive operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.data">
+<code class="descname">data</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">DataSet</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.destroyAllRepresentations">
+<code class="descname">destroyAllRepresentations</code><span class="sig-paren">(</span><em>notification=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.destroyAllRepresentations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy all representations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.destroyRepresentation">
+<code class="descname">destroyRepresentation</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.destroyRepresentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy the stored representation for <strong>name</strong>
+and <strong>**kwargs</strong>. If no <strong>kwargs</strong> are given,
+any representation with <strong>name</strong> will be destroyed
+regardless of the <strong>kwargs</strong> passed when the
+representation was created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.dirty">
+<code class="descname">dirty</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.dirty" title="Permalink to this definition">¶</a></dt>
+<dd><p>The dirty state of the object. True if the object has been changed. False if not. Setting this to True will cause the base changed notification to be posted. The object will automatically maintain this attribute and update it as you change the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.disableNotifications">
+<code class="descname">disableNotifications</code><span class="sig-paren">(</span><em>notification=None</em>, <em>observer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.disableNotifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable this object&#8217;s notifications until told to resume them.</p>
+<ul class="simple">
+<li><strong>notification</strong> The specific notification to disable. This is optional.
+If no <em>notification</em> is given, all notifications will be disabled.</li>
+</ul>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">disableNotifications</span><span class="p">(</span>
+    <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">,</span> <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="n">observer</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.dispatcher">
+<code class="descname">dispatcher</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.dispatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-class docutils literal"><span class="pre">defcon.tools.notifications.NotificationCenter</span></code> assigned to this font.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.enableNotifications">
+<code class="descname">enableNotifications</code><span class="sig-paren">(</span><em>notification=None</em>, <em>observer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.enableNotifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable this object&#8217;s notifications.</p>
+<ul class="simple">
+<li><strong>notification</strong> The specific notification to enable. This is optional.</li>
+</ul>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">enableNotifications</span><span class="p">(</span>
+    <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">,</span> <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observer</span><span class="o">=</span><span class="n">observer</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.features">
+<code class="descname">features</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.features" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Features</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.getRepresentation">
+<code class="descname">getRepresentation</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.getRepresentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representation. <strong>name</strong> must be a registered
+representation name. <strong>**kwargs</strong> will be passed
+to the appropriate representation factory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.getSaveProgressBarTickCount">
+<code class="descname">getSaveProgressBarTickCount</code><span class="sig-paren">(</span><em>formatVersion=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.getSaveProgressBarTickCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of ticks that will be used by a progress bar
+in the save method. Subclasses may override this method to
+implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.glyphOrder">
+<code class="descname">glyphOrder</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.glyphOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s glyph order. When setting the value must be a list of glyph names. There is no requirement, nor guarantee, that the list will contain only names of glyphs in the font. Setting this posts <em>Font.GlyphOrderChanged</em> and <em>Font.Changed</em> notifications.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.glyphsWithOutlines">
+<code class="descname">glyphsWithOutlines</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.glyphsWithOutlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of glyphs containing outlines in the font&#8217;s main layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.groups">
+<code class="descname">groups</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Groups</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.hasCachedRepresentation">
+<code class="descname">hasCachedRepresentation</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.hasCachedRepresentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean indicating if a representation for
+<strong>name</strong> and <strong>**kwargs</strong> is cached in the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.hasObserver">
+<code class="descname">hasObserver</code><span class="sig-paren">(</span><em>observer</em>, <em>notification</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.hasObserver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a boolean indicating is the <strong>observer</strong> is registered for <strong>notification</strong>.</p>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">hasObserver</span><span class="p">(</span><span class="n">observer</span><span class="o">=</span><span class="n">observer</span><span class="p">,</span>
+    <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.holdNotifications">
+<code class="descname">holdNotifications</code><span class="sig-paren">(</span><em>notification=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.holdNotifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hold this object&#8217;s notifications until told to release them.</p>
+<ul class="simple">
+<li><strong>notification</strong> The specific notification to hold. This is optional.
+If no <em>notification</em> is given, all notifications will be held.</li>
+</ul>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">holdNotifications</span><span class="p">(</span>
+    <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">,</span> <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.images">
+<code class="descname">images</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.images" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">ImageSet</span></code> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.info">
+<code class="descname">info</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Info</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.insertGlyph">
+<code class="descname">insertGlyph</code><span class="sig-paren">(</span><em>glyph</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.insertGlyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert <strong>glyph</strong> into the font&#8217;s main layer.
+Optionally, the glyph can be renamed at the same time by
+providing <strong>name</strong>. If a glyph with the glyph name, or
+the name provided as <strong>name</strong>, already exists, the existing
+glyph will be replaced with the new glyph.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.kerning">
+<code class="descname">kerning</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.kerning" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Kerning</span></code> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.kerningGroupConversionRenameMaps">
+<code class="descname">kerningGroupConversionRenameMaps</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.kerningGroupConversionRenameMaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>The kerning group rename map that will be used when writing UFO 1 and UFO 2. This follows the format defined in UFOReader. This will only not be None if it has been set or this object was loaded from a UFO 1 or UFO 2 file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.layers">
+<code class="descname">layers</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">LayerSet</span></code> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.lib">
+<code class="descname">lib</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.lib" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Lib</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.newGlyph">
+<code class="descname">newGlyph</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.newGlyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new glyph with <strong>name</strong> in the font&#8217;s main layer.
+If a glyph with that name already exists, the existing
+glyph will be replaced with the new glyph.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.newLayer">
+<code class="descname">newLayer</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.newLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <code class="xref py py-class docutils literal"><span class="pre">Layer</span></code> and add it to
+the top of the layer order.</p>
+<p>This posts <em>LayerSet.LayerAdded</em> and <em>LayerSet.Changed</em> notifications.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.path">
+<code class="descname">path</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The location of the file on disk. Setting the path should only be done when the user has moved the file in the OS interface. Setting the path is not the same as a save operation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.postNotification">
+<code class="descname">postNotification</code><span class="sig-paren">(</span><em>notification</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.postNotification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post a <strong>notification</strong> through this object&#8217;s notification dispatcher.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>notification</strong> The name of the notification.</li>
+<li><strong>data</strong> Arbitrary data that will be stored in the <code class="xref py py-class docutils literal"><span class="pre">Notification</span></code> object.</li>
+</ul>
+</div></blockquote>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">postNotification</span><span class="p">(</span>
+    <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.releaseHeldNotifications">
+<code class="descname">releaseHeldNotifications</code><span class="sig-paren">(</span><em>notification=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.releaseHeldNotifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release this object&#8217;s held notifications.</p>
+<ul class="simple">
+<li><strong>notification</strong> The specific notification to hold. This is optional.</li>
+</ul>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">releaseHeldNotifications</span><span class="p">(</span>
+    <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">,</span> <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadData">
+<code class="descname">reloadData</code><span class="sig-paren">(</span><em>fileNames</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data files listed in <strong>fileNames</strong> from the
+appropriate files within the UFO. When all of the
+loading is complete, a <em>Font.ReloadedData</em> notification
+will be posted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadFeatures">
+<code class="descname">reloadFeatures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the <code class="xref py py-class docutils literal"><span class="pre">Features</span></code> object from the
+features.fea file in the UFO.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadGlyphs">
+<code class="descname">reloadGlyphs</code><span class="sig-paren">(</span><em>glyphNames</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadGlyphs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated! Use reloadLayers!</p>
+<p>Reload the glyphs listed in <strong>glyphNames</strong> from the
+appropriate files within the UFO. When all of the
+loading is complete, a <em>Font.ReloadedGlyphs</em> notification
+will be posted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadGroups">
+<code class="descname">reloadGroups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the <code class="xref py py-class docutils literal"><span class="pre">Groups</span></code> object from the
+groups.plist file in the UFO.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadImages">
+<code class="descname">reloadImages</code><span class="sig-paren">(</span><em>fileNames</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadImages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the images listed in <strong>fileNames</strong> from the
+appropriate files within the UFO. When all of the
+loading is complete, a <em>Font.ReloadedImages</em> notification
+will be posted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadInfo">
+<code class="descname">reloadInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the <code class="xref py py-class docutils literal"><span class="pre">Info</span></code> object from the
+fontinfo.plist file in the UFO.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadKerning">
+<code class="descname">reloadKerning</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadKerning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the <code class="xref py py-class docutils literal"><span class="pre">Kerning</span></code> object from the
+kerning.plist file in the UFO.</p>
+<p>This validates the kerning against the groups loaded into the
+font. If groups are being reloaded in the same pass, the groups
+should always be reloaded before reloading the kerning.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadLayers">
+<code class="descname">reloadLayers</code><span class="sig-paren">(</span><em>layerData</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the layers specfied in <strong>layerData</strong>.
+When all of the loading is complete, <em>Font.ReloadedLayers</em>
+and <em>Font.ReloadedGlyphs</em> notifications will be posted.
+The <strong>layerData</strong> must be a dictionary following this format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;order&quot;</span>   <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if you want the order releaded</span>
+    <span class="s2">&quot;default&quot;</span> <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if you want the default layer reset</span>
+    <span class="s2">&quot;layers&quot;</span>  <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;layer name&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;glyphNames&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;glyph name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;glyph name 2&quot;</span><span class="p">],</span> <span class="c1"># list of glyph names you want to reload</span>
+            <span class="s2">&quot;info&quot;</span>       <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if you want the layer info reloaded</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.reloadLib">
+<code class="descname">reloadLib</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.reloadLib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the data in the <code class="xref py py-class docutils literal"><span class="pre">Lib</span></code> object from the
+lib.plist file in the UFO.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.removeObserver">
+<code class="descname">removeObserver</code><span class="sig-paren">(</span><em>observer</em>, <em>notification</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.removeObserver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an observer from this object&#8217;s notification dispatcher.</p>
+<ul class="simple">
+<li><strong>observer</strong> A registered object.</li>
+<li><strong>notification</strong> The notification that the observer was registered
+to be notified of.</li>
+</ul>
+<p>This is a convenience method that does the same thing as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span> <span class="o">=</span> <span class="n">anObject</span><span class="o">.</span><span class="n">dispatcher</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">removeObserver</span><span class="p">(</span><span class="n">observer</span><span class="o">=</span><span class="n">observer</span><span class="p">,</span>
+    <span class="n">notification</span><span class="o">=</span><span class="n">notification</span><span class="p">,</span> <span class="n">observable</span><span class="o">=</span><span class="n">anObject</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.representationKeys">
+<code class="descname">representationKeys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.representationKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of all representation keys that are
+currently cached.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>path=None</em>, <em>formatVersion=None</em>, <em>removeUnreferencedImages=False</em>, <em>progressBar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the font to <strong>path</strong>. If path is None, the path
+from the last save or when the font was first opened
+will be used.</p>
+<p>The UFO will be saved using the format found at <code class="docutils literal"><span class="pre">ufoFormatVersion</span></code>.
+This value is either the format version from the exising UFO or
+the format version specified in a previous save. If neither of
+these is available, the UFO will be written as format version 3.
+If you wish to specifiy the format version for saving, pass
+the desired number as the <strong>formatVersion</strong> argument.</p>
+<p>Optionally, the UFO can be purged of unreferenced images
+during this operation. To do this, pass <code class="docutils literal"><span class="pre">True</span></code> as the
+value for the removeUnreferencedImages argument.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveData">
+<code class="descname">saveData</code><span class="sig-paren">(</span><em>writer</em>, <em>saveAs=False</em>, <em>progressBar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save data. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveFeatures">
+<code class="descname">saveFeatures</code><span class="sig-paren">(</span><em>writer</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveFeatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save features. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveGroups">
+<code class="descname">saveGroups</code><span class="sig-paren">(</span><em>writer</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save groups. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveImages">
+<code class="descname">saveImages</code><span class="sig-paren">(</span><em>writer</em>, <em>removeUnreferencedImages=False</em>, <em>saveAs=False</em>, <em>progressBar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveImages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save images. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveInfo">
+<code class="descname">saveInfo</code><span class="sig-paren">(</span><em>writer</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save info. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveKerning">
+<code class="descname">saveKerning</code><span class="sig-paren">(</span><em>writer</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveKerning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save kerning. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.saveLib">
+<code class="descname">saveLib</code><span class="sig-paren">(</span><em>writer</em>, <em>saveAs=False</em>, <em>progressBar=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.saveLib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save lib. This method should not be called externally.
+Subclasses may override this method to implement custom saving behavior.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.testForExternalChanges">
+<code class="descname">testForExternalChanges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.testForExternalChanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the UFO for changes that occured outside of this font&#8217;s
+tree of objects. This returns a dictionary describing the changes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;info&quot;</span>     <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+    <span class="s2">&quot;kerning&quot;</span>  <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+    <span class="s2">&quot;groups&quot;</span>   <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+    <span class="s2">&quot;features&quot;</span> <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+    <span class="s2">&quot;lib&quot;</span>      <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+    <span class="s2">&quot;layers&quot;</span>   <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;defaultLayer&quot;</span> <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+        <span class="s2">&quot;order&quot;</span>        <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+        <span class="s2">&quot;added&quot;</span>        <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;layer name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;layer name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;deleted&quot;</span>      <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;layer name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;layer name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;modified&quot;</span>     <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;info&quot;</span>     <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="c1"># True if changed, False if not changed</span>
+            <span class="s2">&quot;modified&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;glyph name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;glyph name 2&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;added&quot;</span>    <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;glyph name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;glyph name 2&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;deleted&quot;</span>  <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;glyph name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;glyph name 2&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;images&quot;</span>   <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;modified&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;image name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;image name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;added&quot;</span>    <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;image name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;image name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;deleted&quot;</span>  <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;image name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;image name 2&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;data&quot;</span>     <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;modified&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;file name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;file name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;added&quot;</span>    <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;file name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;file name 2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;deleted&quot;</span>  <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;file name 1&quot;</span><span class="p">,</span> <span class="s2">&quot;file name 2&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It is important to keep in mind that the user could have created
+conflicting data outside of the font&#8217;s tree of objects. For example,
+say the user has set <code class="docutils literal"><span class="pre">font.info.unitsPerEm</span> <span class="pre">=</span> <span class="pre">1000</span></code> inside of the
+font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">Info</span></code> object and the user has not saved this change.
+In the the font&#8217;s fontinfo.plist file, the user sets the unitsPerEm value
+to 2000. Which value is current? Which value is right? defcon leaves
+this decision up to you.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.ufoFormatVersion">
+<code class="descname">ufoFormatVersion</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.ufoFormatVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>The UFO format version that will be used when saving. This is taken from a loaded UFO during __init__. If this font was not loaded from a UFO, this will return None until the font has been saved.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.undoManager">
+<code class="descname">undoManager</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.undoManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The undo manager assigned to this object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="editfonts.objects.basefont.BaseFont.unicodeData">
+<code class="descname">unicodeData</code><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.unicodeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font&#8217;s <code class="xref py py-class docutils literal"><span class="pre">UnicodeData</span></code> object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.objects.basefont.BaseFont.updateGlyphOrder">
+<code class="descname">updateGlyphOrder</code><span class="sig-paren">(</span><em>addedGlyph=None</em>, <em>removedGlyph=None</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.objects.basefont.BaseFont.updateGlyphOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tries to keep the glyph order in sync.
+This should not be called externally. It may be overriden
+by subclasses as needed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BaseFont</a><ul>
+<li><a class="reference internal" href="#tasks">Tasks</a><ul>
+<li><a class="reference internal" href="#create-font">Create Font</a></li>
+<li><a class="reference internal" href="#create-glyph">Create Glyph</a><ul>
+<li><a class="reference internal" href="#id1">BaseFont</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to Edit Fonts Activity&#8217;s documentation!</a></li>
+      <li>Next: <a href="bezierpen.html" title="next chapter">BezierPenTool</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/objects/basefont.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Yash Agarwal.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/objects/basefont.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

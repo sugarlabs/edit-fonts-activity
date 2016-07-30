@@ -29,7 +29,7 @@ from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityButton
-from sugar3 import mime
+# from sugar3 import mime
 from sugar3.activity.widgets import StopButton
 from sugar3.activity.widgets import TitleEntry
 from sugar3.activity.widgets import ShareButton
@@ -42,9 +42,9 @@ from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
 
 from defcon import Font
-from ufo2ft import compileOTF
+# from ufo2ft import compileOTF
 from ufo2ft import compileTTF
-import extractor
+# import extractor
 
 from editfonts.pages.summary_page import SummaryPage
 from editfonts.pages.editor_page import EditorPage
@@ -251,6 +251,7 @@ class EditFonts(activity.Activity):
 
         return page_num
 
+    """
     def _load_binary(self, filePath=None):
 
         if filePath is None:
@@ -258,7 +259,7 @@ class EditFonts(activity.Activity):
             # FIX ME: Add compatibility for earlier versions
             try:
                 chooser = ObjectChooser(parent=self,
-                                        filter_type=FILTER_TYPE_MIME_BY_ACTIVITY, # noqa
+                                        filter_type=FILTER_TYPE_MIME_BY_ACTIVITY,  # noqa
                                         what_filter=mime.GENERIC_TYPE_TEXT)
                 result = chooser.run()
                 if result == Gtk.ResponseType.ACCEPT:
@@ -294,8 +295,9 @@ class EditFonts(activity.Activity):
                 # FIX ME: Check that if main_font has unsaved changes
                 globals.FONT = newFont
                 self.set_page("SUMMARY")
-            except Exception, e:
-                raise e
+            except:
+                pass
+    """
 
     def _load_ufo_from_file(self, file_path):
 
@@ -417,7 +419,6 @@ class EditFonts(activity.Activity):
         instance_path =\
             os.path.join(self.get_activity_root(),
                          'instance', self.metadata['title'] + '.ufo')
-        print instance_path
         globals.FONT.save(instance_path)
 
         # zip the folder
@@ -427,7 +428,6 @@ class EditFonts(activity.Activity):
         file_path =\
             os.path.join(self.get_activity_root(),
                          'data', self.metadata['title'] + '.ufo.zip')
-        print file_path
         zipf = zipfile.ZipFile(file_path, 'w', zipfile.ZIP_DEFLATED)
 
         for root, dirs, files in os.walk(instance_path):

@@ -35,7 +35,7 @@ before_install:
 
 script: 
 # check our code conforms to pep8
-  - "flake8 --statistics  --ignore=E402 --exclude=defcon,extractor,fontTools,fontmake,robofab,ufo2ft,ufoLib,snippets ."
+  - "flake8 --statistics  --ignore=E402 --exclude=defcon,extractor,fontTools,fontmake,robofab,ufo2ft,ufoLib,snippets,docs ."
 # TODO This may be needed to build xo packages
 #  - "echo 'python activities/EditFonts.activity/setup.py dist_xo' | ./osbuild shell"
 
