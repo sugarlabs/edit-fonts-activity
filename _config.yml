@@ -1,41 +1,13 @@
 title:            Sugar Font Editor Activity
 tagline:          Kids Make Fonts
 description:      Kids Make Fonts
-canonical:        https://sugarlabs.github.io/edit-fonts-activity
-baseurl:          /edit-fonts-activity
-
-# Owner/author information
-owner:
-  name:           Sugar Font Editor Activity Authors
-  bio:            "Google Summer of Code 2016 Student Yash Agarwal, Mentors Eli Heuer and Dave Crossland"
-  email:          sugar-devel@lists.sugarlabs.org
-  twitter:        sugarlabs
-  github:         http://github.com/sugarlabs
-  instagram:      sugarlabs
-  location:       Worldwide
-
-tools:
-  standards:      "HTML, SCSS, Jekyll"
-  software:       "git"
-
-# Links to include in top navigation
-# For external links add external: true
-links:
-  - title: About
-    url: /about
-  - title: Github
-    url: https://github.com/sugarlabs/edit-fonts-activity
-    external: true
-#  - title: Posts
-#    url: /articles/index
+canonical:        https://sugarlabs.github.io/edit-fonts-activity/
+baseurl:          /edit-fonts-activity/
 
 # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 timezone:    Asia/Kolkata
 future:      false
-highlighter: rouge
 markdown:    kramdown
-
-safe: true
 
 kramdown:
   auto_ids: true
