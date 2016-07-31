@@ -55,7 +55,7 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.34648232"
+     inkscape:zoom="0.98"
      inkscape:cx="941.32492"
      inkscape:cy="499.91334"
      inkscape:document-units="px"
@@ -1106,5 +1106,11 @@
        cx="1035.5"
        cy="282.5"
        r="6.25" />
+    <path
+       style="display:inline;fill:#50e484;fill-opacity:1;fill-rule:evenodd;stroke:#493197;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 619.5,497.74998 0,68 c 0,6 4,10 10,10 6,0 10,-3.99998 10,-10 l 0,-33.99998 59.99999,60 14,-14 -59.99999,-60 33.99999,-2e-5 c 6,0 10,-4 10,-10 0,-6 -4,-10 -10,-10 z"
+       id="path4620-61-5-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccssccccsssc" />
   </g>
 </svg>
