@@ -11,7 +11,7 @@ from editfonts.widgets.custom_box import PageHeading
 # from editfonts.widgets.custom_box import FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class EditorPage(Gtk.Box):
@@ -40,9 +40,11 @@ class EditorPage(Gtk.Box):
         self.pack_end(self.side_toolbar_right, False, False, 10)
 
         # create Left Toolbar
+        """
         self.side_toolbar_left = self._create_left_toolbar()
         self.side_toolbar_left.set_property("border-width", 40)
         self.pack_start(self.side_toolbar_left, False, False, 10)
+        """
 
         # create Central main area
         self.vbox = Gtk.VBox()
@@ -51,7 +53,7 @@ class EditorPage(Gtk.Box):
                                    globals.FONT.info.familyName,
                                    fontSize='20000')
 
-        self.characterMap = CharacterMap(self, 15, 1, 'BUTTON')
+        self.characterMap = CharacterMap(10, 1, 'BUTTON')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         self.vbox.pack_start(Gtk.HSeparator(),
@@ -67,7 +69,7 @@ class EditorPage(Gtk.Box):
                                               xscale=0,
                                               yscale=0)
 
-        self.editor_area = EditorBox(self.font, self.glyphName)
+        self.editor_area = EditorBox()
         self.editor_alignment.add(self.editor_area)
         self.vbox.pack_start(self.editor_alignment, True, True, 30)
 
@@ -109,7 +111,7 @@ class EditorPage(Gtk.Box):
         installButton = Gtk.Button()
         installButton.set_image(image_icon)
         installButton.modify_bg(Gtk.StateType.NORMAL,
-                                style.Color('# 34495E').get_gdk_color())
+                                style.Color('#34495E').get_gdk_color())
         installButton.props.relief = Gtk.ReliefStyle.NONE
         installButton.connect("clicked", self._clickInstall)
         grid.attach(installButton, 0, 0, 1, 1)
@@ -129,7 +131,7 @@ class EditorPage(Gtk.Box):
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                           icon_name='delete',
                           stroke_color=style.COLOR_BLACK.get_svg(),
-                          fill_color=style.Color('# E74C3C').get_svg())
+                          fill_color=style.Color('#E74C3C').get_svg())
 
         deleteButton = Gtk.Button()
         deleteButton.add(image_icon)
@@ -170,7 +172,7 @@ class EditorPage(Gtk.Box):
         installButton = Gtk.Button()
         installButton.set_image(image_icon)
         installButton.modify_bg(Gtk.StateType.NORMAL,
-                                style.Color('# 34495E').get_gdk_color())
+                                style.Color('#34495E').get_gdk_color())
         installButton.props.relief = Gtk.ReliefStyle.NONE
         installButton.connect("clicked", self._clickInstall)
         grid.attach(installButton, 0, 0, 1, 1)
@@ -190,7 +192,7 @@ class EditorPage(Gtk.Box):
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                           icon_name='delete',
                           stroke_color=style.COLOR_BLACK.get_svg(),
-                          fill_color=style.Color('# E74C3C').get_svg())
+                          fill_color=style.Color('#E74C3C').get_svg())
 
         deleteButton = Gtk.Button()
         deleteButton.add(image_icon)

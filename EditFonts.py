@@ -17,34 +17,19 @@
 """Edit Fonts Activity: Kids make fonts!"""
 
 import os
-# import shutil
 import logging
 import time
 from gettext import gettext as _
 
 import gi
-# gi.require_version('GConf', '2.0')
-# from gi.repository import GConf
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-# from gi.repository import Gdk
-# from gi.repository import Gio
-# from gi.repository import Pango
-
-# import cairo
-# import math
-
-# from sugar3 import env
-# from sugar3.graphics import style
-# from sugar3.graphics.icon import CellRendererIcon
-# from sugar3.graphics.xocolor import XoColor
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityButton
-# from sugar3.graphics.toggletoolbutton import ToggleToolButton
-from sugar3 import mime
+# from sugar3 import mime
 from sugar3.activity.widgets import StopButton
 from sugar3.activity.widgets import TitleEntry
 from sugar3.activity.widgets import ShareButton
@@ -55,15 +40,11 @@ from sugar3.datastore import datastore
 from sugar3 import profile
 from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
-# from sugar3.graphics.palette import Palette
 
-# import cairo
-
-# import math
 from defcon import Font
 # from ufo2ft import compileOTF
 from ufo2ft import compileTTF
-import extractor
+# import extractor
 
 from editfonts.pages.summary_page import SummaryPage
 from editfonts.pages.editor_page import EditorPage
@@ -71,7 +52,7 @@ from editfonts.pages.manager_page import ManagerPage
 from editfonts.pages.welcome_page import WelcomePage
 from editfonts.pages.create_font_page import CreateFontPage
 # from editfonts.objects.basefont import BaseFont
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 """
 This Dictionary contains all the class types for pages the activity will
@@ -79,25 +60,26 @@ ever be needing with a key(eg. "MANAGER") that will be used to access
 the class type for that page
 """
 
-PAGE = {'SUMMARY': SummaryPage,
-        'EDITOR': EditorPage,
+PAGE = {'WELCOME': WelcomePage,
+        'SUMMARY': SummaryPage,
         'MANAGER': ManagerPage,
-        'WELCOME': WelcomePage,
-        'CREATEFONT': CreateFontPage}
+        'CREATEFONT': CreateFontPage,
+        'EDITOR': EditorPage}
 
-PAGE = [{'SUMMARY': SummaryPage}, {'EDITOR': EditorPage},
-        {'MANAGER': ManagerPage}]
 page_list = []
 
 # Max number of pages stored in memory
-MAX_PAGE_NUM = 3
+# FIX ME: currently the pages are not updated if the page already exists
+# currently this has been set to 1 to generate a new page
+# everytime a new page is requested by the application
+MAX_PAGE_NUM = 1
 
 
 class EditFonts(activity.Activity):
     """Edit Fonts"""
 
     def __init__(self, handle):
-        """Set up the EditFonts activity."""
+        # Set up the EditFonts activity
         activity.Activity.__init__(self, handle)
 
         globals.A = self
@@ -107,6 +89,8 @@ class EditFonts(activity.Activity):
                             format='%(asctime)s %(levelname)s %(message)s',
                             filename='EditFonts.log',
                             filemode='w')
+
+        logging.debug("Activity Handle Initialised")
 
         """Toolbar"""
         toolbar_box = ToolbarBox()
@@ -127,10 +111,20 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(share_button, -1)
         share_button.show()
 
+        # Add the export/import load/save buttons
+
         separator_2 = Gtk.SeparatorToolItem()
         separator_2.show()
         toolbar_box.toolbar.insert(separator_2, -1)
 
+        self.bt_save_ufo = ToolButton()
+        self.bt_save_ufo.props.icon_name = 'save-as-otf'
+        self.bt_save_ufo.connect('clicked', self._save_ufo)
+        self.bt_save_ufo.set_tooltip(_('Save UFO'))
+        toolbar_box.toolbar.insert(self.bt_save_ufo, -1)
+        self.bt_save_ufo.show()
+
+        """
         self.bt_save_as_ttf = ToolButton()
         self.bt_save_as_ttf.props.icon_name = 'save-as-ttf'
         self.bt_save_as_ttf.connect('clicked', self._write_ttf)
@@ -152,31 +146,28 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.bt_load_otf, -1)
         self.bt_load_otf.show()
 
-        self.bt_save_ufo = ToolButton()
-        self.bt_save_ufo.props.icon_name = 'save-as-otf'
-        self.bt_save_ufo.connect('clicked', self._write_ufo)
-        self.bt_save_ufo.set_tooltip(_('Save UFO'))
-        toolbar_box.toolbar.insert(self.bt_save_ufo, -1)
-        self.bt_save_ufo.show()
+        """
 
         separator = Gtk.SeparatorToolItem()
         toolbar_box.toolbar.insert(separator, -1)
 
-        self.bt_open_manager = ToolButton()
-        self.bt_open_manager.props.icon_name = 'manager'
-        self.bt_open_manager.connect('clicked',
+        '''
+        self.bt_open_page = ToolButton()
+        self.bt_open_page.props.icon_name = 'manager'
+        self.bt_open_page.connect('clicked',
                                      lambda _: self.set_page("MANAGER"))
-        self.bt_open_manager.set_tooltip(_('Open Manager'))
-        toolbar_box.toolbar.insert(self.bt_open_manager, -1)
-        self.bt_open_manager.show()
+        self.bt_open_page.set_tooltip(_('Open Manager Page'))
+        toolbar_box.toolbar.insert(self.bt_open_page, -1)
+        self.bt_open_page.show()
+        '''
 
-        self.bt_open_editor = ToolButton()
-        self.bt_open_editor.props.icon_name = 'edit'
-        self.bt_open_editor.connect('clicked',
-                                    lambda _: self.set_page("EDITOR"))
-        self.bt_open_editor.set_tooltip(_('Open Editor(Temporary Button)'))
-        toolbar_box.toolbar.insert(self.bt_open_editor, -1)
-        self.bt_open_editor.show()
+        self.bt_open_page = ToolButton()
+        self.bt_open_page.props.icon_name = 'summary'
+        self.bt_open_page.connect('clicked',
+                                  lambda _: self.set_page("SUMMARY"))
+        self.bt_open_page.set_tooltip(_('Open Summary Page'))
+        toolbar_box.toolbar.insert(self.bt_open_page, -1)
+        self.bt_open_page.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -200,22 +191,24 @@ class EditFonts(activity.Activity):
 
         """Starting the Main Canvas Design"""
 
-        # a gtk notebook object will manga all the pages of the application
+        # a gtk notebook object will manage all the pages of the application
         # for this activity
         self.notebook = Gtk.Notebook()
 
         self.notebook.set_show_tabs(False)
 
-        self.set_page("MANAGER")
+        if self._jobject.file_path is not None and \
+                self._jobject.file_path != '':
+            self.load_ufo(self._jobject.file_path)
+        else:
+            self.set_page("WELCOME")
 
         self.set_canvas(self.notebook)
         self.show_all()
 
     def set_page(self, page_name):
-        # TODO unpack this long line
-        page_num = next(index for (index, d) in enumerate(PAGE)
-                        if page_name in d)
-        self.create_page(page_name)
+
+        page_num = self.create_page(page_name)
         self.notebook.set_current_page(page_num)
 
     def create_page(self, page_name):
@@ -244,7 +237,7 @@ class EditFonts(activity.Activity):
             page_list.append(self.page)
 
         else:
-            print page_name + " exist, just updating it"
+            # print page_name + " exist, just updating it"
 
             # update the previous instance
             self.page = page_list[l]
@@ -258,6 +251,7 @@ class EditFonts(activity.Activity):
 
         return page_num
 
+    """
     def _load_binary(self, filePath=None):
 
         if filePath is None:
@@ -265,6 +259,7 @@ class EditFonts(activity.Activity):
             # FIX ME: Add compatibility for earlier versions
             try:
                 chooser = ObjectChooser(parent=self,
+                                        filter_type=FILTER_TYPE_MIME_BY_ACTIVITY,  # noqa
                                         what_filter=mime.GENERIC_TYPE_TEXT)
                 result = chooser.run()
                 if result == Gtk.ResponseType.ACCEPT:
@@ -300,10 +295,40 @@ class EditFonts(activity.Activity):
                 # FIX ME: Check that if main_font has unsaved changes
                 globals.FONT = newFont
                 self.set_page("SUMMARY")
-            except Exception, e:
-                raise e
+            except:
+                pass
+    """
 
-    def load_ufo(self, filePath=None):
+    def _load_ufo_from_file(self, file_path):
+
+        import zipfile
+
+        try:
+            zf = zipfile.ZipFile(file_path)
+        except:
+            logging.error("Cannot Open Zip file at %s", str(file_path))
+            return 0
+        else:
+            # Get the activities Instance folders path
+            instance_path =\
+                os.path.join(self.get_activity_root(),
+                             'instance', 'tmp%i' % time.time())
+
+            zf.extractall(instance_path)
+
+            # now check if the file extracted is a valid UFO file
+            try:
+                new_font = Font(instance_path)
+            except:
+                logging.error("invalid UFO file %s", str(instance_path))
+                return 0
+            else:
+                globals.FONT = new_font
+                globals.FONT_PATH = instance_path
+
+        return 1
+
+    def load_ufo(self, file_path=None):
         """
         If the filePath is None this function opens the Object Chooser Dialog
         for choosing a .plist type file
@@ -312,7 +337,7 @@ class EditFonts(activity.Activity):
         and the current page will be set to Font Summary Page
         if the filepath is specified than the ufo from that filepath is opened
         """
-        if filePath is None:
+        if file_path is None:
 
             # FIX ME: Add compatibility for earlier versions
             try:
@@ -321,51 +346,38 @@ class EditFonts(activity.Activity):
                     what_filter=self.get_bundle_id(),
                     filter_type=FILTER_TYPE_MIME_BY_ACTIVITY)
             except:
-                chooser = ObjectChooser(parent=self,
-                                        what_filter=mime.GENERIC_TYPE_TEXT)
+                self._show_alert("Error",
+                                 "This feature is not Implemented")
+                logging.error("This feature is not Implemented")
+                # raise NotImplementedError
 
             try:
                 result = chooser.run()
                 if result == Gtk.ResponseType.ACCEPT:
-                    logging.error('ObjectChooser: %r' %
-                                  chooser.get_selected_object())
                     jobject = chooser.get_selected_object()
-                    print jobject.file_path
 
                     if jobject and jobject.file_path:
 
-                        logging.error("Selected File: %s",
-                                      jobject.file_path)
+                        # Now we know the file exists
+                        # Check if the file is of the valid format
 
-                        tempfile_name = \
-                            os.path.join(self.get_activity_root(),
-                                         'instance', 'tmp%i' % time.time())
-                        os.link(jobject.file_path, tempfile_name)
-                        logging.error("tempfile_name: %s", tempfile_name)
-                        newFont = Font()
-                        extractor.extractUFO(tempfile_name, newFont)
-                        globals.FONT = newFont
-                        self.set_page("SUMMARY")
-
+                        if not self._load_ufo_from_file(jobject.file_path):
+                            self._show_alert("Error",
+                                             "Invalid File type chosen")
+                            logging.error("File type is invalid")
+                        else:
+                            self.set_page("SUMMARY")
             finally:
                 chooser.destroy()
                 del chooser
 
         else:
-
-            filePath = 'test_fonts/Noto.ttf'
-            # path = "test_fonts/Noto.ttf"
-            # file_name = os.path.join(self.get_activity_root(), path)
-            newFont = Font()
-
-            try:
-                extractor.extractUFO(filePath, newFont)
-                # print Gio.content_type_guess(filePath, None)[0]
-                # FIX ME: Check that if main_font has unsaved changes
-                globals.FONT = newFont
+            if not self._load_ufo_from_file(file_path):
+                self._show_alert("Error",
+                                 "Invalid File type chosen")
+                logging.error("File type is invalid")
+            else:
                 self.set_page("SUMMARY")
-            except Exception, e:
-                raise e
 
     def _write_ttf(self, button):
         # # NOT WORKING# #
@@ -388,7 +400,7 @@ class EditFonts(activity.Activity):
         jobject.file_path = file_name
 
         # jobject.metadata['preview'] = \
-        #   self._get_preview_image(file_name)
+        # self._get_preview_image(file_name)
 
         datastore.write(jobject, transfer_ownership=True)
         self._object_id = jobject.object_id
@@ -397,45 +409,47 @@ class EditFonts(activity.Activity):
         success_msg = 'A TTF Font file was created in the Journal'
         self._show_journal_alert(_(success_title), _(success_msg))
 
-    def _write_ufo(self, button):
-        # # NOT WORKING# #
-        # Error: defcon.errors.DefconError: the kerning data is not valid
+    def _save_ufo(self, button):
+        """
+        This function should save the current font loaded
+        in globals.FONT as a .ufo.zip file
+        the file will be saved in the activity data folder
+        """
+        # save the font as a  ufo in a temp path
+        instance_path =\
+            os.path.join(self.get_activity_root(),
+                         'instance', self.metadata['title'] + '.ufo')
+        globals.FONT.save(instance_path)
 
-        # file_name = os.path.join(self.get_activity_root(), 'data',
-        #                        '%s.ufo' % self.metadata['title'])
-        # file_obj = open(file_name, 'w')
+        # zip the folder
+        import zipfile
 
-        file_name = "~/Documents/UFOs/abc1.ufo"
+        # create an empty zip file in the data folder
+        file_path =\
+            os.path.join(self.get_activity_root(),
+                         'data', self.metadata['title'] + '.ufo.zip')
+        zipf = zipfile.ZipFile(file_path, 'w', zipfile.ZIP_DEFLATED)
 
-        # file_name = self.metadata['title'] + '.ttf'
-        print "Printing UFO"
-        globals.FONT.save(file_name)
-        print "Printing UFO Done"
+        for root, dirs, files in os.walk(instance_path):
+            for file in files:
+                relroot = os.path.relpath(root, instance_path)
+                zipf.write(os.path.join(root, file),
+                           os.path.join(relroot, file))
+        zipf.close()
 
-        # file_obj.close()
-
+        # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/x-plist'
-        print "a"
-
+        jobject.metadata['mime_type'] = 'application/zip'
         jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = os.path.join(file_name, "metainfo.plist")
-
-        # jobject.metadata['preview'] = \
-        #   self._get_preview_image(file_name)
-        print "b"
-
+        jobject.file_path = file_path
         datastore.write(jobject, transfer_ownership=True)
-        print "c"
-
         self._object_id = jobject.object_id
-        print "d"
 
+        # create an alert
         success_title = 'Success'
-        success_msg = 'A UFO Font file was created in the Journal'
+        success_msg = 'A UFO Font zip file was created in the Journal'
         self._show_journal_alert(_(success_title), _(success_msg))
-        print "e"
 
     def _write_otf(self, button):
         # # NOT WORKING# #
@@ -469,6 +483,20 @@ class EditFonts(activity.Activity):
         _stop_alert.add_button(Gtk.ResponseType.APPLY,
                                _('Show in Journal'),
                                Icon(icon_name='zoom-activity'))
+        _stop_alert.add_button(Gtk.ResponseType.OK, _('Ok'),
+                               Icon(icon_name='dialog-ok'))
+        # Remove other alerts
+        for alert in self._alerts:
+            self.remove_alert(alert)
+
+        self.add_alert(_stop_alert)
+        _stop_alert.connect('response', self.__stop_response_cb)
+        _stop_alert.show_all()
+
+    def _show_alert(self, title, msg):
+        _stop_alert = Alert()
+        _stop_alert.props.title = title
+        _stop_alert.props.msg = msg
         _stop_alert.add_button(Gtk.ResponseType.OK, _('Ok'),
                                Icon(icon_name='dialog-ok'))
         # Remove other alerts

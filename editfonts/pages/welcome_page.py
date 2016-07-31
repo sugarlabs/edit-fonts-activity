@@ -11,7 +11,7 @@ from gi.repository import Gtk
 
 from editfonts.widgets.custom_box import PageHeading
 from editfonts.widgets.custom_box import ImageButton
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class WelcomePage(Gtk.VBox):

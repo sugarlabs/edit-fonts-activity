@@ -35,9 +35,9 @@ class ImageButton(Gtk.Button):
     """
 
     def __init__(self, icon_name,
-                 stroke_color="# 000000",
-                 fill_color="# FFFFFF",
-                 bg_color="# FFFFFF",
+                 stroke_color="#000000",
+                 fill_color="#FFFFFF",
+                 bg_color="#FFFFFF",
                  pixel_size=82.5):
 
         super(ImageButton, self).__init__()

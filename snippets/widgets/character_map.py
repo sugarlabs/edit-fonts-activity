@@ -1,6 +1,6 @@
 from gi.repository import Gtk, Gdk
 import cairo
-import pango
+from gi.repository import Pango
 import math
 
 from defcon import Font
@@ -149,7 +149,7 @@ class CharacterMap(Gtk.Box):
         
         unicodeLable = Gtk.Label(glyphName)
         unicodeLable.set_max_width_chars(6)
-        unicodeLable.set_property('ellipsize', pango.ELLIPSIZE_END)
+        unicodeLable.set_property('ellipsize', Pango.ELLIPSIZE_END)
         box.pack_start(unicodeLable, False, False, 2)
 
         alignment = Gtk.Alignment(xalign=0.5,

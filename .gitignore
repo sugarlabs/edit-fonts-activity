@@ -1,4 +1,4 @@
-*.pyc
+**/*.pyc
 .jekyll-metadata
 Gemfile.lock
 _site/

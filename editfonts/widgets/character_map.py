@@ -1,17 +1,17 @@
-from gi.repository import Gtk  # Gdk
-# import cairo
-import pango
-# import math
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+# from gi.repository import Pango
 
-# from defcon import Font
 from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-import editfonts.globals as globals
+from editfonts.globals import globals
 
 
 class CharacterMap(Gtk.Box):
+
     def __init__(self, w=10, h=80, ui_type='BUTTON'):
 
         super(CharacterMap, self).__init__()
@@ -134,7 +134,6 @@ class CharacterMap(Gtk.Box):
                         grid.remove(child)
 
                 """
-
         self.show_all()
 
     def _draw_box(self, glyphName, i, j):
@@ -143,26 +142,35 @@ class CharacterMap(Gtk.Box):
         self.grid.attach(eventBox, i, j, 1, 1)
         eventBox.connect("button-press-event", self._glyph_clicked, glyphName)
         eventBox.modify_bg(Gtk.StateType.NORMAL,
-                           style.Color('# 5DADE2').get_gdk_color())
+                           style.Color(globals.GLYPH_BOX_COLOR)
+                           .get_gdk_color())
 
         box = Gtk.VBox()
         eventBox.add(box)
 
         unicodeLable = Gtk.Label(glyphName)
-        unicodeLable.set_max_width_chars(6)
-        unicodeLable.set_property('ellipsize', pango.ELLIPSIZE_END)
+        unicodeLable.set_size_request(self.GRID_BOX_SIZE / 2,
+                                      self.GRID_BOX_SIZE / 3)
+
+        # FIX ME: find a way to set the ellisize mode on this lable to be true
+        # unicodeLable.set_max_width_chars(6)
+        # unicodeLable.set_property('ellipsize', Pango.PANGO_ELLIPSIZE_END)
+
         box.pack_start(unicodeLable, False, False, 2)
 
         alignment = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         box.pack_start(alignment, True, False, 0)
 
-        glyphBox = RenderGlyph(globals.FONT[glyphName], self.GRID_BOX_SIZE,
+        glyphBox = RenderGlyph(glyphName, self.GRID_BOX_SIZE,
                                self.GRID_BOX_SIZE, self.h, self.b)
+        eventBox.connect("button-press-event", self._glyph_clicked, glyphName)
+
         alignment.add(glyphBox)
 
     def _glyph_clicked(self, handle, event, glyphName):
 
         globals.GLYPH_NAME = glyphName
+        globals.GLYPH = globals.FONT[globals.GLYPH_NAME]
         globals.A.set_page("EDITOR")
 
     def _update_marker(self, handle, event, increment):
