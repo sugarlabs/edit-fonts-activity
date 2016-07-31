@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="infinity" format="1">
+  <advance width="512"/>
+  <unicode hex="221E"/>
+  <outline>
+    <contour>
+      <point x="216" y="158" type="line"/>
+      <point x="216" y="318" type="line"/>
+      <point x="105" y="318" type="line"/>
+      <point x="105" y="158" type="line"/>
+    </contour>
+    <contour>
+      <point x="297" y="158" type="line"/>
+      <point x="402" y="158" type="line"/>
+      <point x="402" y="318" type="line"/>
+      <point x="297" y="318" type="line"/>
+    </contour>
+    <contour>
+      <point x="31" y="77" type="line"/>
+      <point x="31" y="394" type="line"/>
+      <point x="481" y="394" type="line"/>
+      <point x="480" y="77" type="line"/>
+    </contour>
+  </outline>
+</glyph>

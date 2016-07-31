@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyph name="scaron" format="1">
+  <advance width="481"/>
+  <unicode hex="0161"/>
+  <outline>
+    <contour>
+      <point x="158" y="75" type="line"/>
+      <point x="158" y="113" type="line"/>
+      <point x="82" y="113" type="line"/>
+      <point x="82" y="0" type="line"/>
+      <point x="397" y="1" type="line"/>
+      <point x="397" y="232" type="line"/>
+      <point x="162" y="287" type="line"/>
+      <point x="162" y="376" type="line"/>
+      <point x="324" y="376" type="line"/>
+      <point x="324" y="287" type="line"/>
+      <point x="399" y="287" type="line"/>
+      <point x="399" y="451" type="line"/>
+      <point x="82" y="451" type="line"/>
+      <point x="82" y="215" type="line"/>
+      <point x="319" y="160" type="line"/>
+      <point x="319" y="75" type="line"/>
+    </contour>
+    <contour>
+      <point x="225" y="487" type="line"/>
+      <point x="86" y="627" type="line"/>
+      <point x="141" y="680" type="line"/>
+      <point x="225" y="588" type="line"/>
+      <point x="309" y="680" type="line"/>
+      <point x="365" y="627" type="line"/>
+    </contour>
+  </outline>
+</glyph>
