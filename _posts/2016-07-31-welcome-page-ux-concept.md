@@ -11,6 +11,7 @@ My fear is that when users start the Edit Fonts activity for the first time they
 I'm proposing that the welcome screen have 4 options, represented by icons and text, plus an editable .glyph that reads "Edit Fonts" in the Geo typeface. The Edit-Fonts logotype will be one .glyph file that is only loaded and never saved. see below:
 
 ![UX concept 01](files/img/wireframe_concept_01_welcome_page.svg)
+
 ![UX concept 02](files/img/wireframe_concept_02_welcome_page.svg)
 
 I have added a Geo-Regular.ufo file to the gh-pages repo with a special "editfonts.glyph" logotype:
