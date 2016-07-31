@@ -1,17 +1,17 @@
-<ul class="allposts">
+<table class="allposts">
 {% for post in site.posts %}	
-<li>
-  <span class="allposts-date">
+<tr>
+  <td class="allposts-date">
     {{ post.date | date: "%Y-%m-%d" }}
-  </span>
-  <span class="allposts-author">
+  </td>
+  <td class="allposts-author">
     {{ post.author }}
-  </span>
-  <span class="allposts-link">
-  <a href="{{ post.id }}">
-    {{ post.title }}
-  </a>
-  </span>
-</li>
+  </td>
+  <td class="allposts-link">
+    <a href="{{ post.id }}">
+      {{ post.title }}
+    </a>
+  </td>
+</tr>
 {% endfor %}
-</ul>
+</table>
