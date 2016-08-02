@@ -1,0 +1,43 @@
+ceback (most recent call last):
+  File "/home/broot/sugar-build/activities/edit-fonts-activity/EditFonts.py", line 470, in _export_ttf
+    otf = compileTTF(globals.FONT)
+  File "third_party/ufo2ft/__init__.py", line 32, in compileTTF
+    return compileOTF(ufo, outlineCompilerClass=outlineCompilerClass, **kwargs)
+  File "third_party/ufo2ft/__init__.py", line 17, in compileOTF
+    otf = outlineCompiler.compile()
+  File "third_party/ufo2ft/outlineOTF.py", line 74, in compile
+    self.setupOtherTables()
+  File "third_party/ufo2ft/outlineOTF.py", line 799, in setupOtherTables
+    self.setupTable_glyf()
+  File "third_party/ufo2ft/outlineOTF.py", line 811, in setupTable_glyf
+    self.allGlyphs[name].draw(pen)
+  File "third_party/defcon/objects/glyph.py", line 430, in draw
+    self.drawPoints(pointPen)
+  File "third_party/defcon/objects/glyph.py", line 441, in drawPoints
+    contour.drawPoints(pointPen)
+  File "third_party/defcon/objects/contour.py", line 673, in drawPoints
+    pointPen.endPath()
+  File "third_party/ufoLib/pointPen.py", line 132, in endPath
+    self._flushContour(segments)
+  File "third_party/ufoLib/pointPen.py", line 183, in _flushContour
+    pen.curveTo(*points)
+  File "third_party/fontTools/pens/basePen.py", line 77, in curveTo
+    raise NotImplementedError
+NotImplementedError
+
+
+  File "/home/broot/sugar-build/activities/edit-fonts-activity/EditFonts.py", line 443, in _export_otf
+    otf = compileOTF(globals.FONT)
+  File "third_party/ufo2ft/__init__.py", line 31, in compileOTF
+    otf = postProcessor.process(useProductionNames, optimizeCff)
+  File "third_party/ufo2ft/otfPostProcessor.py", line 25, in process
+    comp.compress()
+  File "third_party/compreffor/__init__.py", line 115, in compress
+    self.run_executable()
+  File "third_party/compreffor/__init__.py", line 135, in run_executable
+    cxxCompressor.compreff(self.font, use_lib=False, **self.options)
+  File "third_party/compreffor/cxxCompressor.py", line 248, in compreff
+    subrs, glyph_encodings = read_data(td, results)
+  File "third_party/compreffor/cxxCompressor.py", line 127, in read_data
+    num_subrs = struct.unpack_from('<I', results[:4])[0]
+struct.error: unpack_from requires a buffer of at least 4 bytes
