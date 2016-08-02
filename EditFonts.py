@@ -17,6 +17,10 @@
 """Edit Fonts Activity: Kids make fonts!"""
 
 import os
+import sys
+# include the path for the third party Libs to the sys path
+sys.path.insert(0, os.path.relpath('./third_party'))
+
 import logging
 import time
 from gettext import gettext as _
@@ -42,9 +46,9 @@ from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
 
 from defcon import Font
-# from ufo2ft import compileOTF
-from ufo2ft import compileTTF
-# import extractor
+from ufo2ft import compileOTF
+# from ufo2ft import compileTTF
+import extractor
 
 from editfonts.pages.summary_page import SummaryPage
 from editfonts.pages.editor_page import EditorPage
@@ -119,19 +123,19 @@ class EditFonts(activity.Activity):
 
         self.bt_save_ufo = ToolButton()
         self.bt_save_ufo.props.icon_name = 'save-as-otf'
-        self.bt_save_ufo.connect('clicked', self._save_ufo)
+        self.bt_save_ufo.connect('clicked', lambda _: self._save_ufo())
         self.bt_save_ufo.set_tooltip(_('Save UFO'))
         toolbar_box.toolbar.insert(self.bt_save_ufo, -1)
         self.bt_save_ufo.show()
 
-        """
-        self.bt_save_as_ttf = ToolButton()
-        self.bt_save_as_ttf.props.icon_name = 'save-as-ttf'
-        self.bt_save_as_ttf.connect('clicked', self._write_ttf)
-        self.bt_save_as_ttf.set_tooltip(_('Export TTF'))
-        toolbar_box.toolbar.insert(self.bt_save_as_ttf, -1)
-        self.bt_save_as_ttf.show()
+        self.bt_save_as_otf = ToolButton()
+        self.bt_save_as_otf.props.icon_name = 'save-as-otf'
+        self.bt_save_as_otf.connect('clicked', lambda _: self.load_binary())
+        self.bt_save_as_otf.set_tooltip(_('Export OTF'))
+        toolbar_box.toolbar.insert(self.bt_save_as_otf, -1)
+        self.bt_save_as_otf.show()
 
+        """
         self.bt_save_as_otf = ToolButton()
         self.bt_save_as_otf.props.icon_name = 'save-as-otf'
         self.bt_save_as_otf.connect('clicked', self._write_otf)
@@ -251,53 +255,73 @@ class EditFonts(activity.Activity):
 
         return page_num
 
-    """
-    def _load_binary(self, filePath=None):
+    def _load_binary_from_file(self, file_path):
 
-        if filePath is None:
+        try:
+            font = Font()
+            extractor.extractUFO(file_path, font)
+        except:
+            logging.error("Unable to Open the chosen file")
+            return 0
+        else:
+            globals.FONT = font
 
-            # FIX ME: Add compatibility for earlier versions
+        return 1
+
+    def load_binary(self, file_path=None):
+
+        if file_path is None:
+
+            # FIXME: Add compatibility for earlier versions
+            # FIXME: Fix the filter type to include either
+            # all the objects or only the .otf and .ttf font files
             try:
-                chooser = ObjectChooser(parent=self,
-                                        filter_type=FILTER_TYPE_MIME_BY_ACTIVITY,  # noqa
-                                        what_filter=mime.GENERIC_TYPE_TEXT)
-                result = chooser.run()
-                if result == Gtk.ResponseType.ACCEPT:
-                    logging.error('ObjectChooser: %r' %
-                                  chooser.get_selected_object())
-                    jobject = chooser.get_selected_object()
-                    if jobject and jobject.file_path:
-                        logging.error("imagen seleccionada: %s",
-                                      jobject.file_path)
-                        tempfile_name = \
-                            os.path.join(self.get_activity_root(),
-                                         'instance', 'tmp%i' % time.time())
-                        os.link(jobject.file_path, tempfile_name)
-                        logging.error("tempfile_name: %s", tempfile_name)
-                        newFont = Font()
-                        extractor.extractUFO(tempfile_name, newFont)
-                        globals.FONT = newFont
-                        self.set_page("SUMMARY")
-            finally:
-                chooser.destroy()
-                del chooser
+                chooser = ObjectChooser(
+                    parent=self,
+                    what_filter=self.get_bundle_id(),
+                    filter_type=None)
+            except:
+                self._show_alert("Error",
+                                 "This feature is not Implemented")
+                logging.error("This feature is not Implemented")
+                return
+            else:
+                try:
+                    result = chooser.run()
+                    if result == Gtk.ResponseType.ACCEPT:
+                        jobject = chooser.get_selected_object()
+
+                        if jobject and jobject.file_path:
+
+                            if not self._load_binary_from_file(jobject.
+                                                               file_path):
+                                self._show_alert("Error",
+                                                 "Invalid File type chosen")
+                                logging.error("File type is invalid")
+                                return
+                            else:
+                                self.set_page("SUMMARY")
+
+                finally:
+                    chooser.destroy()
+                    del chooser
 
         else:
+            if not self._load_binary_from_file(file_path):
+                self._show_alert("Error",
+                                 "Invalid File type chosen")
+                logging.error("File type is invalid")
+                return
+            else:
+                # save the ufo in the instance folder
+                # so that we have a font path which can be
+                # needed to perform other actions on the font
+                if self._create_font_instance() is not None:
+                    self.set_page("SUMMARY")
 
-            filePath = 'test_fonts/Noto.ttf'
-            # path = "test_fonts/Noto.ttf"
-            # file_name = os.path.join(self.get_activity_root(), path)
-            newFont = Font()
-
-            try:
-                extractor.extractUFO(filePath, newFont)
-                # print Gio.content_type_guess(filePath, None)[0]
-                # FIX ME: Check that if main_font has unsaved changes
-                globals.FONT = newFont
-                self.set_page("SUMMARY")
-            except:
-                pass
-    """
+        # print success message
+        self._show_alert("Success",
+                         "Imported Font: " + str(globals.FONT.info.familyName))
 
     def _load_ufo_from_file(self, file_path):
 
@@ -331,9 +355,9 @@ class EditFonts(activity.Activity):
     def load_ufo(self, file_path=None):
         """
         If the filePath is None this function opens the Object Chooser Dialog
-        for choosing a .plist type file
-        If the file is named metainfo.plist and in contained within a *.ufo
-        folder than that ufo will be loaded using defcon
+        for choosing a .zip type file
+        If the file contains a *.ufo folder than that
+        UFO Font file will be loaded using defcon
         and the current page will be set to Font Summary Page
         if the filepath is specified than the ufo from that filepath is opened
         """
@@ -349,8 +373,7 @@ class EditFonts(activity.Activity):
                 self._show_alert("Error",
                                  "This feature is not Implemented")
                 logging.error("This feature is not Implemented")
-                # raise NotImplementedError
-
+                return
             try:
                 result = chooser.run()
                 if result == Gtk.ResponseType.ACCEPT:
@@ -365,6 +388,7 @@ class EditFonts(activity.Activity):
                             self._show_alert("Error",
                                              "Invalid File type chosen")
                             logging.error("File type is invalid")
+                            return
                         else:
                             self.set_page("SUMMARY")
             finally:
@@ -376,50 +400,41 @@ class EditFonts(activity.Activity):
                 self._show_alert("Error",
                                  "Invalid File type chosen")
                 logging.error("File type is invalid")
+                return
             else:
                 self.set_page("SUMMARY")
 
-    def _write_ttf(self, button):
-        # # NOT WORKING# #
-        # Error: defcon.errors.DefconError: the kerning data is not valid
+        # print success message
+        self._show_alert("Success",
+                         "Imported Font: " + str(globals.FONT.info.familyName))
 
-        file_name = os.path.join(self.get_activity_root(), 'data',
-                                 '%s.ttf' % self.metadata['title'])
+    def _create_font_instance(self):
+        # save the font as a  ufo in a temp path
+        instance_path =\
+            os.path.join(self.get_activity_root(),
+                         'instance', self.metadata['title'] + '.ufo')
+        try:
+            globals.FONT.save(instance_path)
+        except:
+            self._show_alert("Error",
+                             "Font " + str(globals.FONT.info.familyName) +
+                             " has an error")
+            self.welcome()
+            return None
+        else:
+            globals.FONT_PATH = instance_path
+            return instance_path
 
-        # file_name = "a.ttf"
-        # file_name = self.metadata['title'] + '.ttf'
-
-        ttf = compileTTF(globals.FONT)
-        ttf.save(file_name)
-
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/ttf'
-
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_name
-
-        # jobject.metadata['preview'] = \
-        # self._get_preview_image(file_name)
-
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
-
-        success_title = 'Success'
-        success_msg = 'A TTF Font file was created in the Journal'
-        self._show_journal_alert(_(success_title), _(success_msg))
-
-    def _save_ufo(self, button):
+    def _save_ufo(self):
         """
         This function should save the current font loaded
         in globals.FONT as a .ufo.zip file
         the file will be saved in the activity data folder
         """
-        # save the font as a  ufo in a temp path
-        instance_path =\
-            os.path.join(self.get_activity_root(),
-                         'instance', self.metadata['title'] + '.ufo')
-        globals.FONT.save(instance_path)
+        instance_path = self._create_font_instance()
+
+        if instance_path is None:
+            return
 
         # zip the folder
         import zipfile
@@ -451,30 +466,60 @@ class EditFonts(activity.Activity):
         success_msg = 'A UFO Font zip file was created in the Journal'
         self._show_journal_alert(_(success_title), _(success_msg))
 
-    def _write_otf(self, button):
-        # # NOT WORKING# #
-        # Error: defcon.errors.DefconError: the kerning data is not valid
+    def _export_otf(self, button):
+        """
+        This function should save the current font loaded
+        in globals.FONT as a .ttf file
+        the file will be saved in the activity data folder
+        """
+        # save the font as a  ufo in a temp path
+        file_path =\
+            os.path.join(self.get_activity_root(),
+                         'data', globals.FONT.info.familyName + '.otf')
 
-        file_name = os.path.join(self.get_activity_root(), 'instance',
-                                 '%s.otf' % self.metadata['title'])
+        # converting the font to a OTF
+        otf = compileOTF(globals.FONT)
+        otf.save(file_path)
 
-        otf = compileTTF(globals.FONT)
-
-        otf.save(file_name)
-
+        # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/otf'
-
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_name
-
+        jobject.metadata['mime_type'] = 'application/x-font-opentype'
+        jobject.metadata['title'] = globals.FONT.info.familyName + '.otf'
+        jobject.file_path = file_path
         datastore.write(jobject, transfer_ownership=True)
         self._object_id = jobject.object_id
 
         success_title = 'Success'
         success_msg = 'A OTF Font file was created in the Journal'
         self._show_journal_alert(_(success_title), _(success_msg))
+
+    """
+    def _export_ttf(self, button):
+        #FIX ME: This doesn't work
+
+        # save the font as a  ufo in a temp path
+        file_path =\
+            os.path.join(self.get_activity_root(),
+                         'data', globals.FONT.info.familyName + '.ttf')
+
+        # converting the font to a TTF
+        otf = compileTTF(globals.FONT)
+        otf.save(file_path)
+
+        # create a journal entry
+        jobject = datastore.create()
+        jobject.metadata['icon-color'] = profile.get_color().to_string()
+        jobject.metadata['mime_type'] = 'application/x-font-ttf'
+        jobject.metadata['title'] = globals.FONT.info.familyName + '.ttf'
+        jobject.file_path = file_path
+        datastore.write(jobject, transfer_ownership=True)
+        self._object_id = jobject.object_id
+
+        success_title = 'Success'
+        success_msg = 'A TTF Font file was created in the Journal'
+        self._show_journal_alert(_(success_title), _(success_msg))
+    """
 
     def _show_journal_alert(self, title, msg):
         _stop_alert = Alert()
