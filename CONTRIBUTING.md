@@ -23,3 +23,5 @@ To eliminate a specific error, it is helpful to filter the output using grep:
     --exclude=defcon,extractor,fontTools,fontmake,robofab,\
     ufo2ft,ufoLib,snippets,localIcon  . \
     | grep W291; # trailing whitespace
+
+The [autopep8](https://pypi.python.org/pypi/autopep8) tool can be used to automatically format code to comply with this standard.
