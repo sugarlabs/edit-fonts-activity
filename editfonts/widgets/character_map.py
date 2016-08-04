@@ -7,7 +7,7 @@ from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 class CharacterMap(Gtk.Box):
@@ -152,7 +152,7 @@ class CharacterMap(Gtk.Box):
         unicodeLable.set_size_request(self.GRID_BOX_SIZE / 2,
                                       self.GRID_BOX_SIZE / 3)
 
-        # FIX ME: find a way to set the ellisize mode on this lable to be true
+        # FIXME: find a way to set the ellisize mode on this lable to be true
         # unicodeLable.set_max_width_chars(6)
         # unicodeLable.set_property('ellipsize', Pango.PANGO_ELLIPSIZE_END)
 

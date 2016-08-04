@@ -2,7 +2,7 @@ from gi.repository import Gtk  # Gdk
 import cairo
 # import math
 # from defcon import Font
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 class RenderGlyph(Gtk.Box):
@@ -57,7 +57,7 @@ class RenderGlyph(Gtk.Box):
             # move to initial point
             point = contour[0]
             cr.move_to(self.X(point.x), self.Y(point.y))
-            # FIX ME: Validate the segments more thoroughly
+            # FIXME: Validate the segments more thoroughly
 
             for segment in contour.segments:
                 # first determine type of Segment

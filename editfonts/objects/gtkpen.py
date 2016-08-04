@@ -3,7 +3,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 
 from fontTools.pens.basePen import BasePen
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 class GtkPen(BasePen):

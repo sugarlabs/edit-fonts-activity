@@ -16,7 +16,7 @@ import cairo
 # from defcon import Point
 # from defcon import Contour
 
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 def distance(X, Y):

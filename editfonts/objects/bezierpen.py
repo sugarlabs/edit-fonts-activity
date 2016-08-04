@@ -4,7 +4,7 @@ from gi.repository import Gdk
 
 from defcon import Contour
 from defcon import Point
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 def distance(x1, y1, x2, y2):

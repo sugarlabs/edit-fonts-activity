@@ -4,69 +4,116 @@
 # the activity
 
 import gi  # noqa
-from gi.repository import GObject
+from gi.repository import Gdk
 
 from editfonts.objects.basefont import BaseFont
-# from defcon import Font
+from defcon import Font
 
 
-class GlobalVar(GObject.GObject):
-    """
-    This class defines the global settings veriable used
-    GObject provides the signal 'notify' on change,
-    which is the sole reason to use this class
-    """
+# handle for the activity class
+A = None
 
-    def __init__(self):
-        super(GlobalVar, self).__init__()
+# The Default font that will always be loaded
+DEFAULT_FONT_PATH = "./test_fonts/sample.ufo"
 
-        # handle for the activity class
-        self.A = None
+# The Path for the font file
+# set this to be DEFAULT_FONT_PATH in the beginning
+FONT_PATH = DEFAULT_FONT_PATH
 
-        # The Default font that will always be loaded
-        self.DEFAULT_FONT_PATH = "./test_fonts/sample.ufo"
+# The global variable to store the current working font across the
+# entire activity
+FONT = BaseFont(DEFAULT_FONT_PATH)
 
-        # The Path for the font file
-        # set this to be DEFAULT_FONT_PATH in the beginning
-        self.FONT_PATH = self.DEFAULT_FONT_PATH
+GLYPH = FONT["dollar"]
 
-        # The global variable to store the current working font across the
-        # entire activity
-        self.FONT = BaseFont(self.DEFAULT_FONT_PATH)
+ACTIVITY_HANDLE = None
+EDITOR_BOX_WIDTH = 500
+EDITOR_BOX_HEIGHT = 500
+GdkPixbuf = 1
 
-        self.GLYPH = self.FONT["dollar"]
+h = FONT.info.ascender - FONT.info.descender
 
-        self.ACTIVITY_HANDLE = None
-        self.EDITOR_BOX_WIDTH = 500
-        self.EDITOR_BOX_HEIGHT = 500
-        self.GdkPixbuf = 1
+b = 0 - FONT.info.descender
 
-        self.h = self.FONT.info.ascender - self.FONT.info.descender
+ZONE_R = 20
 
-        self.b = 0 - self.FONT.info.descender
+# a flag to see if any particular tool is active in the editor area
+TOOL_ACTIVE = {'BezierPenTool': False}
 
-        self.ZONE_R = 20
+# if the current page has changed the global data or not
+# FONT_EDITED = False
 
-        # a flag to see if any particular tool is active in the editor area
-        self.TOOL_ACTIVE = {'BezierPenTool': False}
+def X(x): # noqa
+    t = float(x) * EDITOR_BOX_HEIGHT / h
+    return t
 
-        # if the current page has changed the global data or not
-        # FONT_EDITED = False
 
-        self.GLYPH_BOX_COLOR = '#6699cc'
+def Y(y): # noqa
+    t = float(h - y - b) * EDITOR_BOX_HEIGHT / h
+    return t
 
-    def X(self, x):
-        t = float(x) * self.EDITOR_BOX_HEIGHT / self.h
-        return t
 
-    def Y(self, y):
-        t = float(self.h - y - self.b) * self.EDITOR_BOX_HEIGHT / self.h
-        return t
+def invX(x): # noqa
+    return float(x) * h / EDITOR_BOX_HEIGHT
 
-    def invX(self, x):
-        return float(x) * self.h / self.EDITOR_BOX_HEIGHT
 
-    def invY(self, y):
-        return self.h - float(y) * self.h / self.EDITOR_BOX_HEIGHT - self.b
+def invY(y): # noqa
+    return h - float(y) * h / EDITOR_BOX_HEIGHT - b
 
-globals = GlobalVar()
+# ###########
+# Screen Info
+# ###########
+
+SCREEN = Gdk.Screen.get_default()
+SCREEN_WIDTH = SCREEN.get_width()
+print SCREEN_WIDTH
+SCREEN_HEIGHT = SCREEN.get_height()
+print SCREEN_HEIGHT
+
+# #############
+# Widget Styles
+# #############
+
+# General
+GLYPH_BOX_COLOR = '#6699cc'
+
+# Welcome Page
+f = Font('./test_fonts/Geo-Regular.ufo')
+
+WELCOME_GLYPH = f['editfonts']
+
+WELCOME_EDITOR_BG = '#AAAAAA'
+
+WELCOME_EDITOR_BOX_WIDTH = float(SCREEN_WIDTH) * 0.8
+WELCOME_EDITOR_BOX_HEIGHT = float(SCREEN_WIDTH) * 0.2
+
+BUTTON_BOX_SIZE = float(SCREEN_WIDTH) * 0.1
+BUTTON_BOX_COLUMN_SPACING = float(SCREEN_WIDTH) * 0.1
+BUTTON_BOX_ROW_SPACING = float(SCREEN_WIDTH) * 0.01
+
+# Summary Page
+
+# ###########
+# Font Styles
+# ###########
+
+TEXT_STYLE = {}
+
+# Using this as a font of size 15000 looks like a LABEL
+# text style on a 1920 px wide screen
+text_size = 20000 / 1920 * SCREEN_WIDTH
+
+TEXT_STYLE["HEADING"] = {'color': 'black',
+                         'font': 'Cantarell',
+                         'weight': 'bold',
+                         'size': text_size * 2}
+
+TEXT_STYLE["PARA"] = {'color': 'black',
+                      'font': 'Cantarell',
+                      'weight': 'bold',
+                      'size': text_size / 2}
+
+TEXT_STYLE["LABEL"] = {'color': 'black',
+                       'font': 'Cantarell',
+                       'weight': 'medium',
+                       'size': text_size}

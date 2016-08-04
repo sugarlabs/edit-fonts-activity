@@ -76,6 +76,7 @@ class DisplayData(Gtk.Alignment):
         else:
             self.text = text
 
+        # FIXME: Use MarkupLabel below # noqa
         HEADING_STRING = "<span foreground='black' size='{}' font='Cantarell' \
         font_weight='bold'>{}</span>".format(headingSize, self.heading)
         TEXT_STRING = "<span foreground='black' size='{}' font='Cantarell'>\
@@ -119,3 +120,29 @@ class FontInfoBox(Gtk.VBox):
 
         fontTrademark = DisplayData("Trademark", font.info.trademark)
         self.pack_start(fontTrademark, False, False, 5)
+
+
+class MarkupLabel(Gtk.Label):
+    """
+    Create a label with markup format as arguments
+    """
+    def __init__(self, text, color='black', size='10000', font='Cantarell',
+                 weight='medium'):
+        super(MarkupLabel, self).__init__()
+
+        string = "<span foreground='{}' size='{}' font='{}' \
+        font_weight='{}'>{}</span>".format(color, size, font, weight, text)
+
+        self.set_markup(string)
+
+
+class FormatLabel(MarkupLabel):
+    """
+    Create a label with a preset style
+    """
+    def __init__(self, text, style):
+        super(FormatLabel, self).__init__(text,
+                                          color=style['color'],
+                                          size=style['size'],
+                                          font=style['font'],
+                                          weight=style['weight'])

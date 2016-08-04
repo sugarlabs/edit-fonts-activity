@@ -10,7 +10,7 @@ from editfonts.objects.gtkpen import GtkPen
 from editfonts.widgets.drag_point import DragPoint
 # from editfonts.objects.basesegment import BaseSegment
 from editfonts.objects.bezierpen import BezierPenTool
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 def bind(A, O, B):
