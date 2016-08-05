@@ -17,7 +17,7 @@ class RenderGlyph(Gtk.Box):
         self.boxWidth = boxWidth
 
         self.glyph = globals.FONT[glyphName]
-        globals.connect("notify::FONT", self.redraw)
+        # globals.connect("notify::FONT", self.redraw)
 
         # The advance width of the glyph
         self.w = self.glyph.width

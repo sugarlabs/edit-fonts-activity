@@ -658,4 +658,3 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
-    """

@@ -142,9 +142,6 @@ class FontsTreeView(Gtk.TreeView):
         super(FontsTreeView, self).__init__()
 
         self._query = ''
-        # client = GConf.Client.get_default()
-        # self.xo_color =
-        # XoColor(client.get_string('/desktop/sugar/user/color'))
 
         self.set_headers_visible(False)
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |

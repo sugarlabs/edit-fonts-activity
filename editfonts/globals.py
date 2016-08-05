@@ -5,30 +5,31 @@
 
 import gi  # noqa
 from gi.repository import Gdk
+from gi.repository import GConf
 
 from editfonts.objects.basefont import BaseFont
-from defcon import Font
+# from defcon import Font
 
+from sugar3.graphics.xocolor import XoColor
 
 # handle for the activity class
 A = None
 
-# The Default font that will always be loaded
-DEFAULT_FONT_PATH = "./test_fonts/sample.ufo"
+# The Sample font that will always be loaded
+SAMPLE_FONT_PATH = './test_fonts/Geo-Regular.ufo'
+SAMPLE_FONT = BaseFont(SAMPLE_FONT_PATH)
 
 # The Path for the font file
-# set this to be DEFAULT_FONT_PATH in the beginning
-FONT_PATH = DEFAULT_FONT_PATH
+# set this to be SAMPLE_FONT_PATH in the beginning
+FONT_PATH = SAMPLE_FONT_PATH
 
 # The global variable to store the current working font across the
 # entire activity
-FONT = BaseFont(DEFAULT_FONT_PATH)
 
-GLYPH = FONT["dollar"]
+FONT = BaseFont(SAMPLE_FONT_PATH)
 
-ACTIVITY_HANDLE = None
-EDITOR_BOX_WIDTH = 500
-EDITOR_BOX_HEIGHT = 500
+GLYPH = FONT["A"]
+
 GdkPixbuf = 1
 
 h = FONT.info.ascender - FONT.info.descender
@@ -43,22 +44,36 @@ TOOL_ACTIVE = {'BezierPenTool': False}
 # if the current page has changed the global data or not
 # FONT_EDITED = False
 
-def X(x): # noqa
-    t = float(x) * EDITOR_BOX_HEIGHT / h
+# ########################
+# Transformation Functions
+# ########################
+
+
+def X(x, id):  # noqa
+    t = float(x) * EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] / h
     return t
 
 
-def Y(y): # noqa
-    t = float(h - y - b) * EDITOR_BOX_HEIGHT / h
+def Y(y, id):  # noqa
+    t = float(h - y - b) * EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] / h
     return t
 
 
-def invX(x): # noqa
-    return float(x) * h / EDITOR_BOX_HEIGHT
+def invX(x, id):  # noqa
+    return float(x) * h / EDITOR_AREA[id]['EDITOR_BOX_HEIGHT']
 
 
-def invY(y): # noqa
-    return h - float(y) * h / EDITOR_BOX_HEIGHT - b
+def invY(y, id):  # noqa
+    return h - float(y) * h / EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] - b
+
+# #########
+# User Info
+# #########
+
+client = GConf.Client.get_default()
+color =\
+    XoColor(client.get_string('/desktop/sugar/user/color'))
+USER_COLOR = color.to_string().split(',')
 
 # ###########
 # Screen Info
@@ -66,32 +81,39 @@ def invY(y): # noqa
 
 SCREEN = Gdk.Screen.get_default()
 SCREEN_WIDTH = SCREEN.get_width()
-print SCREEN_WIDTH
 SCREEN_HEIGHT = SCREEN.get_height()
-print SCREEN_HEIGHT
 
-# #############
-# Widget Styles
-# #############
+# ######################
+# Widget Styles/Settings
+# ######################
 
 # General
 GLYPH_BOX_COLOR = '#6699cc'
+EDITOR_AREA = {}
+ACTIVITY_BG = '#AAAAAA'
 
 # Welcome Page
-f = Font('./test_fonts/Geo-Regular.ufo')
 
-WELCOME_GLYPH = f['editfonts']
 
-WELCOME_EDITOR_BG = '#AAAAAA'
+WELCOME_GLYPH = SAMPLE_FONT['editfonts']
 
 WELCOME_EDITOR_BOX_WIDTH = float(SCREEN_WIDTH) * 0.8
 WELCOME_EDITOR_BOX_HEIGHT = float(SCREEN_WIDTH) * 0.2
+
+EDITOR_AREA['WELCOME'] = {'EDITOR_BOX_WIDTH': float(SCREEN_WIDTH) * 0.80,
+                          'EDITOR_BOX_HEIGHT': float(SCREEN_WIDTH) * 0.26,
+                          'EDITOR_BOX_BG': '#AAAAAA', 'GLYPH': WELCOME_GLYPH}
 
 BUTTON_BOX_SIZE = float(SCREEN_WIDTH) * 0.1
 BUTTON_BOX_COLUMN_SPACING = float(SCREEN_WIDTH) * 0.1
 BUTTON_BOX_ROW_SPACING = float(SCREEN_WIDTH) * 0.01
 
 # Summary Page
+
+# Editor Page
+
+EDITOR_AREA['EDITOR'] = {'EDITOR_BOX_WIDTH': 600, 'EDITOR_BOX_HEIGHT': 600,
+                         'EDITOR_BOX_BG': '#FFFFFF', 'GLYPH': GLYPH}
 
 # ###########
 # Font Styles

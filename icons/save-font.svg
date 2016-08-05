@@ -1,0 +1,148 @@
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+[
+  <!ENTITY fill_color "#FFFFFF">
+  <!ENTITY stroke_color "#000000">
+]>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100"
+   height="100"
+   viewBox="0 0 100 100"
+   id="svg3770"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="save-font.svg">
+  <defs
+     id="defs3772" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="-0.63151877"
+     inkscape:cy="47.193257"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1005"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     units="px"
+     width="100px"
+     inkscape:snap-others="true" />
+  <metadata
+     id="metadata3775">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-952.3622)">
+    <path
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke-width:1.70461333;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" fill="&fill_color;" stroke="&stroke_color;"
+       d="m 71.324424,982.06396 12.7846,0 12.784599,12.78463 0,25.56901 -25.569199,0 z"
+       id="path4620-7-9-5-1-4-2-2-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke-width:1.70461333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" stroke="&stroke_color;"
+       d="m 84.109024,982.06396 0,12.78463 12.784599,0"
+       id="path9927-5-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke-width:1.70461333;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" fill="&fill_color;" stroke="&stroke_color;"
+       d="m 75.585957,999.5362 11.755956,0 0,3.5268 -7.053576,0 0,3.5268 5.877977,0 0,3.5268 -5.877977,0 0,6.4656 -4.70238,0 z"
+       id="path4620-7-9-5-1-4-2-9-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccc" />
+    <g
+       id="document-save"
+       display="block"
+       style="display:block"
+       transform="matrix(1.5453128,0,0,1.5453128,-0.82820941,967.02131)">
+      <g
+         id="g8047">
+        <g
+           id="g8049">
+          <g
+             id="g8051">
+            <path
+               id="path8053"
+               d="m 6.736,49.002 24.52,0 c 2.225,0 3.439,-1.447 3.439,-3.441 l 0,-27.28 c 0,-1.73 -1.732,-3.441 -3.439,-3.441 l -4.389,0"
+               inkscape:connector-curvature="0"
+               style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" fill="&fill_color;" stroke="&stroke_color;" />
+          </g>
+        </g>
+        <g
+           id="g8055">
+          <g
+             id="g8057">
+            <path
+               id="path8059"
+               d="m 26.867,38.592 c 0,1.836 -1.345,3.201 -3.441,4.047 l -16.69,6.363 0,-34.162 16.69,-8.599 c 2.228,-0.394 3.441,0.84 3.441,2.834 l 0,29.517 z"
+               inkscape:connector-curvature="0"
+               style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" fill="&fill_color;" stroke="&stroke_color;" />
+          </g>
+        </g>
+        <path
+           id="path8061"
+           d="m 9.424,42.607 c 0,0 -1.351,-0.543 -2.702,-0.543 -1.351,0 -2.703,0.543 -2.703,0.543"
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+        <path
+           id="path8063"
+           d="m 9.424,32.006 c 0,0 -1.239,-0.543 -2.815,-0.543 -1.577,0 -2.59,0.543 -2.59,0.543"
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+        <path
+           id="path8065"
+           d="m 9.424,21.678 c 0,0 -1.125,-0.544 -2.927,-0.544 -1.802,0 -2.478,0.544 -2.478,0.544"
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+        <line
+           id="line8067"
+           y2="11.505"
+           y1="46.533001"
+           x2="13.209"
+           x1="13.209"
+           style="fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+        <g
+           id="g8069">
+          <line
+             id="line8071"
+             y2="4.9169998"
+             y1="16.188"
+             x2="52.441002"
+             x1="41.169998"
+             style="fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+          <polyline
+             id="polyline8073"
+             points="     51.562,15.306 41.17,16.188 42.053,5.794    "
+             style="fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round" stroke="&stroke_color;" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

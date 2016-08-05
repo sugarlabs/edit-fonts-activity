@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+[
+  <!ENTITY fill_color "#FFFFFF">
+  <!ENTITY stroke_color "#000000">
+]>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -47,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,16 +59,14 @@
      id="layer1"
      transform="translate(0,-952.3622)">
     <path
-       style="display:inline;fill:#50e484;fill-opacity:1;fill-rule:evenodd;stroke:#412a9e;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 19.98576,956.80502 30,0 30,30 0,59.99998 -60,0 z"
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" fill="&fill_color;" stroke="&stroke_color;"
+       d="m 19.98576,956.80502 c 10,0 20,0 30,0 10,10 20,20 30,30 0,19.99998 0,39.99998 0,59.99998 -20,0 -40,0 -60,0 0,-30 0,-59.99999 0,-89.99998 z"
        id="path4620-7-9-5-1-4-2-2"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccc" />
+       inkscape:connector-curvature="0" />
     <path
-       style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#412a9e;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 49.98576,956.80502 0,30 30,0"
+       style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" stroke="&stroke_color;"
+       d="m 49.98576,956.80502 c 0,10 0,20 0,30 10,0 20,0 30,0"
        id="path9927-5"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

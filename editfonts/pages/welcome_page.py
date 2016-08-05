@@ -9,17 +9,16 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 
-from editfonts.widgets.misc import PageHeading
+# from editfonts.widgets.misc import PageHeading
 from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.misc import FormatLabel
-from editfonts.widgets.welcome_editor_box import WelcomeEditorBox
+from editfonts.widgets.editor_box import EditorBox
 import editfonts.globals as globals
 
 
 class WelcomePage(Gtk.VBox):
     """
     This Class Creates the "Welcome" Page
-
     """
 
     def __init__(self):
@@ -35,7 +34,7 @@ class WelcomePage(Gtk.VBox):
                                          xscale=0,
                                          yscale=0)
 
-        editor_area = WelcomeEditorBox()
+        editor_area = EditorBox('WELCOME', fill=True)
         editor_alignment.add(editor_area)
         self.pack_start(editor_alignment, True, True, 30)
 
@@ -63,6 +62,27 @@ class WelcomePage(Gtk.VBox):
 
         grid.attach(vbox, 0, 0, 1, 1)
 
+        # Load Font
+        vbox = Gtk.VBox()
+        button = ImageButton('load-font', pixel_size=globals.BUTTON_BOX_SIZE)
+
+        # FIXME: change the tooltip below to something oriented towards kids
+        button.set_tooltip_text('Load a font:\
+            a .zip file containing a .ufo file')
+        button.connect("clicked", lambda _: globals.A.load())
+
+        vbox.pack_start(button, False, False, 0)
+
+        label = FormatLabel('Load Font', globals.TEXT_STYLE['LABEL'])
+        alignment_box = Gtk.Alignment(xalign=0.5,
+                                      yalign=0.5,
+                                      xscale=0,
+                                      yscale=0)
+        alignment_box.add(label)
+        vbox.pack_start(alignment_box, True, True, 0)
+
+        grid.attach(vbox, 0, 1, 1, 1)
+
         # New Sample Font
         vbox = Gtk.VBox()
         button = ImageButton('sample-font', pixel_size=globals.BUTTON_BOX_SIZE)
@@ -79,27 +99,6 @@ class WelcomePage(Gtk.VBox):
         alignment_box.add(label)
         vbox.pack_start(alignment_box, True, True, 0)
 
-        grid.attach(vbox, 0, 1, 1, 1)
-
-        # Load Font
-        vbox = Gtk.VBox()
-        button = ImageButton('load-font', pixel_size=globals.BUTTON_BOX_SIZE)
-
-        # FIXME: change the tooltip below to something oriented towards kids
-        button.set_tooltip_text('Load the a font:\
-            a .zip file containing a .ufo file')
-        button.connect("clicked", lambda _: globals.A.load())
-
-        vbox.pack_start(button, False, False, 0)
-
-        label = FormatLabel('Load Font', globals.TEXT_STYLE['LABEL'])
-        alignment_box = Gtk.Alignment(xalign=0.5,
-                                      yalign=0.5,
-                                      xscale=0,
-                                      yscale=0)
-        alignment_box.add(label)
-        vbox.pack_start(alignment_box, True, True, 0)
-
         grid.attach(vbox, 1, 0, 1, 1)
 
         # Import Font
@@ -109,7 +108,7 @@ class WelcomePage(Gtk.VBox):
         # FIXME: change the tooltip below to something oriented towards kids
         button.set_tooltip_text('Import a font: only\
             .otf or .ttf files supported')
-        button.connect("clicked", lambda _: globals.A.load_sample())
+        button.connect("clicked", lambda _: globals.A.import_font())
 
         vbox.pack_start(button, False, False, 0)
 

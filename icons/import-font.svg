@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
+<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"
+[
+  <!ENTITY fill_color "#FFFFFF">
+  <!ENTITY stroke_color "#000000">
+]>
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -57,19 +59,19 @@
      id="layer1"
      transform="translate(0,-952.3622)">
     <path
-       style="display:inline;fill:#50e484;fill-opacity:1;fill-rule:evenodd;stroke:#412a9e;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" fill="&fill_color;" stroke="&stroke_color;"
        d="m 20.15768,956.7435 30,0 30,30 0,60 -60,0 z"
        id="path4620-7-9-5-1-4-2-2-6-0"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc" />
     <path
-       style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#412a9e;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" stroke="&stroke_color;" 
        d="m 50.15768,956.7435 0,30 30,0"
        id="path9927-5-6-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
     <path
-       style="display:inline;fill:#50e484;fill-opacity:1;fill-rule:evenodd;stroke:#493197;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" fill="&fill_color;" stroke="&stroke_color;"
        d="m 51.98526,1001.2952 0,34 c 0,3 2,5 5,5 3,0 5,-2 5,-5 l 0,-17 30,30 7,-7 -30,-30 17,0 c 3,0 5,-2 5,-5 0,-3 -2,-5 -5,-5 z"
        id="path4620-61-5-0-0-4"
        inkscape:connector-curvature="0"

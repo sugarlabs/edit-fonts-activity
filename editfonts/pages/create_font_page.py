@@ -8,8 +8,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from editfonts.widgets.custom_box import PageHeading
-from editfonts.widgets.custom_box import ImageButton
+from editfonts.widgets.misc import PageHeading
+from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.form_box import InlineTextInputBox
 from editfonts.widgets.form_box import InlineNumberInputBox
 from editfonts.objects.basefont import BaseFont

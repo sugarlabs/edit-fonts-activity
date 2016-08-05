@@ -1,5 +1,5 @@
 from gi.repository import Gtk, Gdk
-# import cairo
+import cairo
 import math
 
 from sugar3.graphics import style
@@ -30,28 +30,36 @@ def bind(A, O, B):
 
 class EditorBox(Gtk.EventBox):
 
-    def __init__(self):
+    def __init__(self, id='EDITOR', fill=False):
 
         super(EditorBox, self).__init__()
-
-        self.set_size_request(globals.EDITOR_BOX_WIDTH,
-                              globals.EDITOR_BOX_HEIGHT)
+        self.id = id
+        self.set_size_request(globals.EDITOR_AREA[self.id]
+                              ['EDITOR_BOX_WIDTH'],
+                              globals.EDITOR_AREA[self.id]
+                              ['EDITOR_BOX_HEIGHT'])
 
         self.fixed = Gtk.Fixed()
-        self.fixed.set_size_request(globals.EDITOR_BOX_WIDTH,
-                                    globals.EDITOR_BOX_HEIGHT)
+        self.fixed.set_size_request(globals.EDITOR_AREA[self.id]
+                                    ['EDITOR_BOX_WIDTH'],
+                                    globals.EDITOR_AREA[self.id]
+                                    ['EDITOR_BOX_HEIGHT'])
         self.add(self.fixed)
 
         self.da = Gtk.DrawingArea()
-        self.da.set_size_request(globals.EDITOR_BOX_WIDTH,
-                                 globals.EDITOR_BOX_HEIGHT)
+        self.da.set_size_request(globals.EDITOR_AREA[self.id]
+                                 ['EDITOR_BOX_WIDTH'],
+                                 globals.EDITOR_AREA[self.id]
+                                 ['EDITOR_BOX_HEIGHT'])
         self.da.modify_bg(Gtk.StateType.NORMAL,
-                          style.Color('#FFFFFF').get_gdk_color())
+                          style.Color(globals.EDITOR_AREA[self.id]
+                                      ['EDITOR_BOX_BG'])
+                          .get_gdk_color())
 
         self.fixed.put(self.da, 0, 0)
 
         # declare the list for storing all the contours
-        self.contours = globals.GLYPH[:]
+        self.contours = globals.EDITOR_AREA[self.id]['GLYPH'][:]
 
         self.tool = {}
 
@@ -66,6 +74,8 @@ class EditorBox(Gtk.EventBox):
         self.da.connect('draw', self._draw)
 
         self.connect("button-press-event", self._on_point_press)
+
+        self.FILL = fill
 
         '''
         self.da.set_events(self.get_events()
@@ -149,15 +159,19 @@ class EditorBox(Gtk.EventBox):
 
     def draw_all_contours(self, cr, pos):
 
-        pen = GtkPen(cr, pos)
+        pen = GtkPen(cr, pos, self.id)
         for contour in self.contours:
             if len(contour[:]) != 0:
+
+                # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
                 contour.draw(pen)
+
                 # close the contour
 
-                if contour.open is False:
+                # Draw a Hallo around the first point of an open contour
+                if self.FILL is True or contour.open is False:
                     cr.close_path()
                 else:
                     if contour.dirty is True:
@@ -165,12 +179,13 @@ class EditorBox(Gtk.EventBox):
                         cr.set_source_rgb(0.3, 0.3, 0.3)
                         cr.set_line_width(1)
 
-                        r = globals.X(contour[0].x + globals.ZONE_R)\
-                            - globals.X(contour[0].x)
+                        r = globals.X(contour[0].x + globals.ZONE_R,
+                                      self.id) -\
+                            globals.X(contour[0].x, self.id)
                         pen.moveTo((contour[0].x + globals.ZONE_R,
                                     contour[0].y))
-                        cr.arc(globals.X(contour[0].x),
-                               globals.Y(contour[0].y),
+                        cr.arc(globals.X(contour[0].x. self.id),
+                               globals.Y(contour[0].y. self.id),
                                r, 0, 2 * math.pi)
 
                 cr.stroke()
@@ -206,9 +221,15 @@ class EditorBox(Gtk.EventBox):
 
                     cr.stroke()
 
+        if self.FILL is True:
+
+            cr.set_source_rgb(1, 1, 1)
+            cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
+            cr.fill()
+
     def add_point(self, p):
 
-        point = DragPoint(p)
+        point = DragPoint(p, self.id)
         point.connect("notify", self.redraw)
         self.fixed.put(point, point.get_corner_x(), point.get_corner_y())
         self.points.append(point)
