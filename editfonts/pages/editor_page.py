@@ -7,11 +7,10 @@ from gi.repository import Gtk
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-from editfonts.widgets.custom_box import PageHeading
-# from editfonts.widgets.custom_box import FontInfoBox
+from editfonts.widgets.misc import PageHeading
 from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 class EditorPage(Gtk.Box):

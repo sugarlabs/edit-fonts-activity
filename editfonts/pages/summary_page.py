@@ -9,9 +9,9 @@ from gi.repository import Gtk
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-from editfonts.widgets.custom_box import PageHeading, FontInfoBox
+from editfonts.widgets.misc import PageHeading, FontInfoBox
 from editfonts.widgets.character_map import CharacterMap
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 class SummaryPage(Gtk.Box):

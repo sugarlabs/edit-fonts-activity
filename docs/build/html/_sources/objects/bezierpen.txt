@@ -10,7 +10,7 @@ BezierPenTool
       the Editor Box controls the state of the Bezier Pen Tool
 
 Tasks
------
+-----   
 
 * :meth:`~editfonts.objects.bezierpen.distance`
 

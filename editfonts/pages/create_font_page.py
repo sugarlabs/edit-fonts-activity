@@ -8,8 +8,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from editfonts.widgets.custom_box import PageHeading
-from editfonts.widgets.custom_box import ImageButton
+from editfonts.widgets.misc import PageHeading
+from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.form_box import InlineTextInputBox
 from editfonts.widgets.form_box import InlineNumberInputBox
 from editfonts.objects.basefont import BaseFont
@@ -185,7 +185,7 @@ class CreateFontPage(Gtk.VBox):
         form_box.pack_start(self.unit_per_em, False, False, 10)
 
         submit_button = ImageButton(icon_name='dialog-ok-active',
-                                    fill_color='# 32B232')
+                                    fill_color='#32B232')
         submit_button.connect("clicked", self._submit_form)
 
         form_box.pack_start(submit_button, False, False, 10)
@@ -216,5 +216,5 @@ class CreateFontPage(Gtk.VBox):
 
         globals.FONT = BaseFont.new_standard_font(data=data)
 
-        # # FIXME: Check if font was created or not
+        # FIXME: Check if font was created or not
         globals.A.set_page("SUMMARY")

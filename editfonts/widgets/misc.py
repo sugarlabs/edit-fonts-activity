@@ -6,6 +6,7 @@ from gi.repository import Gtk
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
+import editfonts.globals as globals
 
 
 class PageHeading(Gtk.Alignment):
@@ -31,26 +32,28 @@ class PageHeading(Gtk.Alignment):
 class ImageButton(Gtk.Button):
     """
     This is just a button with a image inside it
-
     """
 
     def __init__(self, icon_name,
-                 stroke_color="#000000",
-                 fill_color="#FFFFFF",
-                 bg_color="#FFFFFF",
+                 stroke_color=globals.USER_COLOR[0],
+                 fill_color=globals.USER_COLOR[1],
+                 bg_color=globals.ACTIVITY_BG,
                  pixel_size=82.5):
 
         super(ImageButton, self).__init__()
+        self.icon = Icon(icon_name=icon_name,
+                         pixel_size=style.zoom(pixel_size),
+                         stroke_color=style.Color(stroke_color)
+                         .get_svg(),
+                         fill_color=style.Color(fill_color).get_svg())
 
-        image_icon = Icon(icon_name=icon_name,
-                          pixel_size=style.zoom(pixel_size),
-                          stroke_color=style.Color(stroke_color).get_svg(),
-                          fill_color=style.Color(fill_color).get_svg())
-
-        self.set_image(image_icon)
+        self.set_image(self.icon)
         self.props.relief = Gtk.ReliefStyle.NONE
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.Color(bg_color).get_gdk_color())
+
+    def get_icon(self):
+        return self.icon
 
 
 class DisplayData(Gtk.Alignment):
@@ -76,6 +79,7 @@ class DisplayData(Gtk.Alignment):
         else:
             self.text = text
 
+        # FIXME: Use MarkupLabel below # noqa
         HEADING_STRING = "<span foreground='black' size='{}' font='Cantarell' \
         font_weight='bold'>{}</span>".format(headingSize, self.heading)
         TEXT_STRING = "<span foreground='black' size='{}' font='Cantarell'>\
@@ -119,3 +123,29 @@ class FontInfoBox(Gtk.VBox):
 
         fontTrademark = DisplayData("Trademark", font.info.trademark)
         self.pack_start(fontTrademark, False, False, 5)
+
+
+class MarkupLabel(Gtk.Label):
+    """
+    Create a label with markup format as arguments
+    """
+    def __init__(self, text, color='black', size='10000', font='Cantarell',
+                 weight='medium'):
+        super(MarkupLabel, self).__init__()
+
+        string = "<span foreground='{}' size='{}' font='{}' \
+        font_weight='{}'>{}</span>".format(color, size, font, weight, text)
+
+        self.set_markup(string)
+
+
+class FormatLabel(MarkupLabel):
+    """
+    Create a label with a preset style
+    """
+    def __init__(self, text, style):
+        super(FormatLabel, self).__init__(text,
+                                          color=style['color'],
+                                          size=style['size'],
+                                          font=style['font'],
+                                          weight=style['weight'])

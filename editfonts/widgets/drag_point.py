@@ -16,7 +16,7 @@ import cairo
 # from defcon import Point
 # from defcon import Contour
 
-from editfonts.globals import globals
+import editfonts.globals as globals
 
 
 def distance(X, Y):
@@ -35,13 +35,14 @@ def slope(X, Y):
 
 class DragPoint(Gtk.EventBox):
 
-    def __init__(self, point=None):
+    def __init__(self, point=None, id='EDITOR'):
 
         super(DragPoint, self).__init__()
 
         self.point = point
-        self.set_x(globals.X(self.point.x))
-        self.set_y(globals.Y(self.point.y))
+        self.id = id
+        self.set_x(globals.X(self.point.x, self.id))
+        self.set_y(globals.Y(self.point.y, self.id))
 
         # if the point is bound to any other points
         self.is_bound = False
@@ -190,13 +191,13 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.x > globals.EDITOR_BOX_WIDTH:
-            self.x = globals.EDITOR_BOX_WIDTH
+        if self.x > globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']:
+            self.x = globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']
 
         elif self.x < 0:
             self.x = 0
 
-        self.point.x = globals.invX(self.x)
+        self.point.x = globals.invX(self.x, self.id)
 
     def set_y(self, y):
 
@@ -204,9 +205,9 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.y > globals.EDITOR_BOX_HEIGHT:
-            self.y = globals.EDITOR_BOX_HEIGHT
+        if self.y > globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']:
+            self.y = globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']
         elif self.y < 0:
             self.y = 0
 
-        self.point.y = globals.invY(self.y)
+        self.point.y = globals.invY(self.y, self.id)

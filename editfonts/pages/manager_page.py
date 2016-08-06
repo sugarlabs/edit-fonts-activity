@@ -48,7 +48,7 @@ _all_system_fonts = []
 # inactive fonts folder
 inactive_fonts_file_path = '/home/broot/.fonts-inactive'
 
-# FIX ME:Only font names will be shown for the Inactive fonts as I can't
+# FIXME:Only font names will be shown for the Inactive fonts as I can't
 # upload any ttf file using Pango
 # this can be done in two of the following ways
 # temporarily install the font and draw using Pango
@@ -131,7 +131,7 @@ class ManagerPage(Gtk.Box):
         file.close()
         # print fav_fonts
 
-        # FIX ME: Automatic change monitoring not working
+        # FIXME: Automatic change monitoring not working
 
 
 class FontsTreeView(Gtk.TreeView):
@@ -142,9 +142,6 @@ class FontsTreeView(Gtk.TreeView):
         super(FontsTreeView, self).__init__()
 
         self._query = ''
-        # client = GConf.Client.get_default()
-        # self.xo_color =
-        # XoColor(client.get_string('/desktop/sugar/user/color'))
 
         self.set_headers_visible(False)
         self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
@@ -243,12 +240,12 @@ class FontsTreeView(Gtk.TreeView):
         # self.set_search_column(ListModel.COLUMN_FONT_NAME)
         # self.set_enable_search(True)
 
-        # FIX ME: This will only work in Gtk+ 3.8 and later.
+        # FIXME: This will only work in Gtk+ 3.8 and later.
         # self.props.activate_on_single_click = True
         # self.connect('row-activated', self.__row_activated_cb)
 
     def on_treeview_selection_changed(self, selection):
-        # FIX ME: only show the activate/edit buttons if the row is selected
+        # FIXME: only show the activate/edit buttons if the row is selected
         # the activate and edit buttons should be shown in top toolbar
         # print "Selection Changed"
 
@@ -304,7 +301,7 @@ class FontsTreeView(Gtk.TreeView):
         # sign means the cell will be activated if the button is clicked -
         # is this setting correct?
 
-        # FIX ME: add tooltips here to that the user what icons mean what
+        # FIXME: add tooltips here to that the user what icons mean what
 
         is_activated = model[tree_iter][ListModel.COLUMN_ACTIVATE]
 
@@ -373,7 +370,7 @@ class FontsTreeView(Gtk.TreeView):
         # context = self.activity.get_pango_context()
 
         for family in context.list_families():
-            # FIX ME: Incomplete, variable 'name' is assigned to but never used
+            # FIXME: Incomplete, variable 'name' is assigned to but never used
             # name = family.get_name()
             # print name
             pass
