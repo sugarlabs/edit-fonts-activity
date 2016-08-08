@@ -1,14 +1,14 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-# from gi.repository import Pango
+from gi.repository import Pango
 
 from editfonts.widgets.render_glyph import RenderGlyph
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 import editfonts.globals as globals
-
+from editfonts.widgets.misc import FormatLabel
 
 class CharacterMap(Gtk.Box):
 
@@ -20,10 +20,6 @@ class CharacterMap(Gtk.Box):
         # default values
         self.GRID_WIDTH = w  # number of columns
         self.GRID_HEIGHT = h  # number of rows
-        self.GRID_BOX_SIZE = 60
-        self.GRID_ROW_SPACING = 5
-        self.GRID_COLUMN_SPACING = self.GRID_ROW_SPACING
-
         self.h = globals.FONT.info.ascender - globals.FONT.info.descender
         self.b = -globals.FONT.info.descender
 
@@ -50,19 +46,19 @@ class CharacterMap(Gtk.Box):
         self.grid = Gtk.Grid()
         self.align.add(self.grid)
 
-        self.grid.set_row_spacing(self.GRID_ROW_SPACING)
-        self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
+        self.grid.set_row_spacing(globals.GRID_ROW_SPACING)
+        self.grid.set_column_spacing(globals.GRID_COLUMN_SPACING)
 
         # creating a back button
         self.backButton = Gtk.EventBox()
-        backIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
+        backIcon = Icon(pixel_size=globals.GRID_BOX_SIZE)
         backIcon.props.icon_name = 'go-previous'
         self.backButton.add(backIcon)
         self.backButton.connect("button-press-event", self._update_marker, -1)
 
         # creating a next button
         self.nextButton = Gtk.EventBox()
-        nextIcon = Icon(pixel_size=self.GRID_BOX_SIZE)
+        nextIcon = Icon(pixel_size=globals.GRID_BOX_SIZE)
         nextIcon.props.icon_name = 'go-next'
         self.nextButton.add(nextIcon)
         self.nextButton.connect("button-press-event", self._update_marker, 1)
@@ -83,8 +79,8 @@ class CharacterMap(Gtk.Box):
         self.grid = Gtk.Grid()
         self.align.add(self.grid)
 
-        self.grid.set_row_spacing(self.GRID_ROW_SPACING)
-        self.grid.set_column_spacing(self.GRID_COLUMN_SPACING)
+        self.grid.set_row_spacing(globals.GRID_ROW_SPACING)
+        self.grid.set_column_spacing(globals.GRID_COLUMN_SPACING)
 
         i, j = 0, 0
 
@@ -147,22 +143,24 @@ class CharacterMap(Gtk.Box):
 
         box = Gtk.VBox()
         eventBox.add(box)
+        unicode_lable = FormatLabel(glyphName, globals.TEXT_STYLE['LABEL'])
 
-        unicodeLable = Gtk.Label(glyphName)
-        unicodeLable.set_size_request(self.GRID_BOX_SIZE / 2,
-                                      self.GRID_BOX_SIZE / 3)
+        # unicode_lable.set_size_request(globals.GRID_BOX_SIZE / 2,
+        #                              globals.GRID_BOX_SIZE / 3)
 
         # FIXME: find a way to set the ellisize mode on this lable to be true
-        # unicodeLable.set_max_width_chars(6)
-        # unicodeLable.set_property('ellipsize', Pango.PANGO_ELLIPSIZE_END)
-
-        box.pack_start(unicodeLable, False, False, 2)
+        # unicode_lable.set_max_width_chars(6)
+        # unicode_lable.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        unicode_lable.set_max_width_chars(9)
+        unicode_lable.set_ellipsize(Pango.EllipsizeMode.END)
+        unicode_lable.set_halign(Gtk.Align.CENTER)
+        box.pack_start(unicode_lable, False, False, 2)
 
         alignment = Gtk.Alignment(xalign=0.5, yalign=0.5, xscale=0, yscale=0)
         box.pack_start(alignment, True, False, 0)
 
-        glyphBox = RenderGlyph(glyphName, self.GRID_BOX_SIZE,
-                               self.GRID_BOX_SIZE, self.h, self.b)
+        glyphBox = RenderGlyph(glyphName, globals.GRID_BOX_SIZE,
+                               globals.GRID_BOX_SIZE, self.h, self.b)
         eventBox.connect("button-press-event", self._glyph_clicked, glyphName)
 
         alignment.add(glyphBox)

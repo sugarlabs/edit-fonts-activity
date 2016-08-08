@@ -159,13 +159,13 @@ class EditorBox(Gtk.EventBox):
 
     def draw_all_contours(self, cr, pos):
 
-        pen = GtkPen(cr, pos, self.id)
         for contour in self.contours:
             if len(contour[:]) != 0:
 
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
+                pen = GtkPen(cr, pos, self.id)
                 contour.draw(pen)
 
                 # close the contour

@@ -157,6 +157,7 @@ class EditFonts(activity.Activity):
         separator.show()
         toolbar_box.toolbar.insert(separator, -1)
 
+        # Welcome Page Icon
         self.welcome_page_btn = ToolButton()
         self.welcome_page_btn.props.icon_name = 'welcome-page'
         self.welcome_page_btn.connect('clicked',
@@ -165,6 +166,16 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.welcome_page_btn, -1)
         self.welcome_page_btn.show()
 
+        # Manager Page Icon
+        self.manager_page_btn = ToolButton()
+        self.manager_page_btn.props.icon_name = 'manager-page'
+        self.manager_page_btn.connect('clicked',
+                                      lambda _: self.set_page('MANAGER'))
+        self.manager_page_btn.set_tooltip(_('Go to the Manager Page'))
+        toolbar_box.toolbar.insert(self.manager_page_btn, -1)
+        self.manager_page_btn.show()
+
+        # Summary Page Icon
         self.summary_page_btn = ToolButton()
         self.summary_page_btn.props.icon_name = 'summary-page'
         self.summary_page_btn.connect('clicked',
@@ -173,6 +184,7 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.summary_page_btn, -1)
         self.summary_page_btn.show()
 
+        # Editor Page Icon
         self.editor_page_btn = ToolButton()
         self.editor_page_btn.props.icon_name = 'editor-page'
         self.editor_page_btn.connect('clicked',
@@ -180,14 +192,6 @@ class EditFonts(activity.Activity):
         self.editor_page_btn.set_tooltip(_('Go to the Editor Page'))
         toolbar_box.toolbar.insert(self.editor_page_btn, -1)
         self.editor_page_btn.show()
-
-        self.manager_page_btn = ToolButton()
-        self.manager_page_btn.props.icon_name = 'manager-page'
-        self.manager_page_btn.connect('clicked',
-                                      lambda _: self.set_page('MANAGER'))
-        self.manager_page_btn.set_tooltip(_('Go to the Manager Page'))
-        toolbar_box.toolbar.insert(self.manager_page_btn, -1)
-        self.manager_page_btn.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -566,12 +570,20 @@ class EditFonts(activity.Activity):
     # Export
     # ######
 
-    def export_font(self, button):
+    def export_font(self):
         """
         This function should save the current font loaded
-        in globals.FONT as a .ttf file
+        in globals.FONT as a .otf file
         the file will be saved in the activity data folder
         """
+        import subprocess
+
+        def bash_command(cmd):
+            subprocess.Popen(['/bin/bash', '-c', cmd])
+
+        bash_command('python -m fontmake -u ' + globals.FONT_PATH +
+                     ' -o otf')
+
         # save the font as a  ufo in a temp path
         file_path =\
             os.path.join(self.get_activity_root(),
@@ -580,6 +592,7 @@ class EditFonts(activity.Activity):
         # converting the font to a OTF
         otf = compileOTF(globals.FONT)
         otf.save(file_path)
+
         # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()

@@ -88,12 +88,18 @@ SCREEN_HEIGHT = SCREEN.get_height()
 # ######################
 
 # General
-GLYPH_BOX_COLOR = '#6699cc'
+GLYPH_BOX_COLOR = '#FFFFFF'
 EDITOR_AREA = {}
 ACTIVITY_BG = '#AAAAAA'
 
-# Welcome Page
+# Character Map
 
+GRID_BOX_SIZE = float(SCREEN_WIDTH) * 0.07
+GRID_ROW_SPACING = float(SCREEN_WIDTH) * 0.007
+GRID_COLUMN_SPACING = GRID_ROW_SPACING
+
+
+# Welcome Page
 
 WELCOME_GLYPH = SAMPLE_FONT['editfonts']
 

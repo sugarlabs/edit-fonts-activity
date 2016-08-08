@@ -34,10 +34,12 @@ class EditorPage(Gtk.Box):
         self.set_property("orientation", Gtk.Orientation.HORIZONTAL)
 
         # create Right Toolbar
+        """
         self.side_toolbar_right = self._create_right_toolbar()
         self.side_toolbar_right.set_property("border-width", 40)
         self.pack_end(self.side_toolbar_right, False, False, 10)
-
+        """
+        
         # create Left Toolbar
         """
         self.side_toolbar_left = self._create_left_toolbar()
@@ -48,20 +50,22 @@ class EditorPage(Gtk.Box):
         # create Central main area
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
+
+        """
         self.heading = PageHeading("Let's Edit Font:" +
                                    globals.FONT.info.familyName,
                                    fontSize='20000')
-
-        self.characterMap = CharacterMap(10, 1, 'BUTTON')
 
         self.vbox.pack_start(self.heading, False, False, 30)
         self.vbox.pack_start(Gtk.HSeparator(),
                              False, False, 0)
 
+        self.characterMap = CharacterMap(10, 1, 'BUTTON')
         self.vbox.pack_start(self.characterMap, False, False, 30)
         self.vbox.pack_start(Gtk.HSeparator(),
                              False, False, 0)
 
+        """
         # create DrawingArea
         self.editor_alignment = Gtk.Alignment(xalign=0.5,
                                               yalign=0.5,

@@ -50,7 +50,7 @@ class DragPoint(Gtk.EventBox):
         self.binding = []
 
         # radius of the point
-        self.r = 5
+        self.r = 10
 
         self.set_size_request(self.r * 2, self.r * 2)
 

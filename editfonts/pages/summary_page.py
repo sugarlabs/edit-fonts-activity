@@ -41,22 +41,18 @@ class SummaryPage(Gtk.Box):
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
 
-        self.heading = PageHeading("Font: " + globals.FONT.info.familyName)
+        """
+        self.heading = FormatLabel("Font: " + globals.FONT.info.familyName,
+                                   globals.TEXT_STYLE['HEADING'])
 
         self.infoBoxExpander = Gtk.Expander()
-
         expanderLabelText = "See Details"
-        TEMP_STRING = """<span foreground='black' size='15000'
-                      font='Cantarell' font_weight='bold'>""" + \
-                      expanderLabelText + "</span>"
         self.infoBoxExpander.set_property("use-markup", True)
-        self.infoBoxExpander.set_label(TEMP_STRING)
+        self.infoBoxExpander.set_label("something")
 
         self.infoBox = FontInfoBox(globals.FONT)
 
         self.infoBoxExpander.add(self.infoBox)
-
-        self.characterMap = CharacterMap(10, 5, 'SCROLL')
 
         self.vbox.pack_start(self.heading, False, False, 30)
 
@@ -67,6 +63,9 @@ class SummaryPage(Gtk.Box):
 
         self.vbox.pack_start(Gtk.HSeparator(),
                              False, False, 0)
+        """
+
+        self.characterMap = CharacterMap(10, 5, 'SCROLL')
 
         self.vbox.pack_start(self.characterMap, True, True, 30)
 
@@ -95,6 +94,7 @@ class SummaryPage(Gtk.Box):
         grid.set_column_spacing(GRID_COLUMN_SPACING)
         grid.set_row_spacing(GRID_ROW_SPACING)
 
+        """
         # Install Button
         image_icon = Icon(pixel_size=style.zoom(55 * 1.5),
                           icon_name='install',
@@ -119,6 +119,7 @@ class SummaryPage(Gtk.Box):
         editButton.connect("clicked", self._clickEdit)
         grid.attach(editButton, 0, 1, 1, 1)
 
+
         # Delete Button
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                           icon_name='delete',
@@ -129,8 +130,9 @@ class SummaryPage(Gtk.Box):
         deleteButton.add(image_icon)
         deleteButton.props.relief = Gtk.ReliefStyle.NONE
         deleteButton.connect("clicked", self._clickDelete)
-        grid.attach(deleteButton, 0, 2, 1, 1)
 
+        grid.attach(deleteButton, 0, 2, 1, 1)
+        """
         return frame
 
     def _clickDelete(self, handle):
