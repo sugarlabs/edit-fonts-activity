@@ -9,7 +9,8 @@ from gi.repository import Gtk
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-from editfonts.widgets.misc import PageHeading, FontInfoBox
+from editfonts.widgets.misc import ImageButton
+from editfonts.widgets.misc import FormatLabel
 from editfonts.widgets.character_map import CharacterMap
 import editfonts.globals as globals
 
@@ -34,7 +35,7 @@ class SummaryPage(Gtk.Box):
         self.set_property("orientation", Gtk.Orientation.HORIZONTAL)
 
         self.side_toolbar = self._create_toolbar()
-        self.side_toolbar.set_property("border-width", 40)
+        # self.side_toolbar.set_property("border-width", 40)
 
         self.pack_end(self.side_toolbar, False, False, 10)
 
@@ -86,7 +87,7 @@ class SummaryPage(Gtk.Box):
         # GRID_HEIGHT = 3  # number of rows
         # GRID_WIDTH = 1  # number of columns
         # GRID_BOX_SIZE = 40
-        GRID_ROW_SPACING = 20
+        GRID_ROW_SPACING = 10
         GRID_COLUMN_SPACING = 5
 
         frame.set_border_width(5)
@@ -94,20 +95,87 @@ class SummaryPage(Gtk.Box):
         grid.set_column_spacing(GRID_COLUMN_SPACING)
         grid.set_row_spacing(GRID_ROW_SPACING)
 
-        """
         # Install Button
-        image_icon = Icon(pixel_size=style.zoom(55 * 1.5),
-                          icon_name='install',
-                          stroke_color=style.COLOR_BLACK.get_svg(),
-                          fill_color=style.COLOR_WHITE.get_svg())
-        installButton = Gtk.Button()
-        installButton.set_image(image_icon)
-        installButton.modify_bg(Gtk.StateType.NORMAL,
-                                style.Color('#34495E').get_gdk_color())
-        installButton.props.relief = Gtk.ReliefStyle.NONE
-        installButton.connect("clicked", self._clickInstall)
-        grid.attach(installButton, 0, 0, 1, 1)
+        vbox = Gtk.VBox()
+        button = ImageButton('install',
+                             pixel_size=globals.BUTTON_BOX_SIZE * 0.6)
+        button.set_tooltip_text('Activate a Font')
+        # button.connect("clicked", lambda _: pass)
 
+        vbox.pack_start(button, False, False, 0)
+
+        label = FormatLabel('Activate', globals.TEXT_STYLE['LABEL'])
+        alignment_box = Gtk.Alignment(xalign=0.5,
+                                      yalign=0.5,
+                                      xscale=0,
+                                      yscale=0)
+        alignment_box.add(label)
+        vbox.pack_start(alignment_box, True, True, 0)
+
+        grid.attach(vbox, 0, 0, 1, 1)
+
+        # Add Glyph
+        vbox = Gtk.VBox()
+        button = ImageButton('install',
+                             pixel_size=globals.BUTTON_BOX_SIZE * 0.6)
+        button.set_tooltip_text('Add a Glyph')
+        # button.connect("clicked", lambda _: pass)
+
+        vbox.pack_start(button, False, False, 0)
+
+        label = FormatLabel('Add a Glyph', globals.TEXT_STYLE['LABEL'])
+        alignment_box = Gtk.Alignment(xalign=0.5,
+                                      yalign=0.5,
+                                      xscale=0,
+                                      yscale=0)
+        alignment_box.add(label)
+        vbox.pack_start(alignment_box, True, True, 0)
+
+        grid.attach(vbox, 0, 1, 1, 1)
+
+        """
+        # Only displayed when any of the glyph is selected
+        # Delete Glyph
+        vbox = Gtk.VBox()
+        button = ImageButton('install',
+                             pixel_size=globals.BUTTON_BOX_SIZE * 0.6)
+        button.set_tooltip_text('Activate a Font')
+        button.connect("clicked", lambda _: self._clickInstall)
+
+        vbox.pack_start(button, False, False, 0)
+
+        label = FormatLabel('Activate', globals.TEXT_STYLE['LABEL'])
+        alignment_box = Gtk.Alignment(xalign=0.5,
+                                      yalign=0.5,
+                                      xscale=0,
+                                      yscale=0)
+        alignment_box.add(label)
+        vbox.pack_start(alignment_box, True, True, 0)
+
+        grid.attach(vbox, 0, 0, 1, 1)
+
+
+        # Add Glyph
+        vbox = Gtk.VBox()
+        button = ImageButton('install',
+                             pixel_size=globals.BUTTON_BOX_SIZE * 0.6)
+        button.set_tooltip_text('Activate a Font')
+        button.connect("clicked", lambda _: self._clickInstall)
+
+        vbox.pack_start(button, False, False, 0)
+
+        label = FormatLabel('Activate', globals.TEXT_STYLE['LABEL'])
+        alignment_box = Gtk.Alignment(xalign=0.5,
+                                      yalign=0.5,
+                                      xscale=0,
+                                      yscale=0)
+        alignment_box.add(label)
+        vbox.pack_start(alignment_box, True, True, 0)
+
+        grid.attach(vbox, 0, 0, 1, 1)
+        """
+
+        """
         # Edit Button
         image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
                           icon_name='edit',
@@ -118,20 +186,6 @@ class SummaryPage(Gtk.Box):
         editButton.props.relief = Gtk.ReliefStyle.NONE
         editButton.connect("clicked", self._clickEdit)
         grid.attach(editButton, 0, 1, 1, 1)
-
-
-        # Delete Button
-        image_icon = Icon(pixel_size=style.MEDIUM_ICON_SIZE,
-                          icon_name='delete',
-                          stroke_color=style.COLOR_BLACK.get_svg(),
-                          fill_color=style.Color('#E74C3C').get_svg())
-
-        deleteButton = Gtk.Button()
-        deleteButton.add(image_icon)
-        deleteButton.props.relief = Gtk.ReliefStyle.NONE
-        deleteButton.connect("clicked", self._clickDelete)
-
-        grid.attach(deleteButton, 0, 2, 1, 1)
         """
         return frame
 
