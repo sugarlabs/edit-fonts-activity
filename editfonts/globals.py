@@ -118,7 +118,8 @@ BUTTON_BOX_ROW_SPACING = float(SCREEN_WIDTH) * 0.01
 
 # Editor Page
 
-EDITOR_AREA['EDITOR'] = {'EDITOR_BOX_WIDTH': 600, 'EDITOR_BOX_HEIGHT': 600,
+EDITOR_AREA['EDITOR'] = {'EDITOR_BOX_WIDTH': float(SCREEN_WIDTH) * 0.80,
+                         'EDITOR_BOX_HEIGHT': float(SCREEN_HEIGHT) * 0.80,
                          'EDITOR_BOX_BG': '#FFFFFF', 'GLYPH': GLYPH}
 
 # ###########

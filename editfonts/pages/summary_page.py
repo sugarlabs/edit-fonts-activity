@@ -18,7 +18,6 @@ import editfonts.globals as globals
 class SummaryPage(Gtk.Box):
     """This Class Creates the "Font:<familyName>" Page that loads up on
         clicking any Font
-
     """
 
     def __init__(self):
@@ -65,8 +64,9 @@ class SummaryPage(Gtk.Box):
         self.vbox.pack_start(Gtk.HSeparator(),
                              False, False, 0)
         """
-
-        self.characterMap = CharacterMap(10, 5, 'SCROLL')
+        # FIXME: Number of Columns displayed are
+        # 1 more than the arguement given
+        self.characterMap = CharacterMap(9, 5, 'SCROLL')
 
         self.vbox.pack_start(self.characterMap, True, True, 30)
 

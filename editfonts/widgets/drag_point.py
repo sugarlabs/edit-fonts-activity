@@ -57,6 +57,10 @@ class DragPoint(Gtk.EventBox):
         WIDTH = self.r * 2
         HEIGHT = self.r * 2
 
+        # Create the point using the cairo drawing functions
+        # TODO: add the point as a svg so that
+        # the anyone can change the icon
+
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
         cr = cairo.Context(surface)
         cr.scale(WIDTH, HEIGHT)  # Normalizing the canvas
@@ -76,6 +80,11 @@ class DragPoint(Gtk.EventBox):
                                              self.r * 2)
         transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
         image = Gtk.Image.new_from_pixbuf(transparent)
+
+        # Create the point using a svg file
+
+        # image = Gtk.Image.new_from_file('./icons/star')
+
         self.add(image)
 
         self.set_above_child(True)

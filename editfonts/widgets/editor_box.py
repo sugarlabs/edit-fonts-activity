@@ -51,6 +51,7 @@ class EditorBox(Gtk.EventBox):
                                  ['EDITOR_BOX_WIDTH'],
                                  globals.EDITOR_AREA[self.id]
                                  ['EDITOR_BOX_HEIGHT'])
+
         self.da.modify_bg(Gtk.StateType.NORMAL,
                           style.Color(globals.EDITOR_AREA[self.id]
                                       ['EDITOR_BOX_BG'])
@@ -165,7 +166,7 @@ class EditorBox(Gtk.EventBox):
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
-                pen = GtkPen(cr, pos, self.id)
+                pen = GtkPen(cr, self.id)
                 contour.draw(pen)
 
                 # close the contour

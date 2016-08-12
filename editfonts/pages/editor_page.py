@@ -39,15 +39,14 @@ class EditorPage(Gtk.Box):
         self.side_toolbar_right.set_property("border-width", 40)
         self.pack_end(self.side_toolbar_right, False, False, 10)
         """
-        
+
         # create Left Toolbar
-        """
+        
         self.side_toolbar_left = self._create_left_toolbar()
         self.side_toolbar_left.set_property("border-width", 40)
         self.pack_start(self.side_toolbar_left, False, False, 10)
-        """
 
-        # create Central main area
+        # Create Central Area
         self.vbox = Gtk.VBox()
         self.pack_start(self.vbox, True, True, 10)
 
@@ -66,7 +65,9 @@ class EditorPage(Gtk.Box):
                              False, False, 0)
 
         """
-        # create DrawingArea
+
+        # Create Drawing Area
+
         self.editor_alignment = Gtk.Alignment(xalign=0.5,
                                               yalign=0.5,
                                               xscale=0,
@@ -74,12 +75,19 @@ class EditorPage(Gtk.Box):
 
         self.editor_area = EditorBox()
         self.editor_alignment.add(self.editor_area)
-        self.vbox.pack_start(self.editor_alignment, True, True, 30)
 
-        self.vbox.pack_start(Gtk.HSeparator(),
-                             False, False, 0)
+        self.vbox.pack_start(self.editor_alignment, True, True, 0)
 
-        # create Testing Area
+        # Add the Drawing Area inside a scrolling window
+        """
+        scrolled_window = Gtk.ScrolledWindow()
+        scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC,
+                                   Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_border_width(10)
+        scrolled_window.add_with_viewport(self.editor_alignment)
+
+        self.vbox.pack_start(scrolled_window, True, True, 0)
+        """
 
         self.show_all()
 
