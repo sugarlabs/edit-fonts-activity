@@ -166,7 +166,7 @@ class EditorBox(Gtk.EventBox):
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
-                pen = GtkPen(cr, self.id)
+                pen = GtkPen(cr, pos, self.id)
                 contour.draw(pen)
 
                 # close the contour

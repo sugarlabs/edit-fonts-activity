@@ -12,14 +12,14 @@ class GtkPen(BasePen):
     converts any segment type to simple moveTo, lineTo, curveTo commands
     """
 
-    def __init__(self, cr, id='EDITOR', scale=1.0):
+    def __init__(self, cr, pos, id='EDITOR', scale=1.0):
         BasePen.__init__(self, glyphSet={})
         self.cr = cr
 
         self.id = id
 
         # the position the glyph is at while drawing it in a string of glyphs
-        # self.pos = pos
+        self.pos = pos
 
         # The advance width of the glyph
         self.w = globals.GLYPH.width
@@ -35,6 +35,10 @@ class GtkPen(BasePen):
 
     # define the transformations for the points here
     def X(self, x):
+        t = self.pos + float(x) *\
+            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+
+        """
         H = globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']
         W = globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']
 
@@ -42,11 +46,16 @@ class GtkPen(BasePen):
         W_ = self.w * 0.8 * H / self.h
         # w_prime = W * 1.2 * self.h / H
         t = (W / 2.0 + W_ / 2.0) + float(x) * W_ / self.w
+        """
         return t * self.scale
 
     def Y(self, y):
+        t = float(self.h - y - self.b) *\
+            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+        """
         t = float(1.1 * self.h - y - self.b) *\
             globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / 1.2 * self.h
+        """
         return t * self.scale
 
     def convertToScale(self, X):
