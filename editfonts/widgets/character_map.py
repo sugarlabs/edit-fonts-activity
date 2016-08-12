@@ -146,12 +146,6 @@ class CharacterMap(Gtk.Box):
         eventBox.add(box)
         unicode_lable = FormatLabel(glyphName, globals.TEXT_STYLE['LABEL'])
 
-        # unicode_lable.set_size_request(globals.GRID_BOX_SIZE / 2,
-        #                              globals.GRID_BOX_SIZE / 3)
-
-        # FIXME: find a way to set the ellisize mode on this lable to be true
-        # unicode_lable.set_max_width_chars(6)
-        # unicode_lable.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         unicode_lable.set_max_width_chars(9)
         unicode_lable.set_ellipsize(Pango.EllipsizeMode.END)
         unicode_lable.set_halign(Gtk.Align.CENTER)

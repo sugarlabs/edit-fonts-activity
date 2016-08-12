@@ -94,6 +94,9 @@ class EditFonts(activity.Activity):
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.Color(globals.ACTIVITY_BG).get_gdk_color())
 
+        self.modify_bg(Gtk.StateType.NORMAL,
+                       style.Color(globals.ACTIVITY_BG).get_gdk_color())
+
         self.max_participants = 1
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(levelname)s %(message)s',
@@ -592,7 +595,6 @@ class EditFonts(activity.Activity):
         # converting the font to a OTF
         otf = compileOTF(globals.FONT)
         otf.save(file_path)
-
         # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()

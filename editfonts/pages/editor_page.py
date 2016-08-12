@@ -6,7 +6,6 @@ from gi.repository import Gtk
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-
 from editfonts.widgets.editor_box import EditorBox
 import editfonts.globals as globals
 

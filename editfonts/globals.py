@@ -50,21 +50,21 @@ TOOL_ACTIVE = {'BezierPenTool': False}
 
 
 def X(x, id):  # noqa
-    t = float(x) * EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] / h
+    t = float(x) * EDITOR_AREA[id]['height'] / h
     return t
 
 
 def Y(y, id):  # noqa
-    t = float(h - y - b) * EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] / h
+    t = float(h - y - b) * EDITOR_AREA[id]['height'] / h
     return t
 
 
 def invX(x, id):  # noqa
-    return float(x) * h / EDITOR_AREA[id]['EDITOR_BOX_HEIGHT']
+    return float(x) * h / EDITOR_AREA[id]['height']
 
 
 def invY(y, id):  # noqa
-    return h - float(y) * h / EDITOR_AREA[id]['EDITOR_BOX_HEIGHT'] - b
+    return h - float(y) * h / EDITOR_AREA[id]['height'] - b
 
 # #########
 # User Info
@@ -106,9 +106,9 @@ WELCOME_GLYPH = SAMPLE_FONT['editfonts']
 WELCOME_EDITOR_BOX_WIDTH = float(SCREEN_WIDTH) * 0.8
 WELCOME_EDITOR_BOX_HEIGHT = float(SCREEN_WIDTH) * 0.2
 
-EDITOR_AREA['WELCOME'] = {'EDITOR_BOX_WIDTH': float(SCREEN_WIDTH) * 0.80,
-                          'EDITOR_BOX_HEIGHT': float(SCREEN_WIDTH) * 0.26,
-                          'EDITOR_BOX_BG': '#AAAAAA', 'GLYPH': WELCOME_GLYPH}
+EDITOR_AREA['WELCOME'] = {'width': float(SCREEN_WIDTH) * 0.80,
+                          'height': float(SCREEN_WIDTH) * 0.26,
+                          'bg-color': '#AAAAAA', 'glyph': WELCOME_GLYPH}
 
 BUTTON_BOX_SIZE = float(SCREEN_WIDTH) * 0.1
 BUTTON_BOX_COLUMN_SPACING = float(SCREEN_WIDTH) * 0.1
@@ -118,9 +118,9 @@ BUTTON_BOX_ROW_SPACING = float(SCREEN_WIDTH) * 0.01
 
 # Editor Page
 
-EDITOR_AREA['EDITOR'] = {'EDITOR_BOX_WIDTH': float(SCREEN_WIDTH) * 0.80,
-                         'EDITOR_BOX_HEIGHT': float(SCREEN_HEIGHT) * 0.80,
-                         'EDITOR_BOX_BG': '#FFFFFF', 'GLYPH': GLYPH}
+EDITOR_AREA['EDITOR'] = {'width': float(SCREEN_WIDTH) * 0.80,
+                         'height': float(SCREEN_HEIGHT) * 0.80,
+                         'bg-color': '#FFFFFF', 'glyph': GLYPH}
 
 # ###########
 # Font Styles

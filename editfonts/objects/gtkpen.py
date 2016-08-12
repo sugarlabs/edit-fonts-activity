@@ -36,7 +36,7 @@ class GtkPen(BasePen):
     # define the transformations for the points here
     def X(self, x):
         t = self.pos + float(x) *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
 
         """
         H = globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']
@@ -51,16 +51,16 @@ class GtkPen(BasePen):
 
     def Y(self, y):
         t = float(self.h - y - self.b) *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
         """
         t = float(1.1 * self.h - y - self.b) *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / 1.2 * self.h
+            globals.EDITOR_AREA[self.id]['height'] / 1.2 * self.h
         """
         return t * self.scale
 
     def convertToScale(self, X):
         return X * self.scale *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
 
     def _moveTo(self, p):
         x, y = p
