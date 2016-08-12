@@ -87,23 +87,11 @@ lock = """
 
 """
 
-
 simple_handle = """
-<svg viewBox="0 0 70 65" width="55px" height="55px" transform='translate(5 5)'
- x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
- xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block"
- id="emblem-locked">
- <g display="inline">
- <rect style="fill:rgb(240,240,240);stroke-width:3.5;stroke:rgb(147,147,147)"
- height="40" width="40" x="7.5" y="7.5"/>
- <g>
- <rect style="fill:rgb(147,147,147)" height="14.06" width="17.824" x="18.589"
- y="24.725"/>
- <path d="M22.515,24.725v-3.637c0-2.692,2.18-4.869,4.868-4.869 c2.688,0,4.867,
- 2.181,4.867,4.869v3.637" style="fill:none;stroke-width:3.5;
- stroke:rgb(147,147,147)"/>
- </g>
- </g>
-</g></svg>
+<svg height="10" width="10" xmlns="http://www.w3.org/2000/svg"
+     xmlns:svg="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+<circle cx="5" cy="5" r="5" />
+</svg>
 
 """
