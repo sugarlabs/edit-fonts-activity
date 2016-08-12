@@ -5,18 +5,19 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
-# from gi.repository import GdkPixbuf
+from gi.repository import GdkPixbuf
 # from gi.repository import GLib
 # from gi.repository import Gio
 # from gi.repository import GObject
 
-import cairo
+# import cairo
 
 # from defcon import Font
 # from defcon import Point
 # from defcon import Contour
 
 import editfonts.globals as globals
+import editfonts.widgets.localIcon as localIcon
 
 
 def distance(X, Y):
@@ -54,13 +55,13 @@ class DragPoint(Gtk.EventBox):
 
         self.set_size_request(self.r * 2, self.r * 2)
 
-        WIDTH = self.r * 2
-        HEIGHT = self.r * 2
+        WIDTH = self.r * 2  # noqa
+        HEIGHT = self.r * 2  # noqa
 
         # Create the point using the cairo drawing functions
         # TODO: add the point as a svg so that
         # the anyone can change the icon
-
+        """
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
         cr = cairo.Context(surface)
         cr.scale(WIDTH, HEIGHT)  # Normalizing the canvas
@@ -80,10 +81,13 @@ class DragPoint(Gtk.EventBox):
                                              self.r * 2)
         transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
         image = Gtk.Image.new_from_pixbuf(transparent)
+        """
 
         # Create the point using a svg file
-
-        # image = Gtk.Image.new_from_file('./icons/star')
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(localIcon.simple_handle.encode())
+        loader.close()
+        image = Gtk.Image.new_from_pixbuf(loader.get_pixbuf())
 
         self.add(image)
 
