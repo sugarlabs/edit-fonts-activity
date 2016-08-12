@@ -9,7 +9,7 @@ import editfonts.globals as globals
 class GtkPen(BasePen):
     """
     This class is a subclass of the BasePen Class from fontTools which
-    converts any segement type to simple moveto, lineto, curveto statements
+    converts any segment type to simple moveTo, lineTo, curveTo commands
     """
 
     def __init__(self, cr, pos, id='EDITOR', scale=1.0):
@@ -36,17 +36,31 @@ class GtkPen(BasePen):
     # define the transformations for the points here
     def X(self, x):
         t = self.pos + float(x) *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
+
+        """
+        H = globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']
+        W = globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']
+
+        H_ = 0.8 * H
+        W_ = self.w * 0.8 * H / self.h
+        # w_prime = W * 1.2 * self.h / H
+        t = (W / 2.0 + W_ / 2.0) + float(x) * W_ / self.w
+        """
         return t * self.scale
 
     def Y(self, y):
         t = float(self.h - y - self.b) *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
+        """
+        t = float(1.1 * self.h - y - self.b) *\
+            globals.EDITOR_AREA[self.id]['height'] / 1.2 * self.h
+        """
         return t * self.scale
 
     def convertToScale(self, X):
         return X * self.scale *\
-            globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT'] / self.h
+            globals.EDITOR_AREA[self.id]['height'] / self.h
 
     def _moveTo(self, p):
         x, y = p

@@ -34,32 +34,27 @@ class EditorBox(Gtk.EventBox):
 
         super(EditorBox, self).__init__()
         self.id = id
-        self.set_size_request(globals.EDITOR_AREA[self.id]
-                              ['EDITOR_BOX_WIDTH'],
-                              globals.EDITOR_AREA[self.id]
-                              ['EDITOR_BOX_HEIGHT'])
+        self.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
+                              globals.EDITOR_AREA[self.id]['height'])  # noqa
 
         self.fixed = Gtk.Fixed()
-        self.fixed.set_size_request(globals.EDITOR_AREA[self.id]
-                                    ['EDITOR_BOX_WIDTH'],
-                                    globals.EDITOR_AREA[self.id]
-                                    ['EDITOR_BOX_HEIGHT'])
+        self.fixed.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
+                                    globals.EDITOR_AREA[self.id]['height'])  # noqa
         self.add(self.fixed)
 
         self.da = Gtk.DrawingArea()
-        self.da.set_size_request(globals.EDITOR_AREA[self.id]
-                                 ['EDITOR_BOX_WIDTH'],
-                                 globals.EDITOR_AREA[self.id]
-                                 ['EDITOR_BOX_HEIGHT'])
+        self.da.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
+                                 globals.EDITOR_AREA[self.id]['height'])  # noqa
+
         self.da.modify_bg(Gtk.StateType.NORMAL,
                           style.Color(globals.EDITOR_AREA[self.id]
-                                      ['EDITOR_BOX_BG'])
+                                      ['bg-color'])
                           .get_gdk_color())
 
         self.fixed.put(self.da, 0, 0)
 
         # declare the list for storing all the contours
-        self.contours = globals.EDITOR_AREA[self.id]['GLYPH'][:]
+        self.contours = globals.EDITOR_AREA[self.id]['glyph'][:]
 
         self.tool = {}
 
@@ -160,12 +155,14 @@ class EditorBox(Gtk.EventBox):
     def draw_all_contours(self, cr, pos):
 
         pen = GtkPen(cr, pos, self.id)
+
         for contour in self.contours:
             if len(contour[:]) != 0:
 
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
+                pen = GtkPen(cr, pos, self.id)
                 contour.draw(pen)
 
                 # close the contour

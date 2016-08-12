@@ -5,18 +5,19 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
-# from gi.repository import GdkPixbuf
+from gi.repository import GdkPixbuf
 # from gi.repository import GLib
 # from gi.repository import Gio
 # from gi.repository import GObject
 
-import cairo
+# import cairo
 
 # from defcon import Font
 # from defcon import Point
 # from defcon import Contour
 
 import editfonts.globals as globals
+import editfonts.widgets.localIcon as localIcon
 
 
 def distance(X, Y):
@@ -50,13 +51,17 @@ class DragPoint(Gtk.EventBox):
         self.binding = []
 
         # radius of the point
-        self.r = 5
+        self.r = 10
 
         self.set_size_request(self.r * 2, self.r * 2)
 
-        WIDTH = self.r * 2
-        HEIGHT = self.r * 2
+        WIDTH = self.r * 2  # noqa
+        HEIGHT = self.r * 2  # noqa
 
+        # Create the point using the cairo drawing functions
+        # TODO: add the point as a svg so that
+        # the anyone can change the icon
+        """
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
         cr = cairo.Context(surface)
         cr.scale(WIDTH, HEIGHT)  # Normalizing the canvas
@@ -76,6 +81,14 @@ class DragPoint(Gtk.EventBox):
                                              self.r * 2)
         transparent = pixbuf.add_alpha(True, 0xff, 0xff, 0xff)
         image = Gtk.Image.new_from_pixbuf(transparent)
+        """
+
+        # Create the point using a svg file
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(localIcon.simple_handle.encode())
+        loader.close()
+        image = Gtk.Image.new_from_pixbuf(loader.get_pixbuf())
+
         self.add(image)
 
         self.set_above_child(True)
@@ -191,8 +204,8 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.x > globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']:
-            self.x = globals.EDITOR_AREA[self.id]['EDITOR_BOX_WIDTH']
+        if self.x > globals.EDITOR_AREA[self.id]['width']:
+            self.x = globals.EDITOR_AREA[self.id]['width']
 
         elif self.x < 0:
             self.x = 0
@@ -205,8 +218,8 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.y > globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']:
-            self.y = globals.EDITOR_AREA[self.id]['EDITOR_BOX_HEIGHT']
+        if self.y > globals.EDITOR_AREA[self.id]['height']:
+            self.y = globals.EDITOR_AREA[self.id]['height']
         elif self.y < 0:
             self.y = 0
 
