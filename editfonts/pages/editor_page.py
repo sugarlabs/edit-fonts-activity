@@ -215,7 +215,7 @@ class EditorPage(Gtk.Box):
         pass
 
     def _clickEdit(self, handle):
-        globals.A.set_page("SUMMARY")
+        globals.SELF.set_page("SUMMARY")
 
     def _clickInstall(self, handle):
         pass

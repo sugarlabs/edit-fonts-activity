@@ -89,7 +89,7 @@ class EditFonts(activity.Activity):
         # Set up the EditFonts activity
         activity.Activity.__init__(self, handle)
 
-        globals.A = self
+        globals.SELF = self
 
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.Color(globals.ACTIVITY_BG).get_gdk_color())

@@ -217,4 +217,4 @@ class CreateFontPage(Gtk.VBox):
         globals.FONT = BaseFont.new_standard_font(data=data)
 
         # FIXME: Check if font was created or not
-        globals.A.set_page("SUMMARY")
+        globals.SELF.set_page("SUMMARY")

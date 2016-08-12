@@ -66,7 +66,7 @@ class SummaryPage(Gtk.Box):
         """
         # FIXME: Number of Columns displayed are
         # 1 more than the arguement given
-        self.characterMap = CharacterMap(9, 5, 'SCROLL')
+        self.characterMap = CharacterMap(8, 5, 'SCROLL')
 
         self.vbox.pack_start(self.characterMap, True, True, 30)
 
@@ -194,7 +194,7 @@ class SummaryPage(Gtk.Box):
 
     def _clickEdit(self, handle):
         # create a new page
-        globals.A.set_page("EDITOR")
+        globals.SELF.set_page("EDITOR")
 
     def _clickInstall(self, handle):
         pass

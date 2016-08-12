@@ -48,7 +48,7 @@ class WelcomePage(Gtk.VBox):
         vbox = Gtk.VBox()
         button = ImageButton('blank-font', pixel_size=globals.BUTTON_BOX_SIZE)
         button.set_tooltip_text('Create a new font file')
-        button.connect("clicked", lambda _: globals.A.create_font())
+        button.connect("clicked", lambda _: globals.SELF.create_font())
 
         vbox.pack_start(button, False, False, 0)
 
@@ -69,7 +69,7 @@ class WelcomePage(Gtk.VBox):
         # FIXME: change the tooltip below to something oriented towards kids
         button.set_tooltip_text('Load a font:\
             a .zip file containing a .ufo file')
-        button.connect("clicked", lambda _: globals.A.load())
+        button.connect("clicked", lambda _: globals.SELF.load())
 
         vbox.pack_start(button, False, False, 0)
 
@@ -87,7 +87,7 @@ class WelcomePage(Gtk.VBox):
         vbox = Gtk.VBox()
         button = ImageButton('sample-font', pixel_size=globals.BUTTON_BOX_SIZE)
         button.set_tooltip_text('Load the sample font: Geo')
-        button.connect("clicked", lambda _: globals.A.load_sample())
+        button.connect("clicked", lambda _: globals.SELF.load_sample())
 
         vbox.pack_start(button, False, False, 0)
 
@@ -108,7 +108,7 @@ class WelcomePage(Gtk.VBox):
         # FIXME: change the tooltip below to something oriented towards kids
         button.set_tooltip_text('Import a font: only\
             .otf or .ttf files supported')
-        button.connect("clicked", lambda _: globals.A.import_font())
+        button.connect("clicked", lambda _: globals.SELF.import_font())
 
         vbox.pack_start(button, False, False, 0)
 

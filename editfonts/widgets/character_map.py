@@ -170,7 +170,7 @@ class CharacterMap(Gtk.Box):
 
         globals.GLYPH_NAME = glyphName
         globals.GLYPH = globals.FONT[globals.GLYPH_NAME]
-        globals.A.set_page("EDITOR")
+        globals.SELF.set_page("EDITOR")
 
     def _update_marker(self, handle, event, increment):
 
