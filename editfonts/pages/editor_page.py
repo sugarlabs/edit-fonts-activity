@@ -7,8 +7,6 @@ from gi.repository import Gtk
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
-from editfonts.widgets.misc import PageHeading
-from editfonts.widgets.character_map import CharacterMap
 from editfonts.widgets.editor_box import EditorBox
 import editfonts.globals as globals
 
@@ -41,7 +39,7 @@ class EditorPage(Gtk.Box):
         """
 
         # create Left Toolbar
-        
+
         self.side_toolbar_left = self._create_left_toolbar()
         self.side_toolbar_left.set_property("border-width", 40)
         self.pack_start(self.side_toolbar_left, False, False, 10)

@@ -10,6 +10,7 @@ from sugar3.graphics import style
 import editfonts.globals as globals
 from editfonts.widgets.misc import FormatLabel
 
+
 class CharacterMap(Gtk.Box):
 
     def __init__(self, w=10, h=80, ui_type='BUTTON'):

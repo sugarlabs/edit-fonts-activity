@@ -6,7 +6,7 @@ from gi.repository import Gtk
 
 # import pager
 
-from sugar3.graphics.icon import Icon
+# from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
 
 from editfonts.widgets.misc import ImageButton
@@ -82,7 +82,7 @@ class SummaryPage(Gtk.Box):
         """
         frame = Gtk.Frame()
         grid = Gtk.Grid()
-        # grid.set_border_color(style.Color('# 34495E').get_gdk_color())
+        grid.set_border_color(style.Color('# 34495E').get_gdk_color())
 
         # GRID_HEIGHT = 3  # number of rows
         # GRID_WIDTH = 1  # number of columns
