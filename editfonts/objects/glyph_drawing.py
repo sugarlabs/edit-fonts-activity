@@ -1,20 +1,89 @@
-
 import gi
 gi.require_version('Gtk', '3.0')
 
 from fontTools.pens.basePen import BasePen
+from fontTools.pens.transformPen import TransformPen
 from fontTools.misc.transform import Transform
+from fontTools.pens.basePen import AbstractPen
 
 import editfonts.globals as globals
 
 
-class GtkPen(BasePen):
+class GlyphDrawing(object):
+
     """
-    This class is a subclass of the BasePen Class from fontTools which
-    converts any segment type to simple moveTo, lineTo, curveTo commands
+    class: `GlyphDrawing` represents a single glyph on a drawing area.
+
+    **Parts of a GlyphDrawing**
+
+    ========================
+    Name
+    ========================
+    GlyphDrawing.drag_points
+    GlyphDrawing.support_lines
+    GlyphDrawing.glyph_outine
+    GlyphDrawing.sidebearing
+    ========================
+
+    **Inputs requires by a GlyphDrawing**
+
+    ========================
+    Name
+    ========================
+    GlyphDrawing.cr
+    GlyphDrawing.glyph
+    GlyphDrawing.origin
+    GlyphDrawing.height
+    GlyphDrawing.width
+    GlyphDrawing.margin
+    GlyphDrawing.style
+    GlyphDrawing.glyph_color
+    ========================
+
+    **Modes of a GlyphDrawing Object**
+
+    GlyphDrawing.mode.<modeName> is a Boolean type variable
+    which represents its active and inactive state
+
+    ========================
+    Name
+    ========================
+    GlyphDrawing.mode.edit
+    GlyphDrawing.mode.fill
+    GlyphDrawing.mode.sidebearing
+    ========================
+
+    Note: Both of the above modes can be active at the same time.
+    This won't cause problems as every mode deals with a separate
+    part of the glyph drawing.
+
+    **Procedure for drawing the Glyph**
+
+    Draw the Glyph Outline
+
+    if GlyphDrawing.mode.edit is True
+    then Draw the support lines and the drag points
+
+    if GlyphDrawing.mode.fill is True
+    then Fill the glyph
+
+    if GlyphDrawing.mode.sidebearing is True
+    then Draw the side bearing editing interface
+
+    # TODO: Add Tool Interaction
+
+    Tools to be added:
+
+    PenTool
+    Slice/Cutter Tool
+    Select Tool
     """
 
-    def __init__(self, cr, pos, id='EDITOR', scale=1.0):
+    def __init__(self,
+                 cr,
+                 pos,
+                 id='EDITOR',
+                 scale=1.0):
         BasePen.__init__(self, glyphSet={})
         self.cr = cr
 

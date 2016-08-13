@@ -52,6 +52,7 @@ from ufo2ft import compileOTF
 # from ufo2ft import compileTTF
 import extractor
 
+import editfonts.globals as globals
 from editfonts.pages.summary_page import SummaryPage
 from editfonts.pages.editor_page import EditorPage
 from editfonts.pages.manager_page import ManagerPage
@@ -59,7 +60,6 @@ from editfonts.pages.welcome_page import WelcomePage
 from editfonts.pages.create_font_page import CreateFontPage
 # from editfonts.widgets.misc import ImageButton
 # from editfonts.objects.basefont import BaseFont
-import editfonts.globals as globals
 
 """
 This Dictionary contains all the class types for pages the activity will
@@ -83,16 +83,14 @@ MAX_PAGE_NUM = 1
 
 
 class EditFonts(activity.Activity):
+
     """Edit Fonts"""
 
-    def __init__(self, handle):
+    def __init__(self, handle=None):
         # Set up the EditFonts activity
         activity.Activity.__init__(self, handle)
 
         globals.SELF = self
-
-        self.modify_bg(Gtk.StateType.NORMAL,
-                       style.Color(globals.ACTIVITY_BG).get_gdk_color())
 
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.Color(globals.ACTIVITY_BG).get_gdk_color())
@@ -673,3 +671,12 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
+
+if __name__ == '__main__':
+    win = Gtk.Window(title="Edit Fonts Activity")
+    win.connect("delete-event", Gtk.main_quit)
+    win.set_size_request(1024, 800)
+    activity = EditFonts()
+    win.add(activity)
+    win.show_all()
+    Gtk.main()

@@ -17,10 +17,8 @@ class MyWindow(Gtk.Window):
         Gtk.Window.__init__(self, title="Editor Area")
         # self.set_size_request(globals.EDITOR_BOX_WIDTH,
         #                       globals.EDITOR_BOX_HEIGHT)
-        self.set_size_request(globals.EDITOR_AREA['EDITOR']
-                              ['EDITOR_BOX_WIDTH'],
-                              globals.EDITOR_AREA['EDITOR']
-                              ['EDITOR_BOX_HEIGHT'])
+        self.set_size_request(globals.EDITOR_AREA['EDITOR']['width'],
+                              globals.EDITOR_AREA['EDITOR']['height'])
 
         editor_alignment = Gtk.Alignment(xalign=0.5,
                                          yalign=0.5,

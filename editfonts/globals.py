@@ -4,6 +4,7 @@
 # the activity
 
 import gi  # noqa
+import weakref
 from gi.repository import Gdk
 from gi.repository import GConf
 
@@ -18,7 +19,7 @@ A = None
 # The Sample font that will always be loaded
 SAMPLE_FONT_PATH = './test_fonts/Geo-Regular.ufo'
 SAMPLE_FONT = BaseFont(SAMPLE_FONT_PATH)
-
+SAMPLE_FONT_REF = weakref.ref(SAMPLE_FONT)
 # The Path for the font file
 # set this to be SAMPLE_FONT_PATH in the beginning
 FONT_PATH = SAMPLE_FONT_PATH
@@ -27,14 +28,15 @@ FONT_PATH = SAMPLE_FONT_PATH
 # entire activity
 
 FONT = BaseFont(SAMPLE_FONT_PATH)
+FONT_REF = weakref.ref(FONT)
 
-GLYPH = FONT["A"]
+if FONT_REF() is not None:
+    GLYPH = FONT_REF()["A"]
+    h = FONT_REF().info.ascender - FONT_REF().info.descender
+    b = 0 - FONT_REF().info.descender
 
 GdkPixbuf = 1
 
-h = FONT.info.ascender - FONT.info.descender
-
-b = 0 - FONT.info.descender
 
 ZONE_R = 20
 
@@ -101,10 +103,11 @@ GRID_COLUMN_SPACING = GRID_ROW_SPACING
 
 # Welcome Page
 
-WELCOME_GLYPH = SAMPLE_FONT['editfonts']
-
-WELCOME_EDITOR_BOX_WIDTH = float(SCREEN_WIDTH) * 0.8
-WELCOME_EDITOR_BOX_HEIGHT = float(SCREEN_WIDTH) * 0.2
+if SAMPLE_FONT_REF() is not None:
+    WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
+else:
+    SAMPLE_FONT = weakref.ref(BaseFont(SAMPLE_FONT_PATH))
+    WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
 
 EDITOR_AREA['WELCOME'] = {'width': float(SCREEN_WIDTH) * 0.80,
                           'height': float(SCREEN_WIDTH) * 0.26,
