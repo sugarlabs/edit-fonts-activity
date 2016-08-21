@@ -1,15 +1,16 @@
+import logging
 import gi
 gi.require_version('Gtk', '3.0')
 
 from fontTools.pens.basePen import BasePen
-from fontTools.pens.transformPen import TransformPen
+# from fontTools.pens.transformPen import TransformPen
 from fontTools.misc.transform import Transform
-from fontTools.pens.basePen import AbstractPen
+# from fontTools.pens.basePen import AbstractPen
 
 import editfonts.globals as globals
 
 
-class GlyphDrawing(object):
+class EditGlyphBox(object):
 
     """
     class: `GlyphDrawing` represents a single glyph on a drawing area.
@@ -90,7 +91,7 @@ class GlyphDrawing(object):
         self.id = id
 
         # the position the glyph is at while drawing it in a string of glyphs
-        self.pos = pos
+        self._origin = pos
 
         self.glyph = globals.EDITOR_AREA[self.id]['glyph']
         self.font = self.glyph.font
@@ -107,7 +108,6 @@ class GlyphDrawing(object):
         self.scale = scale
 
         H = globals.EDITOR_AREA[self.id]['height']  # noqa
-        print H
         W = globals.EDITOR_AREA[self.id]['width']  # noqa
 
         self.transformation = Transform()
@@ -155,16 +155,19 @@ class GlyphDrawing(object):
         x, y = self.transformation.transformPoint(p)
         self.cr.move_to(x, y)
         # self.cr.move_to(self.X(x), self.Y(y))
-        # print "move ->" + str(x) + "," + str(y)
+        logging.debug("move ->{ %s , %s}" %
+                      str(x), str(y))
 
     def _lineTo(self, p):
-        print p
+        # print p
         x, y = self.transformation.transformPoint(p)
         # x, y = p
 
         self.cr.line_to(x, y)
         # self.cr.line_to(self.X(x), self.Y(y))
-        print "line ->" + str(x) + "," + str(y)
+        # print "line ->" + str(x) + "," + str(y)
+        logging.debug("line ->{ %s , %s}" %
+                      str(x), str(y))
 
     def _curveToOne(self, p1, p2, p3):
         x1, y1 = self.transformation.transformPoint(p1)
@@ -176,4 +179,5 @@ class GlyphDrawing(object):
 
         # self.cr.curve_to(self.X(x1), self.Y(y1), self.X(x2), self.Y(y2),
         #                  self.X(x3), self.Y(y3))
-        print "curve ->{" + str(x1) + "," + str(y1) + "}, {" + str(x2) + "," + str(y2) + "}, {" + str(x3) + "," + str(y3) + "}"
+        logging.debug("curve ->{ %s , %s},{ %s , %s},{ %s , %s}" %
+                      str(x1), str(y1), str(x2), str(y2), str(x3), str(y3))

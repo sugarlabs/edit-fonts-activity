@@ -8,7 +8,7 @@ import weakref
 from gi.repository import Gdk
 from gi.repository import GConf
 
-from editfonts.objects.basefont import BaseFont
+from editfonts.core.basefont import BaseFont
 # from defcon import Font
 
 from sugar3.graphics.xocolor import XoColor

@@ -6,10 +6,10 @@ from sugar3.graphics import style
 # from defcon import Font
 
 # Making a glyph editor box
-from editfonts.objects.gtkpen import GtkPen
+from editfonts.core.gtkpen import GtkPen
 from editfonts.widgets.drag_point import DragPoint
-# from editfonts.objects.basesegment import BaseSegment
-from editfonts.objects.bezierpen import BezierPenTool
+# from editfonts.core.basesegment import BaseSegment
+from editfonts.core.bezierpen import BezierPenTool
 import editfonts.globals as globals
 
 

@@ -7,7 +7,7 @@ from gi.repository import Gtk
 # import pager
 
 # from sugar3.graphics.icon import Icon
-from sugar3.graphics import style
+# from sugar3.graphics import style
 
 from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.misc import FormatLabel
@@ -84,23 +84,19 @@ class SummaryPage(Gtk.Box):
         grid = Gtk.Grid()
         # grid.set_border_color(style.Color('#34495E').get_gdk_color())
 
-        # GRID_HEIGHT = 3  # number of rows
-        # GRID_WIDTH = 1  # number of columns
-        # GRID_BOX_SIZE = 40
-        GRID_ROW_SPACING = 10
-        GRID_COLUMN_SPACING = 5
+        _grid_spacing = 10, 5
 
         frame.set_border_width(5)
         frame.add(grid)
-        grid.set_column_spacing(GRID_COLUMN_SPACING)
-        grid.set_row_spacing(GRID_ROW_SPACING)
+        grid.set_column_spacing(_grid_spacing[1])
+        grid.set_row_spacing(_grid_spacing[0])
 
         # Install Button
         vbox = Gtk.VBox()
         button = ImageButton('install',
                              pixel_size=globals.BUTTON_BOX_SIZE * 0.6)
         button.set_tooltip_text('Activate a Font')
-        # button.connect("clicked", lambda _: pass)
+        button.connect("clicked", lambda _: globals.SELF.activate())
 
         vbox.pack_start(button, False, False, 0)
 

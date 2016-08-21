@@ -1,7 +1,7 @@
 from defcon import Font
 # from defcon import Glyph
 
-from editfonts.objects import settings
+from editfonts.core import settings
 
 import fontTools
 

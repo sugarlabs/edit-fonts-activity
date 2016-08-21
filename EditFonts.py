@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-"""Edit Fonts Activity: Kids make fonts!"""
+"""Edit Fonts Activity: Kids make fonts!, a Sugar Activity."""
 
 import os
 import sys
@@ -33,11 +33,8 @@ from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityToolbarButton
-# from sugar3 import mime
+
 from sugar3.activity.widgets import StopButton
-# from sugar3.activity.widgets import TitleEntry
-# from sugar3.activity.widgets import ShareButton
-# from sugar3.activity.widgets import DescriptionItem
 from sugar3.graphics.objectchooser import ObjectChooser
 from sugar3.graphics.objectchooser import FILTER_TYPE_MIME_BY_ACTIVITY
 from sugar3.datastore import datastore
@@ -53,13 +50,13 @@ from ufo2ft import compileOTF
 import extractor
 
 import editfonts.globals as globals
-from editfonts.pages.summary_page import SummaryPage
-from editfonts.pages.editor_page import EditorPage
-from editfonts.pages.manager_page import ManagerPage
-from editfonts.pages.welcome_page import WelcomePage
-from editfonts.pages.create_font_page import CreateFontPage
+from editfonts.ui.summary_page import SummaryPage
+from editfonts.ui.editor_page import EditorPage
+from editfonts.ui.manager_page import ManagerPage
+from editfonts.ui.welcome_page import WelcomePage
+from editfonts.ui.create_font_page import CreateFontPage
 # from editfonts.widgets.misc import ImageButton
-# from editfonts.objects.basefont import BaseFont
+# from editfonts.core.basefont import BaseFont
 
 """
 This Dictionary contains all the class types for pages the activity will
@@ -239,12 +236,18 @@ class EditFonts(activity.Activity):
         page_num = self.notebook.get_current_page()
         page = self.notebook.get_nth_page(page_num)
         page_name = self.notebook.get_tab_label_text(page)
-        if page_name == "WELCOME" or\
-                page_name == "CREATEFONT":
+
+        if page_name == "WELCOME":
             self.welcome_page_btn.set_sensitive(False)
             self.summary_page_btn.set_sensitive(False)
             self.editor_page_btn.set_sensitive(False)
-            self.manager_page_btn.set_sensitive(False)
+            self.manager_page_btn.set_sensitive(True)
+
+        elif page_name == "CREATEFONT":
+            self.welcome_page_btn.set_sensitive(False)
+            self.summary_page_btn.set_sensitive(False)
+            self.editor_page_btn.set_sensitive(False)
+            self.manager_page_btn.set_sensitive(True)
 
         elif page_name == "SUMMARY":
             self.welcome_page_btn.set_sensitive(True)
@@ -577,6 +580,7 @@ class EditFonts(activity.Activity):
         in globals.FONT as a .otf file
         the file will be saved in the activity data folder
         """
+        """
         import subprocess
 
         def bash_command(cmd):
@@ -585,14 +589,21 @@ class EditFonts(activity.Activity):
         bash_command('python -m fontmake -u ' + globals.FONT_PATH +
                      ' -o otf')
 
-        # save the font as a  ufo in a temp path
+        """
+
+        # converting the font to a OTF
+        # The current implementation fails if optimizeCff is set to True
+        # FIXME: Find a better solution for exporting the font
+        # probably use fontmake to validate the data being saved
+        otf = compileOTF(globals.FONT, optimizeCff=False)
+
+        # create the file path
         file_path =\
             os.path.join(self.get_activity_root(),
                          'data', globals.FONT.info.familyName + '.otf')
-
-        # converting the font to a OTF
-        otf = compileOTF(globals.FONT)
+        # save the otf
         otf.save(file_path)
+
         # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()
@@ -632,9 +643,24 @@ class EditFonts(activity.Activity):
         self._show_journal_alert(_(success_title), _(success_msg))
     """
 
-    # ######
+    # ##
+    # Activate
+    # ##
+
+    def activate(self):
+        """
+        Activate the font currently loaded at globals.FONT.
+
+        ## Procedure of Activation:
+
+        save the otf
+        move the otf to the .font-cache
+
+        """
+
+    # ##
     # Alerts
-    # ######
+    # ##
 
     def _show_journal_alert(self, title, msg):
         _stop_alert = Alert()

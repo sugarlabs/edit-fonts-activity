@@ -38,7 +38,6 @@ class GtkPen(BasePen):
         self.scale = scale
 
         H = globals.EDITOR_AREA[self.id]['height']  # noqa
-        print H
         W = globals.EDITOR_AREA[self.id]['width']  # noqa
 
         self.transformation = Transform()
@@ -86,16 +85,12 @@ class GtkPen(BasePen):
         x, y = self.transformation.transformPoint(p)
         self.cr.move_to(x, y)
         # self.cr.move_to(self.X(x), self.Y(y))
-        # print "move ->" + str(x) + "," + str(y)
 
     def _lineTo(self, p):
-        print p
         x, y = self.transformation.transformPoint(p)
         # x, y = p
 
         self.cr.line_to(x, y)
-        # self.cr.line_to(self.X(x), self.Y(y))
-        print "line ->" + str(x) + "," + str(y)
 
     def _curveToOne(self, p1, p2, p3):
         x1, y1 = self.transformation.transformPoint(p1)
@@ -104,7 +99,3 @@ class GtkPen(BasePen):
 
         self.cr.curve_to(x1, y1, x2, y2,
                          x3, y3)
-
-        # self.cr.curve_to(self.X(x1), self.Y(y1), self.X(x2), self.Y(y2),
-        #                  self.X(x3), self.Y(y3))
-        print "curve ->{" + str(x1) + "," + str(y1) + "}, {" + str(x2) + "," + str(y2) + "}, {" + str(x3) + "," + str(y3) + "}"
