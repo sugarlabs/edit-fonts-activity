@@ -14,7 +14,7 @@ from editfonts.core.basefont import BaseFont
 from sugar3.graphics.xocolor import XoColor
 
 # handle for the activity class
-A = None
+SELF = None
 
 # The Sample font that will always be loaded
 SAMPLE_FONT_PATH = './test_fonts/Geo-Regular.ufo'

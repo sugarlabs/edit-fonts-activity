@@ -1,13 +1,4 @@
 from gi.repository import Gtk
-# from gi.repository import Gdk
-# import cairo
-# import math
-# from defcon import Font
-
-# import pager
-
-# from sugar3.graphics.icon import Icon
-# from sugar3.graphics import style
 
 from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.misc import FormatLabel
