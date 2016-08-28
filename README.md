@@ -26,7 +26,7 @@ Download this repo to a Sugar desktop and set it up, then launch it from the Hom
 
     # boot Fedora-Live-SoaS-x86_64-23-10.iso
     sudo dnf install git -y;
-    git clone http://https://github.com/sugarlabs/edit-fonts-activity.git;
+    git clone https://github.com/sugarlabs/edit-fonts-activity.git;
     cd edit-fonts-activity;
     python setup.py dev
     # go to home, list view, search Fonts
