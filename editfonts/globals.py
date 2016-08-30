@@ -4,21 +4,22 @@
 # the activity
 
 import gi  # noqa
+import weakref
 from gi.repository import Gdk
 from gi.repository import GConf
 
-from editfonts.objects.basefont import BaseFont
+from editfonts.core.basefont import BaseFont
 # from defcon import Font
 
 from sugar3.graphics.xocolor import XoColor
 
 # handle for the activity class
-A = None
+SELF = None
 
 # The Sample font that will always be loaded
 SAMPLE_FONT_PATH = './test_fonts/Geo-Regular.ufo'
 SAMPLE_FONT = BaseFont(SAMPLE_FONT_PATH)
-
+SAMPLE_FONT_REF = weakref.ref(SAMPLE_FONT)
 # The Path for the font file
 # set this to be SAMPLE_FONT_PATH in the beginning
 FONT_PATH = SAMPLE_FONT_PATH
@@ -27,14 +28,15 @@ FONT_PATH = SAMPLE_FONT_PATH
 # entire activity
 
 FONT = BaseFont(SAMPLE_FONT_PATH)
+FONT_REF = weakref.ref(FONT)
 
-GLYPH = FONT["A"]
+if FONT_REF() is not None:
+    GLYPH = FONT_REF()["A"]
+    h = FONT_REF().info.ascender - FONT_REF().info.descender
+    b = 0 - FONT_REF().info.descender
 
 GdkPixbuf = 1
 
-h = FONT.info.ascender - FONT.info.descender
-
-b = 0 - FONT.info.descender
 
 ZONE_R = 20
 
@@ -50,21 +52,21 @@ TOOL_ACTIVE = {'BezierPenTool': False}
 
 
 def X(x, id):  # noqa
-    t = float(x) * EDITOR_AREA[id]['height'] / h
+    t = float(x) * GLYPH_BOX[id]['height'] / h
     return t
 
 
 def Y(y, id):  # noqa
-    t = float(h - y - b) * EDITOR_AREA[id]['height'] / h
+    t = float(h - y - b) * GLYPH_BOX[id]['height'] / h
     return t
 
 
 def invX(x, id):  # noqa
-    return float(x) * h / EDITOR_AREA[id]['height']
+    return float(x) * h / GLYPH_BOX[id]['height']
 
 
 def invY(y, id):  # noqa
-    return h - float(y) * h / EDITOR_AREA[id]['height'] - b
+    return h - float(y) * h / GLYPH_BOX[id]['height'] - b
 
 # #########
 # User Info
@@ -89,7 +91,7 @@ SCREEN_HEIGHT = SCREEN.get_height()
 
 # General
 GLYPH_BOX_COLOR = '#FFFFFF'
-EDITOR_AREA = {}
+GLYPH_BOX = {}
 ACTIVITY_BG = '#AAAAAA'
 
 # Character Map
@@ -98,17 +100,21 @@ GRID_BOX_SIZE = float(SCREEN_WIDTH) * 0.07
 GRID_ROW_SPACING = float(SCREEN_WIDTH) * 0.007
 GRID_COLUMN_SPACING = GRID_ROW_SPACING
 
-
 # Welcome Page
 
 WELCOME_GLYPH = SAMPLE_FONT['editfonts']
 
-WELCOME_EDITOR_BOX_WIDTH = float(SCREEN_WIDTH) * 0.8
-WELCOME_EDITOR_BOX_HEIGHT = float(SCREEN_WIDTH) * 0.2
+# Welcome Page
 
-EDITOR_AREA['WELCOME'] = {'width': float(SCREEN_WIDTH) * 0.80,
-                          'height': float(SCREEN_WIDTH) * 0.26,
-                          'bg-color': '#AAAAAA', 'glyph': WELCOME_GLYPH}
+if SAMPLE_FONT_REF() is not None:
+    WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
+else:
+    SAMPLE_FONT = weakref.ref(BaseFont(SAMPLE_FONT_PATH))
+    WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
+
+GLYPH_BOX['WELCOME'] = {'width': float(SCREEN_WIDTH) * 0.80,
+                        'height': float(SCREEN_WIDTH) * 0.26,
+                        'bg-color': '#AAAAAA', 'glyph': WELCOME_GLYPH}
 
 BUTTON_BOX_SIZE = float(SCREEN_WIDTH) * 0.1
 BUTTON_BOX_COLUMN_SPACING = float(SCREEN_WIDTH) * 0.1
@@ -118,9 +124,10 @@ BUTTON_BOX_ROW_SPACING = float(SCREEN_WIDTH) * 0.01
 
 # Editor Page
 
-EDITOR_AREA['EDITOR'] = {'width': float(SCREEN_WIDTH) * 0.80,
-                         'height': float(SCREEN_HEIGHT) * 0.80,
-                         'bg-color': '#FFFFFF', 'glyph': GLYPH}
+GLYPH_BOX['EDITOR'] = {'glyph': GLYPH,
+                       'width': float(SCREEN_WIDTH) * 0.80,
+                       'height': float(SCREEN_HEIGHT) * 0.80,
+                       'bg-color': '#FFFFFF'}
 
 # ###########
 # Font Styles
@@ -146,3 +153,29 @@ TEXT_STYLE["LABEL"] = {'color': 'black',
                        'font': 'Cantarell',
                        'weight': 'medium',
                        'size': text_size}
+
+"""
+# ##
+# GlyphBox Manager
+# ##
+
+# A list for storing the identifiers
+GlyphBoxManager = []
+
+
+def add_glyph_box(glyph_box):
+    Add the Glyph Box to the GlyphBoxManager.
+
+    The function returns the identifier for the GlyphBox so that each GlyphBox
+    has an unique identifier
+
+    if glyph_box.identifier is None:
+        from defcon.tools.identifiers import makeRandomIdentifier
+        identifier = makeRandomIdentifier(existing=GlyphBoxManager)
+    else:
+        if identifier in GlyphBoxManager.keys():
+            return -1
+    GlyphBoxManager[identifier] =
+    return len(GlyphBoxManager) - 1
+
+"""

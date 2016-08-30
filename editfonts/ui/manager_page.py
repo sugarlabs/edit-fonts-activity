@@ -16,20 +16,6 @@ from gi.repository import GdkPixbuf
 # from gi.repository import Gio
 from gi.repository import Pango
 
-# from sugar3 import env
-# from sugar3.graphics import style
-# from sugar3.graphics.icon import CellRendererIcon
-# from sugar3.graphics.xocolor import XoColor
-
-# from sugar3.activity import activity
-# from sugar3.graphics.toolbarbox import ToolbarBox
-# from sugar3.activity.widgets import ActivityToolbarButton
-# from sugar3.activity.widgets import StopButton
-# from sugar3.graphics.icon import Icon
-
-# gi.require_version('WebKit', '3.0')
-# from gi.repository import WebKit
-# from gi.repository import GLib
 
 import editfonts.widgets.localIcon as localIcon
 

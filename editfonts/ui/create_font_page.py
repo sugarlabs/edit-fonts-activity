@@ -12,7 +12,7 @@ from editfonts.widgets.misc import PageHeading
 from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.form_box import InlineTextInputBox
 from editfonts.widgets.form_box import InlineNumberInputBox
-from editfonts.objects.basefont import BaseFont
+from editfonts.core.basefont import BaseFont
 import editfonts.globals as globals
 
 

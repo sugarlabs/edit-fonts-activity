@@ -1,8 +1,11 @@
 [![Build Status](https://travis-ci.org/sugarlabs/edit-fonts-activity.svg?branch=master)](https://travis-ci.org/sugarlabs/edit-fonts-activity)
 
+[![Documentation Status](https://readthedocs.org/projects/edit-fonts-activity/badge/?version=latest)](http://edit-fonts-activity.readthedocs.io/en/latest/?badge=latest)
+
 # Sugar Activity: Edit Fonts Activity
 
 Project Blog: <http://sugarlabs.github.io/edit-fonts-activity/>
+Project Documentation: <http://edit-fonts-activity.rtfd.io>
 
 Typeface design is a cornerstone of literate cultures, with subliminal power: 
 Typefaces carry the emotions of texts, from formal designs that speak with authority to fun designs that are silly or military or ornate.
@@ -15,14 +18,6 @@ It now has over 1M users, including every child in Uruguay.
 
 Fonts are fun to make, and Sugar needs a font editor activity so learners can make and modify them for their own tastes and needs.
 
-## Project News
-
-* [Week 1 Work](https://sugarlabs.github.io/edit-fonts-activity/week-1-work)
-* [Week 2+3 Work](https://sugarlabs.github.io/edit-fonts-activity/week-3-work)
-* [Week 4 Work](https://sugarlabs.github.io/edit-fonts-activity/week-4-work)
-* [Week 5 Work](https://sugarlabs.github.io/edit-fonts-activity/week-5-work)
-* [Week 6 Work](https://sugarlabs.github.io/edit-fonts-activity/week-6-work)
-
 The feature list of the application is documented on the project blog. 
 
 ## Usage
@@ -31,7 +26,7 @@ Download this repo to a Sugar desktop and set it up, then launch it from the Hom
 
     # boot Fedora-Live-SoaS-x86_64-23-10.iso
     sudo dnf install git -y;
-    git clone http://https://github.com/sugarlabs/edit-fonts-activity.git;
+    git clone https://github.com/sugarlabs/edit-fonts-activity.git;
     cd edit-fonts-activity;
     python setup.py dev
     # go to home, list view, search Fonts

@@ -41,3 +41,14 @@ NotImplementedError
   File "third_party/compreffor/cxxCompressor.py", line 127, in read_data
     num_subrs = struct.unpack_from('<I', results[:4])[0]
 struct.error: unpack_from requires a buffer of at least 4 bytes
+
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "fontmake/font_project.py", line 25, in <module>
+    from booleanOperations import BooleanOperationManager
+  File "booleanOperations/__init__.py", line 2, in <module>
+    from .booleanOperationManager import BooleanOperationManager
+  File "booleanOperations/booleanOperationManager.py", line 3, in <module>
+    from . import pyClipper
+ImportError: /lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by booleanOperations/pyClipper.so)
+

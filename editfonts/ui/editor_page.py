@@ -6,7 +6,7 @@ from gi.repository import Gtk
 
 from sugar3.graphics.icon import Icon
 from sugar3.graphics import style
-from editfonts.widgets.editor_box import EditorBox
+from editfonts.widgets.glyph_box import GlyphBox
 import editfonts.globals as globals
 
 
@@ -70,7 +70,7 @@ class EditorPage(Gtk.Box):
                                               xscale=0,
                                               yscale=0)
 
-        self.editor_area = EditorBox()
+        self.editor_area = GlyphBox(param=globals.GLYPH_BOX['EDITOR'])
         self.editor_alignment.add(self.editor_area)
 
         self.vbox.pack_start(self.editor_alignment, True, True, 0)
