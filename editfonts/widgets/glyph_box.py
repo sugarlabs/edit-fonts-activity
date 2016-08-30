@@ -5,7 +5,6 @@ import math
 from sugar3.graphics import style
 
 # from defcon import Font
-from defcon.tools.identifiers import makeRandomIdentifier
 
 from editfonts.core.gtkpen import GtkPen
 from editfonts.widgets.drag_point import DragPoint
