@@ -3,7 +3,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 
 from fontTools.pens.basePen import BasePen
-from fontTools.misc.transform import Transform
+# from fontTools.misc.transform import Transform
 
 import editfonts.globals as globals
 

@@ -9,10 +9,9 @@ BezierPenTool
    :ref:`GlyphBox`:
       the **Bezier Pen Tool** only works inside a Glyph Box
 
-BezierPenTool
-^^^^^^^^^^^^^
-
 .. module:: editfonts.core.bezierpen
-.. autoclass:: BezierPenTool
-   :inherited-members:
+.. autoclass:: BezierPenTool   
    :members:
+   :undoc-members:
+   :private-members:
+   :show-inheritance:
