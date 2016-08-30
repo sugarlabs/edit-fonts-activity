@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BaseFont &mdash; Edit Fonts Activity 1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Edit Fonts Activity 1.0 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Edit Fonts Activity
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="simple">
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Edit Fonts Activity</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>BaseFont</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/widgets/render_glyph.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basefont">
+<h1>BaseFont<a class="headerlink" href="#basefont" title="Permalink to this headline">¶</a></h1>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><span class="xref std std-ref">globals</span>:</dt>
+<dd>the globals class contains a BaseFont object</dd>
+</dl>
+</div>
+<span class="target" id="module-editfonts.core.basefont"></span><dl class="class">
+<dt id="editfonts.core.basefont.BaseFont">
+<em class="property">class </em><code class="descclassname">editfonts.core.basefont.</code><code class="descname">BaseFont</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">defcon.objects.font.Font</span></code></p>
+<p>The Subclass of <code class="xref py py-class docutils literal"><span class="pre">Font</span></code> class.</p>
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.add_glyph">
+<code class="descname">add_glyph</code><span class="sig-paren">(</span><em>glyph_list</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.add_glyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the Glyph Names mentioned in the glyph_list to the font.</p>
+<p>Don&#8217;t Override all the Glyphs that are already present in the Font</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.export_binary">
+<code class="descname">export_binary</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.export_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the font as a .otf file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="editfonts.core.basefont.BaseFont.import_from_binary">
+<em class="property">classmethod </em><code class="descname">import_from_binary</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.import_from_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import the font from a .otf/.ttf file.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="editfonts.core.basefont.BaseFont.new_default_font">
+<em class="property">classmethod </em><code class="descname">new_default_font</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.new_default_font" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a font object that has the <em>Default Values</em> preset for
+certain <em>Attributes</em>.</p>
+<p>The <em>Attributes</em> and their <em>Default Values</em> are set within
+this function definition.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.new_standard_glyph">
+<code class="descname">new_standard_glyph</code><span class="sig-paren">(</span><em>name</em>, <em>override=False</em>, <em>addUnicode=True</em>, <em>asTemplate=False</em>, <em>markColor=None</em>, <em>width=500</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.new_standard_glyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new <em>Standard Glyph</em> to the Font.</p>
+<p><strong>Standard Glyph</strong> is a Glyph from AGLFN(Adobe Glyph List For New Fonts)</p>
+<p>from module [fontTools.agl](<a class="reference external" href="https://github.com/behdad/fonttools/blob/master/Lib/fontTools/agl.py">https://github.com/behdad/fonttools/blob/master/Lib/fontTools/agl.py</a>)</p>
+<p>AGLFN (Adobe Glyph List For New Fonts) provides a list of base glyph
+names that are recommended for new fonts, which are compatible with
+the AGL (Adobe Glyph List) Specification, and which should be used
+as described in Section 6 of that document. AGLFN comprises the set
+of glyph names from AGL that map via the AGL Specification rules to
+the semantically correct UV (Unicode Value). For example, &#8220;Asmall&#8221;
+is omitted because AGL maps this glyph name to the PUA (Private Use
+Area) value U+F761, rather than to the UV that maps from the glyph
+name &#8220;A.&#8221; Also omitted is &#8220;ffi,&#8221; because AGL maps this to the
+Alphabetic Presentation Forms value U+FB03, rather than decomposing
+it into the following sequence of three UVs: U+0066, U+0066, and
+U+0069. The name &#8220;arrowvertex&#8221; has been omitted because this glyph
+now has a real UV, and AGL is now incorrect in mapping it to the PUA
+value U+F8E6. If you do not find an appropriate name for your glyph
+in this list, then please refer to Section 6 of the AGL
+Specification.</p>
+<dl class="docutils">
+<dt>Format: three semicolon-delimited fields:</dt>
+<dd><ol class="first last arabic simple">
+<li>Standard UV or CUS UV&#8211;four uppercase hexadecimal digits</li>
+<li>Glyph name&#8211;upper/lowercase letters and digits</li>
+<li>Character names: Unicode character names for standard UVs, and
+descriptive names for CUS UVs&#8211;uppercase letters, hyphen, and
+space</li>
+</ol>
+</dd>
+</dl>
+<p>The records are sorted by glyph name in increasing ASCII order,
+entries with the same glyph name are sorted in decreasing priority
+order, the UVs and Unicode character names are provided for
+convenience, lines starting with &#8220;#&#8221; are comments, and blank lines
+should be ignored.</p>
+<p>Ported from [Trufont](<a class="reference external" href="https://github.com/trufont/trufont/blob/master/Lib/trufont/objects/defcon.py">https://github.com/trufont/trufont/blob/master/Lib/trufont/objects/defcon.py</a>)  # noqa</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.remove_glyph">
+<code class="descname">remove_glyph</code><span class="sig-paren">(</span><em>glyph_list</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.remove_glyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the Glyph Names mentioned in the glyph_list from the font.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.save_zip">
+<code class="descname">save_zip</code><span class="sig-paren">(</span><em>ufo_path</em>, <em>zip_path</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.save_zip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the font to the <code class="docutils literal"><span class="pre">zip_path</span></code> attribute as zip file containing a UFO font file.  # noqa</p>
+<p><code class="docutils literal"><span class="pre">ufo_path</span></code> is the path where the UFO font file is saved
+This is used as the source for the zip file made</p>
+<p><strong>Output</strong>: Returns the state of statement <em>The zip file was successfully created</em></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.set_default_glyph_set">
+<code class="descname">set_default_glyph_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.set_default_glyph_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the default Glyph List specified in <code class="xref py py-func docutils literal"><span class="pre">settings.get_default_glyph_set()</span></code>  # noqa</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.set_font_data">
+<code class="descname">set_font_data</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.set_font_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Font attributes to the data specified as key
+arguments to this function.</p>
+<p>## Usage</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+data = {&#8216;familyName&#8217;:&#8217;Amazo&#8217;,</p>
+<blockquote>
+<div><blockquote>
+<div>&#8216;ascender&#8217;:800,
+&#8216;descender&#8217;:-200</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>font  = BaseFont()
+font.set_font_data(data)
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="editfonts.core.basefont.BaseFont.sort_glyph_list">
+<code class="descname">sort_glyph_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#editfonts.core.basefont.BaseFont.sort_glyph_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the Glyph List according to
+[fontTools.ttLib.standardGlyphOrder](<a class="reference external" href="https://github.com/behdad/fonttools/blob/master/Lib/fontTools/ttLib/standardGlyphOrder.py">https://github.com/behdad/fonttools/blob/master/Lib/fontTools/ttLib/standardGlyphOrder.py</a>)  # noqa</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Yash Agarwal.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

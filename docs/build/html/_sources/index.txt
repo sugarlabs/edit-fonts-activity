@@ -7,14 +7,46 @@ Sugar is a learning platform that reinvents how computers are used for education
 
 Fonts are fun to make, and Sugar needs a font editor activity so learners can make and modify them for their own tastes and needs.
 
+Main Activity File
+^^^^^^^^^^^^^^^^^^
+.. toctree::
+   :maxdepth: 2
 
-Objects
+   EditFonts
+
+Core Functionality
+^^^^^^^^^^^^^^^^^^
+.. toctree::
+   :maxdepth: 2
+
+   globals
+   editfonts.core.basefont
+   editfonts.core.bezierpen
+   editfonts.core.gtkpen
+   editfonts.core.settings
+
+UI
+^^
+.. toctree::
+   :maxdepth: 2
+
+   editfonts.ui.create_font_page
+   editfonts.ui.manager_page
+   editfonts.ui.summary_page
+   editfonts.ui.welcome_page
+
+Widgets
 ^^^^^^^
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
-   objects/basefont
-   objects/bezierpen
+   editfonts.widgets.character_map
+   editfonts.widgets.drag_point
+   editfonts.widgets.form_box
+   editfonts.widgets.glyph_box
+   editfonts.widgets.localIcon
+   editfonts.widgets.misc
+   editfonts.widgets.render_glyph
 
 Indices and tables
 ==================

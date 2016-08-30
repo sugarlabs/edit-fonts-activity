@@ -102,14 +102,16 @@ class GlyphBox(Gtk.EventBox):
     Select Tool
     """
 
-    def __init__(self, param, mode=['edit']):
+    def __init__(self, id='EDITOR', mode=['edit']):
         super(GlyphBox, self).__init__()
 
         # Generate a random indentifier for this GlyphBox
         # self.id = makeRandomIdentifier([])
 
         self.mode = mode
-        self.param = param
+        self.id = id
+
+        self.param = globals.GLYPH_BOX[self.id]
         self.set_size_request(self.param['width'],  # noqa
                               self.param['height'])  # noqa
 
@@ -206,7 +208,7 @@ class GlyphBox(Gtk.EventBox):
 
     def update_bindings(self):
         c = 0
-        for contour in self.contours:
+        for contour in self.glyph:
             for j, point in enumerate(contour):
                 if point.segmentType == u'curve' \
                         and point.smooth is True:
@@ -220,26 +222,26 @@ class GlyphBox(Gtk.EventBox):
 
     def add_contour(self, contour):
 
-        self.contours.append(contour)
+        self.glyph.appendContour(contour)
         self.update_control_points()
 
     def draw_all_contours(self, cr, pos):
 
-        pen = GtkPen(cr, pos, self.param)
+        pen = GtkPen(cr, pos, self.id)
 
-        for contour in self.contours:
+        for contour in self.glyph:
             if len(contour[:]) != 0:
 
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
-                pen = GtkPen(cr, pos, self.param)
+                pen = GtkPen(cr, pos, self.id)
                 contour.draw(pen)
 
                 # close the contour
 
                 # Draw a Hallo around the first point of an open contour
-                if self.FILL is True or contour.open is False:
+                if 'fill' in self.mode or contour.open is False:
                     cr.close_path()
                 else:
                     if contour.dirty is True:
@@ -248,12 +250,12 @@ class GlyphBox(Gtk.EventBox):
                         cr.set_line_width(1)
 
                         r = globals.X(contour[0].x + globals.ZONE_R,
-                                      self.param) -\
-                            globals.X(contour[0].x, self.param)
+                                      self.id) -\
+                            globals.X(contour[0].x, self.id)
                         pen.moveTo((contour[0].x + globals.ZONE_R,
                                     contour[0].y))
-                        cr.arc(globals.X(contour[0].x. self.param),
-                               globals.Y(contour[0].y. self.param),
+                        cr.arc(globals.X(contour[0].x. self.id),
+                               globals.Y(contour[0].y. self.id),
                                r, 0, 2 * math.pi)
 
                 cr.stroke()
@@ -289,7 +291,7 @@ class GlyphBox(Gtk.EventBox):
 
                     cr.stroke()
 
-        if self.FILL is True:
+        if 'fill' in self.mode:
 
             cr.set_source_rgb(1, 1, 1)
             cr.set_fill_rule(cairo.FILL_RULE_EVEN_ODD)
@@ -297,7 +299,7 @@ class GlyphBox(Gtk.EventBox):
 
     def add_point(self, p):
 
-        point = DragPoint(p, self.param)
+        point = DragPoint(p, self.id)
         point.connect("notify", self.redraw)
         self.fixed.put(point, point.get_corner_x(), point.get_corner_y())
         self.points.append(point)
