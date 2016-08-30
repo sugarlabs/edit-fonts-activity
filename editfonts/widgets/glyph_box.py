@@ -3,9 +3,10 @@ import cairo
 import math
 
 from sugar3.graphics import style
-# from defcon import Font
 
-# Making a glyph editor box
+# from defcon import Font
+from defcon.tools.identifiers import makeRandomIdentifier
+
 from editfonts.core.gtkpen import GtkPen
 from editfonts.widgets.drag_point import DragPoint
 # from editfonts.core.basesegment import BaseSegment
@@ -28,35 +29,108 @@ def bind(A, O, B):
     O.bind_to(A, B)
 
 
-class EditorBox(Gtk.EventBox):
+class GlyphBox(Gtk.EventBox):
+    """
+    Represents a drawing area with a single glyph.
 
-    def __init__(self, id='EDITOR', fill=False):
+    **Parts of a GlyphBox**
 
-        super(EditorBox, self).__init__()
-        self.id = id
-        self.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
-                              globals.EDITOR_AREA[self.id]['height'])  # noqa
+    ========================
+    Name
+    ========================
+    GlyphBox.id
+    GlyphBox.drag_points
+    GlyphBox.support_lines
+    GlyphBox.glyph_outine
+    GlyphBox.sidebearing
+    ========================
+
+    **Inputs requires by a GlyphBox**
+
+    ========================
+    Name
+    ========================
+    GlyphBox.param
+
+    * *param* is a dictionary object containing the following keys
+        + glyph: A Mutable defcon.Glyph object
+        + style parameters: Parameters containing the styling info
+            - width
+            - height
+            - margin
+            - fill_color
+            - bg_color
+    ========================
+
+    **Modes of a GlyphBox Object**
+
+    GlyphBox.mode.<modeName> is a Boolean type variable
+    which represents its active and inactive state
+
+    ========================
+    Name
+    ========================
+    GlyphBox.mode.edit
+    GlyphBox.mode.fill
+    GlyphBox.mode.sidebearing
+    ========================
+
+    Note: Both of the above modes can be active at the same time.
+    This won't cause problems as every mode deals with a separate
+    part of the glyph drawing.
+
+    **Procedure for drawing the Glyph**
+
+    Draw the Glyph Outline
+
+    if GlyphBox.mode.edit is True
+    then Draw the support lines and the drag points
+
+    if GlyphBox.mode.fill is True
+    then Fill the glyph
+
+    if GlyphBox.mode.sidebearing is True
+    then Draw the side bearing editing interface
+
+    # TODO: Add Tool Interaction
+    Tools will only work in the edit mode or we'll need to
+    make separate modes for each of the tools
+
+    Tools to be added:
+
+    PenTool
+    Slice/Cutter Tool
+    Select Tool
+    """
+
+    def __init__(self, param, mode=['edit']):
+        super(GlyphBox, self).__init__()
+
+        # Generate a random indentifier for this GlyphBox
+        # self.id = makeRandomIdentifier([])
+
+        self.mode = mode
+        self.param = param
+        self.set_size_request(self.param['width'],  # noqa
+                              self.param['height'])  # noqa
 
         self.fixed = Gtk.Fixed()
-        self.fixed.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
-                                    globals.EDITOR_AREA[self.id]['height'])  # noqa
+        self.fixed.set_size_request(self.param['width'],  # noqa
+                                    self.param['height'])  # noqa
         self.add(self.fixed)
 
         self.da = Gtk.DrawingArea()
-        self.da.set_size_request(globals.EDITOR_AREA[self.id]['width'],  # noqa
-                                 globals.EDITOR_AREA[self.id]['height'])  # noqa
+        self.da.set_size_request(self.param['width'],  # noqa
+                                 self.param['height'])  # noqa
 
         self.da.modify_bg(Gtk.StateType.NORMAL,
-                          style.Color(globals.EDITOR_AREA[self.id]
-                                      ['bg-color'])
+                          style.Color(self.param['bg-color'])
                           .get_gdk_color())
 
         self.fixed.put(self.da, 0, 0)
 
-        # declare the list for storing all the contours
-        self.contours = globals.EDITOR_AREA[self.id]['glyph'][:]
-
-        self.tool = {}
+        # The Glyph that will be displayed in the drawing box
+        self.glyph = self.param['glyph']
 
         # declare the list for storing the drag points in the editing session
         self.points = []
@@ -69,8 +143,6 @@ class EditorBox(Gtk.EventBox):
         self.da.connect('draw', self._draw)
 
         self.connect("button-press-event", self._on_point_press)
-
-        self.FILL = fill
 
         '''
         self.da.set_events(self.get_events()
@@ -125,7 +197,7 @@ class EditorBox(Gtk.EventBox):
         del self.points
         self.points = []
 
-        for contour in self.contours:
+        for contour in self.glyph:
             # print len(contour)
             for point in contour:
                 # print "adding: " + str(point.x) + ", " + str(point.y)
@@ -154,7 +226,7 @@ class EditorBox(Gtk.EventBox):
 
     def draw_all_contours(self, cr, pos):
 
-        pen = GtkPen(cr, pos, self.id)
+        pen = GtkPen(cr, pos, self.param)
 
         for contour in self.contours:
             if len(contour[:]) != 0:
@@ -162,7 +234,7 @@ class EditorBox(Gtk.EventBox):
                 # Set line style
                 cr.set_source_rgb(0, 0, 0)
                 cr.set_line_width(3)
-                pen = GtkPen(cr, pos, self.id)
+                pen = GtkPen(cr, pos, self.param)
                 contour.draw(pen)
 
                 # close the contour
@@ -177,12 +249,12 @@ class EditorBox(Gtk.EventBox):
                         cr.set_line_width(1)
 
                         r = globals.X(contour[0].x + globals.ZONE_R,
-                                      self.id) -\
-                            globals.X(contour[0].x, self.id)
+                                      self.param) -\
+                            globals.X(contour[0].x, self.param)
                         pen.moveTo((contour[0].x + globals.ZONE_R,
                                     contour[0].y))
-                        cr.arc(globals.X(contour[0].x. self.id),
-                               globals.Y(contour[0].y. self.id),
+                        cr.arc(globals.X(contour[0].x. self.param),
+                               globals.Y(contour[0].y. self.param),
                                r, 0, 2 * math.pi)
 
                 cr.stroke()
@@ -226,7 +298,7 @@ class EditorBox(Gtk.EventBox):
 
     def add_point(self, p):
 
-        point = DragPoint(p, self.id)
+        point = DragPoint(p, self.param)
         point.connect("notify", self.redraw)
         self.fixed.put(point, point.get_corner_x(), point.get_corner_y())
         self.points.append(point)

@@ -12,7 +12,7 @@ from gi.repository import Gtk
 # from editfonts.widgets.misc import PageHeading
 from editfonts.widgets.misc import ImageButton
 from editfonts.widgets.misc import FormatLabel
-from editfonts.widgets.editor_box import EditorBox
+from editfonts.widgets.glyph_box import GlyphBox
 import editfonts.globals as globals
 
 
@@ -34,7 +34,8 @@ class WelcomePage(Gtk.VBox):
                                          xscale=0,
                                          yscale=0)
 
-        editor_area = EditorBox('WELCOME', fill=True)
+        editor_area = GlyphBox(globals.GLYPH_BOX['WELCOME'],
+                               ['fill'])
         editor_alignment.add(editor_area)
         self.pack_start(editor_alignment, True, True, 30)
 
