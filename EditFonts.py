@@ -566,6 +566,7 @@ class EditFonts(activity.Activity):
         The file will be saved in the activity data folder
         """
         # create the file path
+
         file_path =\
             os.path.join(self.get_activity_root(),
                          'data', '%s.otf' % self.get_title)
