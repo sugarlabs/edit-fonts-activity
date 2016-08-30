@@ -1,7 +1,6 @@
 from gi.repository import Gtk  # Gdk
 import cairo
-# import math
-# from defcon import Font
+
 import editfonts.globals as globals
 
 

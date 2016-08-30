@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-"""Edit Fonts Activity: Kids make fonts!"""
+"""Edit Fonts Activity: Kids make fonts, a Sugar Activity."""
 
 import os
 import sys
@@ -33,11 +33,8 @@ from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ActivityToolbarButton
-# from sugar3 import mime
+
 from sugar3.activity.widgets import StopButton
-# from sugar3.activity.widgets import TitleEntry
-# from sugar3.activity.widgets import ShareButton
-# from sugar3.activity.widgets import DescriptionItem
 from sugar3.graphics.objectchooser import ObjectChooser
 from sugar3.graphics.objectchooser import FILTER_TYPE_MIME_BY_ACTIVITY
 from sugar3.datastore import datastore
@@ -48,18 +45,18 @@ from sugar3.graphics.alert import Alert
 from sugar3.graphics.icon import Icon
 
 from defcon import Font
-from ufo2ft import compileOTF
+# from ufo2ft import compileOTF
 # from ufo2ft import compileTTF
-import extractor
+# import extractor
 
-from editfonts.pages.summary_page import SummaryPage
-from editfonts.pages.editor_page import EditorPage
-from editfonts.pages.manager_page import ManagerPage
-from editfonts.pages.welcome_page import WelcomePage
-from editfonts.pages.create_font_page import CreateFontPage
-# from editfonts.widgets.misc import ImageButton
-# from editfonts.objects.basefont import BaseFont
 import editfonts.globals as globals
+from editfonts.ui.summary_page import SummaryPage
+from editfonts.ui.editor_page import EditorPage
+from editfonts.ui.manager_page import ManagerPage
+from editfonts.ui.welcome_page import WelcomePage
+from editfonts.ui.create_font_page import CreateFontPage
+# from editfonts.widgets.misc import ImageButton
+from editfonts.core.basefont import BaseFont
 
 """
 This Dictionary contains all the class types for pages the activity will
@@ -83,13 +80,14 @@ MAX_PAGE_NUM = 1
 
 
 class EditFonts(activity.Activity):
+
     """Edit Fonts"""
 
-    def __init__(self, handle):
+    def __init__(self, handle=None):
         # Set up the EditFonts activity
         activity.Activity.__init__(self, handle)
 
-        globals.A = self
+        globals.SELF = self
 
         self.modify_bg(Gtk.StateType.NORMAL,
                        style.Color(globals.ACTIVITY_BG).get_gdk_color())
@@ -157,6 +155,7 @@ class EditFonts(activity.Activity):
         separator.show()
         toolbar_box.toolbar.insert(separator, -1)
 
+        # Welcome Page Icon
         self.welcome_page_btn = ToolButton()
         self.welcome_page_btn.props.icon_name = 'welcome-page'
         self.welcome_page_btn.connect('clicked',
@@ -165,6 +164,16 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.welcome_page_btn, -1)
         self.welcome_page_btn.show()
 
+        # Manager Page Icon
+        self.manager_page_btn = ToolButton()
+        self.manager_page_btn.props.icon_name = 'manager-page'
+        self.manager_page_btn.connect('clicked',
+                                      lambda _: self.set_page('MANAGER'))
+        self.manager_page_btn.set_tooltip(_('Go to the Manager Page'))
+        toolbar_box.toolbar.insert(self.manager_page_btn, -1)
+        self.manager_page_btn.show()
+
+        # Summary Page Icon
         self.summary_page_btn = ToolButton()
         self.summary_page_btn.props.icon_name = 'summary-page'
         self.summary_page_btn.connect('clicked',
@@ -173,6 +182,7 @@ class EditFonts(activity.Activity):
         toolbar_box.toolbar.insert(self.summary_page_btn, -1)
         self.summary_page_btn.show()
 
+        # Editor Page Icon
         self.editor_page_btn = ToolButton()
         self.editor_page_btn.props.icon_name = 'editor-page'
         self.editor_page_btn.connect('clicked',
@@ -180,14 +190,6 @@ class EditFonts(activity.Activity):
         self.editor_page_btn.set_tooltip(_('Go to the Editor Page'))
         toolbar_box.toolbar.insert(self.editor_page_btn, -1)
         self.editor_page_btn.show()
-
-        self.manager_page_btn = ToolButton()
-        self.manager_page_btn.props.icon_name = 'manager-page'
-        self.manager_page_btn.connect('clicked',
-                                      lambda _: self.set_page('MANAGER'))
-        self.manager_page_btn.set_tooltip(_('Go to the Manager Page'))
-        toolbar_box.toolbar.insert(self.manager_page_btn, -1)
-        self.manager_page_btn.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -234,12 +236,18 @@ class EditFonts(activity.Activity):
         page_num = self.notebook.get_current_page()
         page = self.notebook.get_nth_page(page_num)
         page_name = self.notebook.get_tab_label_text(page)
-        if page_name == "WELCOME" or\
-                page_name == "CREATEFONT":
+
+        if page_name == "WELCOME":
             self.welcome_page_btn.set_sensitive(False)
             self.summary_page_btn.set_sensitive(False)
             self.editor_page_btn.set_sensitive(False)
-            self.manager_page_btn.set_sensitive(False)
+            self.manager_page_btn.set_sensitive(True)
+
+        elif page_name == "CREATEFONT":
+            self.welcome_page_btn.set_sensitive(False)
+            self.summary_page_btn.set_sensitive(False)
+            self.editor_page_btn.set_sensitive(False)
+            self.manager_page_btn.set_sensitive(True)
 
         elif page_name == "SUMMARY":
             self.welcome_page_btn.set_sensitive(True)
@@ -315,6 +323,20 @@ class EditFonts(activity.Activity):
     # Fundamentals
     # ############
 
+    def get_title(self):
+        """
+        Generate a title for the font.
+
+        Font Title = font.info.familyName + date
+        """
+        import datetime
+        date = datetime.datetime.now()
+        return '%s_%d-%d-%d' % (globals.FONT.info.
+                                familyName,
+                                date.day,
+                                date.month,
+                                date.year)
+
     def welcome(self):
         self.set_page("WELCOME")
 
@@ -329,13 +351,10 @@ class EditFonts(activity.Activity):
         # save the font as a  ufo in a temp path
         instance_path =\
             os.path.join(self.get_activity_root(),
-                         'instance', self.metadata['title'] + '.ufo')
+                         'instance', '%s.ufo' % (self.get_title()))
         try:
             globals.FONT.save(instance_path)
         except:
-            self._show_alert("Error",
-                             "Font " + str(globals.FONT.info.familyName) +
-                             " has an error")
             self.welcome()
             return None
         else:
@@ -445,70 +464,51 @@ class EditFonts(activity.Activity):
                          "Sample Font Loaded: " +
                          str(globals.FONT.info.familyName))
 
-    # ########
+    # ##
     # Save UFO
-    # ########
+    # ##
 
     def save(self):
         """
-        This function should save the current font loaded
-        in globals.FONT as a .ufo.zip file
-        the file will be saved in the activity data folder
+        Save the current font loaded in globals.FONT as a .ufo.zip file.
+
+        The file will be saved in the activity data folder
         """
-        instance_path = self._create_font_instance()
-
-        if instance_path is None:
-            return
-
-        # zip the folder
-        import zipfile
-
-        # create an empty zip file in the data folder
-        file_path =\
+        ufo_path = self._create_font_instance()
+        title = self.get_title()
+        zip_path =\
             os.path.join(self.get_activity_root(),
-                         'data', self.metadata['title'] + '.ufo.zip')
-        zipf = zipfile.ZipFile(file_path, 'w', zipfile.ZIP_DEFLATED)
+                         'data', '%s_ufo.zip' % (title))
+        if globals.FONT.save_zip(ufo_path, zip_path) is True:
+            # create a journal entry
+            jobject = datastore.create()
 
-        for root, dirs, files in os.walk(instance_path):
-            for file in files:
-                relroot = os.path.relpath(root, instance_path)
-                zipf.write(os.path.join(root, file),
-                           os.path.join(relroot, file))
-        zipf.close()
+            # FIXME: This method of setting the metadata is not working
+            # set the title to the output of self.get_title()
+            jobject.metadata['icon-color'] = profile.get_color().to_string()
+            jobject.metadata['mime_type'] = 'application/zip'
+            jobject.metadata['title'] = title
+            jobject.file_path = zip_path
+            datastore.write(jobject, transfer_ownership=True)
+            self._object_id = jobject.object_id
 
-        # create a journal entry
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/zip'
-        jobject.metadata['title'] = self.metadata['title']
-        jobject.file_path = file_path
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
+            # create an alert
+            success_title = 'Success'
+            success_msg = 'A UFO Font zip file was created in the Journal'
+            self._show_journal_alert(_(success_title), _(success_msg))
 
-        # create an alert
-        success_title = 'Success'
-        success_msg = 'A UFO Font zip file was created in the Journal'
-        self._show_journal_alert(_(success_title), _(success_msg))
-
-    # ######
-    # Import
-    # ######
-
-    def _import_font_from_file(self, file_path):
-
-        try:
-            font = Font()
-            extractor.extractUFO(file_path, font)
-        except:
-            logging.error("Unable to Open the chosen file")
-            return 0
         else:
-            globals.FONT = font
+            # create an alert
+            failure_title = 'Error'
+            failure_msg = 'Could not create the Zip file'
+            self._show_journal_alert(_(failure_title), _(failure_msg))
 
-        return 1
+    # ##
+    # Import
+    # ##
 
     def import_font(self, file_path=None):
-
+        """Import the font from a .otf or .ttf file."""
         if file_path is None:
 
             # FIXME: Add compatibility for earlier versions
@@ -531,60 +531,52 @@ class EditFonts(activity.Activity):
                         jobject = chooser.get_selected_object()
 
                         if jobject and jobject.file_path:
-
-                            if not self._import_font_from_file(jobject.
-                                                               file_path):
-                                self._show_alert("Error",
-                                                 "Invalid File type chosen")
-                                logging.error("File type is invalid")
-                                return
-                            else:
-                                self.set_page("SUMMARY")
-
+                            file_path = jobject.file_path
                 finally:
                     chooser.destroy()
                     del chooser
 
+        font = BaseFont.import_from_binary(file_path)
+        if font is None:
+            self._show_alert("Error",
+                             "Invalid file chosen")
+            return
         else:
-            if not self._import_font_from_file(file_path):
-                self._show_alert("Error",
-                                 "Invalid File type chosen")
-                logging.error("File type is invalid")
-                return
-            else:
-                # save the ufo in the instance folder
-                # so that we have a font path which can be
-                # needed to perform other actions on the font
-                if self._create_font_instance() is not None:
-                    self.set_page("SUMMARY")
+            # save the ufo in the instance folder
+            # so that we have a font path which can be
+            # needed to perform other actions on the font
+            path = self._create_font_instance()
+            globals.FONT = font
+            if path is not None:
+                self.set_page("SUMMARY")
 
-        # print success message
-        self._show_alert("Success",
-                         "Imported Font: " + str(globals.FONT.info.familyName))
+            # print success message
+            self._show_alert("Success",
+                             "Imported Font: %s" %
+                             globals.FONT.info.familyName)
 
-    # ######
+    # ##
     # Export
-    # ######
+    # ##
 
-    def export_font(self, button):
+    def export_font(self):
         """
-        This function should save the current font loaded
-        in globals.FONT as a .ttf file
-        the file will be saved in the activity data folder
+        Export the current font loaded in globals.FONT as a .otf file.
+
+        The file will be saved in the activity data folder
         """
-        # save the font as a  ufo in a temp path
+        # create the file path
         file_path =\
             os.path.join(self.get_activity_root(),
-                         'data', globals.FONT.info.familyName + '.otf')
+                         'data', '%s.otf' % self.get_title)
+        # save the otf
+        globals.FONT.export_binary(file_path)
 
-        # converting the font to a OTF
-        otf = compileOTF(globals.FONT)
-        otf.save(file_path)
         # create a journal entry
         jobject = datastore.create()
         jobject.metadata['icon-color'] = profile.get_color().to_string()
         jobject.metadata['mime_type'] = 'application/x-font-opentype'
-        jobject.metadata['title'] = globals.FONT.info.familyName + '.otf'
+        jobject.metadata['title'] = '%s.otf' % self.get_title
         jobject.file_path = file_path
         datastore.write(jobject, transfer_ownership=True)
         self._object_id = jobject.object_id
@@ -593,35 +585,55 @@ class EditFonts(activity.Activity):
         success_msg = 'A OTF Font file was created in the Journal'
         self._show_journal_alert(_(success_title), _(success_msg))
 
-    """
-    def _export_ttf(self, button):
-        # FIXME: This doesn't work # noqa
-        # save the font as a  ufo in a temp path
-        file_path =\
+    # ##
+    # Activate
+    # ##
+
+    def activate(self):
+        """
+        Activate the font currently loaded at globals.FONT.
+
+        ## Procedure of Activation:
+
+        * Save the otf to home/.fonts
+        * Run the command ``fc-cache -f``
+        """
+        source =\
             os.path.join(self.get_activity_root(),
-                         'data', globals.FONT.info.familyName + '.ttf')
+                         'instance', '%s.otf' % globals.FONT.info.familyName)
+        globals.FONT.export_binary(source)
 
-        # converting the font to a TTF
-        otf = compileTTF(globals.FONT)  # noqa
-        otf.save(file_path)
+        import shutil
 
-        # create a journal entry
-        jobject = datastore.create()
-        jobject.metadata['icon-color'] = profile.get_color().to_string()
-        jobject.metadata['mime_type'] = 'application/x-font-ttf'
-        jobject.metadata['title'] = globals.FONT.info.familyName + '.ttf'
-        jobject.file_path = file_path
-        datastore.write(jobject, transfer_ownership=True)
-        self._object_id = jobject.object_id
+        # FIXME: Use proper path manipulators
+        # Get the /home/<usr_name>/.fonts
+        from sugar3 import env
+        temp = env.get_profile_path()
+        temp = temp.split('/')
+        temp = temp[1:3]
+        temp = "/%s/%s" % (temp[0], temp[1])
+        dest = os.path.join(temp, '.fonts', '%s.otf' %
+                            globals.FONT.info.familyName)
 
+        # Copy file to the destination
+        shutil.copyfile(source, dest)
+
+        # FIXME: Validate the Output
+        import subprocess
+
+        bash_cmd = "fc-cache -f"
+        p = subprocess.Popen(bash_cmd.split(), stdout=subprocess.PIPE)
+        output, err = p.communicate()
+
+        # Create an Alert
         success_title = 'Success'
-        success_msg = 'A TTF Font file was created in the Journal'
-        self._show_journal_alert(_(success_title), _(success_msg))
-    """
+        success_msg = 'The Font %s was Activated' %\
+            globals.FONT.info.familyName
+        self._show_alert(_(success_title), _(success_msg))
 
-    # ######
+    # ##
     # Alerts
-    # ######
+    # ##
 
     def _show_journal_alert(self, title, msg):
         _stop_alert = Alert()
@@ -658,3 +670,12 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
+
+if __name__ == '__main__':
+    win = Gtk.Window(title="Edit Fonts Activity")
+    win.connect("delete-event", Gtk.main_quit)
+    win.set_size_request(1024, 800)
+    activity = EditFonts()
+    win.add(activity)
+    win.show_all()
+    Gtk.main()
