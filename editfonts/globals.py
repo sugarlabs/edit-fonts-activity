@@ -3,7 +3,6 @@
 # Choose variable names wisely as they will going in the global namespace of
 # the activity
 
-import gi  # noqa
 import weakref
 from gi.repository import Gdk
 from gi.repository import GConf
@@ -90,6 +89,7 @@ SCREEN_HEIGHT = SCREEN.get_height()
 # ######################
 
 # General
+
 GLYPH_BOX_COLOR = '#FFFFFF'
 GLYPH_BOX = {}
 ACTIVITY_BG = '#AAAAAA'
@@ -106,15 +106,20 @@ WELCOME_GLYPH = SAMPLE_FONT['editfonts']
 
 # Welcome Page
 
+"""
+Trying to fix #86
+
 if SAMPLE_FONT_REF() is not None:
     WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
 else:
     SAMPLE_FONT = weakref.ref(BaseFont(SAMPLE_FONT_PATH))
     WELCOME_GLYPH = SAMPLE_FONT_REF()['P']
+"""
 
 GLYPH_BOX['WELCOME'] = {'width': float(SCREEN_WIDTH) * 0.80,
                         'height': float(SCREEN_WIDTH) * 0.26,
-                        'bg-color': '#AAAAAA', 'glyph': WELCOME_GLYPH}
+                        'bg-color': '#AAAAAA',
+                        'glyph': WELCOME_GLYPH}
 
 BUTTON_BOX_SIZE = float(SCREEN_WIDTH) * 0.1
 BUTTON_BOX_COLUMN_SPACING = float(SCREEN_WIDTH) * 0.1

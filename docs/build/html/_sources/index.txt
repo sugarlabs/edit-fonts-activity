@@ -11,10 +11,10 @@ Fonts are fun to make, and Sugar needs a font editor activity so learners can ma
 Objects
 ^^^^^^^
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
-   objects/basefont
-   objects/bezierpen
+   core/basefont
+   core/bezierpen
 
 Indices and tables
 ==================

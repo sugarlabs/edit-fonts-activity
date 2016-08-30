@@ -34,7 +34,7 @@ class WelcomePage(Gtk.VBox):
                                          xscale=0,
                                          yscale=0)
 
-        editor_area = GlyphBox(globals.GLYPH_BOX['WELCOME'],
+        editor_area = GlyphBox('WELCOME',
                                ['fill'])
         editor_alignment.add(editor_area)
         self.pack_start(editor_alignment, True, True, 30)

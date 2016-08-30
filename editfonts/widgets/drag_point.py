@@ -195,8 +195,8 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.x > globals.EDITOR_AREA[self.id]['width']:
-            self.x = globals.EDITOR_AREA[self.id]['width']
+        if self.x > globals.GLYPH_BOX[self.id]['width']:
+            self.x = globals.GLYPH_BOX[self.id]['width']
 
         elif self.x < 0:
             self.x = 0
@@ -209,8 +209,8 @@ class DragPoint(Gtk.EventBox):
 
         # validate the move
         # see that the points dont go outside the drawing area
-        if self.y > globals.EDITOR_AREA[self.id]['height']:
-            self.y = globals.EDITOR_AREA[self.id]['height']
+        if self.y > globals.GLYPH_BOX[self.id]['height']:
+            self.y = globals.GLYPH_BOX[self.id]['height']
         elif self.y < 0:
             self.y = 0
 

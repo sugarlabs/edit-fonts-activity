@@ -70,7 +70,7 @@ class EditorPage(Gtk.Box):
                                               xscale=0,
                                               yscale=0)
 
-        self.editor_area = GlyphBox(param=globals.GLYPH_BOX['EDITOR'])
+        self.editor_area = GlyphBox()
         self.editor_alignment.add(self.editor_area)
 
         self.vbox.pack_start(self.editor_alignment, True, True, 0)
