@@ -12,7 +12,7 @@ Main Activity File
 .. toctree::
    :maxdepth: 2
 
-   editfonts
+   EditFonts
 
 Core Functionality
 ^^^^^^^^^^^^^^^^^^
@@ -20,33 +20,33 @@ Core Functionality
    :maxdepth: 2
 
    globals
-   core/basefont
-   core/bezierpen
-   core/gtkpen
-   core/settings
+   editfonts.core.basefont
+   editfonts.core.bezierpen
+   editfonts.core.gtkpen
+   editfonts.core.settings
 
 UI
 ^^
 .. toctree::
    :maxdepth: 2
 
-   ui/create_font_page
-   ui/manager_page
-   ui/summary_page
-   ui/welcome_page
+   editfonts.ui.create_font_page
+   editfonts.ui.manager_page
+   editfonts.ui.summary_page
+   editfonts.ui.welcome_page
 
 Widgets
 ^^^^^^^
 .. toctree::
    :maxdepth: 2
 
-   widgets/character_map
-   widgets/drag_point
-   widgets/form_box
-   widgets/glyph_box
-   widgets/localIcon
-   widgets/misc
-   widgets/render_glyph
+   editfonts.widgets.character_map
+   editfonts.widgets.drag_point
+   editfonts.widgets.form_box
+   editfonts.widgets.glyph_box
+   editfonts.widgets.localIcon
+   editfonts.widgets.misc
+   editfonts.widgets.render_glyph
 
 Indices and tables
 ==================
