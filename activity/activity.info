@@ -8,7 +8,7 @@ exec = sugar-activity EditFonts.EditFonts
 license = GPLv3+
 show_launcher = yes
 summary = Interested in making your own Font, well now you can!
-categories = media language art
+tags = media language art
 repository = https://github.com/sugarlabs/edit-fonts-activity.git
 max_participants = 1
 
