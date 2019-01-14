@@ -6,6 +6,7 @@
 import weakref
 from gi.repository import Gdk
 from gi.repository import GConf
+from gi.repository import Gio
 
 from editfonts.core.basefont import BaseFont
 # from defcon import Font
@@ -36,11 +37,11 @@ if FONT_REF() is not None:
 
 GdkPixbuf = 1
 
-
 ZONE_R = 20
 
 # a flag to see if any particular tool is active in the editor area
 TOOL_ACTIVE = {'BezierPenTool': False}
+
 
 # if the current page has changed the global data or not
 # FONT_EDITED = False
@@ -67,13 +68,14 @@ def invX(x, id):  # noqa
 def invY(y, id):  # noqa
     return h - float(y) * h / GLYPH_BOX[id]['height'] - b
 
+
 # #########
 # User Info
 # #########
 
-client = GConf.Client.get_default()
-color =\
-    XoColor(client.get_string('/desktop/sugar/user/color'))
+settings = Gio.Settings('org.sugarlabs.user')
+color = \
+    XoColor(settings.get_string('color'))
 USER_COLOR = color.to_string().split(',')
 
 # ###########
