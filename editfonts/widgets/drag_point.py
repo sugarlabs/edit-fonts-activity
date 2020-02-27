@@ -86,11 +86,11 @@ class DragPoint(Gtk.EventBox):
         self.connect("notify::point", lambda _: logging.debug("Hello"))
         self.connect("motion-notify-event", self._on_motion)
 
-        self.set_events(self.get_events() |
-                        Gdk.EventMask.LEAVE_NOTIFY_MASK |
-                        Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.POINTER_MOTION_MASK |
-                        Gdk.EventMask.POINTER_MOTION_HINT_MASK)
+        self.set_events(self.get_events()
+                        | Gdk.EventMask.LEAVE_NOTIFY_MASK
+                        | Gdk.EventMask.BUTTON_PRESS_MASK
+                        | Gdk.EventMask.POINTER_MOTION_MASK
+                        | Gdk.EventMask.POINTER_MOTION_HINT_MASK)
 
         self.show_all()
 
@@ -118,10 +118,10 @@ class DragPoint(Gtk.EventBox):
             # t = math.sqrt(t)
 
             # point1.update(point0.get_x() + t, point0.get_y() + m*t)
-            point1.update(point0.get_x() + (point0.get_x() - self.get_x()) *
-                          r / d,
-                          point0.get_y() + (point0.get_y() - self.get_y()) *
-                          r / d)
+            point1.update(point0.get_x() + (point0.get_x() - self.get_x())
+                          * r / d,
+                          point0.get_y() + (point0.get_y() - self.get_y())
+                          * r / d)
 
             # print "moving point1"
 

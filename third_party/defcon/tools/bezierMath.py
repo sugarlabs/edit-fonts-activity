@@ -11,8 +11,8 @@ def _distance(point1, point2):
     return sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
 
-def joinSegments(on_point1, off_point1, off_piont2,
-                 on_point2, off_point3, off_piont4,
+def joinSegments(on_point1, off_point1, off_point2,
+                 on_point2, off_point3, off_point4,
                  on_point3):
     """
     >>> joinSegments(
@@ -25,10 +25,10 @@ def joinSegments(on_point1, off_point1, off_piont2,
     """
     (on1X, on1Y) = on_point1
     (off1X, off1Y) = off_point1
-    (off2X, off2Y) = off_piont2
+    (off2X, off2Y) = off_point2
     (on2X, on2Y) = on_point2
     (off3X, off3Y) = off_point3
-    (off4X, off4Y) = off_piont4
+    (off4X, off4Y) = off_point4
     (on3X, on3Y) = on_point3
     if (on1X, on1Y) == (off1X, off1Y) and (off2X, off2Y) == (on2X, on2Y) == (
             off3X, off3Y) and (off4X, off4Y) == (on3X, on3Y):

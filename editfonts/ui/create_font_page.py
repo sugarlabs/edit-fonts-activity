@@ -114,10 +114,10 @@ class CreateFontPage(Gtk.VBox):
         # Type: Text
         self.copyright = InlineTextInputBox("Copyright",
                                             "Enter the Copyright Info",
-                                            "2016 The " +
-                                            self.family_name.get_text() +
-                                            " " +
-                                            self.author_info.get_text())
+                                            "2016 The "
+                                            + self.family_name.get_text()
+                                            + " "
+                                            + self.author_info.get_text())
         form_box.pack_start(self.copyright, False, False, 10)
 
         # License,
