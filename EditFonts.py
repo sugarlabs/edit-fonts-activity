@@ -286,8 +286,8 @@ class EditFonts(activity.Activity):
         # check if page already exists
         try:
             # TODO unpack this long line
-            l = next(index for (index, page) in enumerate(page_list)
-                     if isinstance(page, PAGE[page_name]))
+            line = next(index for (index, page) in enumerate(page_list)
+                        if isinstance(page, PAGE[page_name]))
 
         except StopIteration:
             logging.debug(page_name + " doesn't exist, let me create one")
@@ -308,7 +308,7 @@ class EditFonts(activity.Activity):
             # print page_name + " exist, just updating it"
 
             # update the previous instance
-            self.page = page_list[l]
+            self.page = page_list[line]
 
         self.page.set_border_width(10)
 
@@ -354,7 +354,7 @@ class EditFonts(activity.Activity):
                          'instance', '%s.ufo' % (self.get_title()))
         try:
             globals.FONT.save(instance_path)
-        except:
+        except Exception:
             self.welcome()
             return None
         else:
@@ -371,7 +371,7 @@ class EditFonts(activity.Activity):
 
         try:
             zf = zipfile.ZipFile(file_path)
-        except:
+        except Exception:
             logging.error("Cannot Open Zip file at %s", str(file_path))
             return 0
         else:
@@ -385,7 +385,7 @@ class EditFonts(activity.Activity):
             # now check if the file extracted is a valid UFO file
             try:
                 new_font = Font(instance_path)
-            except:
+            except Exception:
                 logging.error("invalid UFO file %s", str(instance_path))
                 return 0
             else:
@@ -411,7 +411,7 @@ class EditFonts(activity.Activity):
                     parent=self,
                     what_filter=self.get_bundle_id(),
                     filter_type=FILTER_TYPE_MIME_BY_ACTIVITY)
-            except:
+            except Exception:
                 self._show_alert("Error",
                                  "This feature is not Implemented")
                 logging.error("This feature is not Implemented")
@@ -519,7 +519,7 @@ class EditFonts(activity.Activity):
                     parent=self,
                     what_filter=self.get_bundle_id(),
                     filter_type=None)
-            except:
+            except Exception:
                 self._show_alert("Error",
                                  "This feature is not Implemented")
                 logging.error("This feature is not Implemented")
@@ -671,6 +671,7 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
+
 
 if __name__ == '__main__':
     win = Gtk.Window(title="Edit Fonts Activity")

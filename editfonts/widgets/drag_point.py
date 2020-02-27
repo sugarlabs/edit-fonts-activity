@@ -107,31 +107,32 @@ class DragPoint(Gtk.EventBox):
     def update_connected_points(self, dx, dy):
 
         if self.point.segmentType is None:
-            O = self.binding[0]
-            B = self.binding[1]
+            point0 = self.binding[0]
+            point1 = self.binding[1]
 
-            r = distance(O, B)
-            d = distance(O, self)
-            # m = slope(self, O)
+            r = distance(point0, point1)
+            d = distance(point0, self)
+            # m = slope(self, point0)
 
             # t = r * r / (m * m + 1)
             # t = math.sqrt(t)
 
-            # B.update(O.get_x() + t, O.get_y() + m*t)
-            B.update(O.get_x() + (O.get_x() - self.get_x()) *
-                     r / d, O.get_y() + (O.get_y() - self.get_y()) *
-                     r / d)
+            # point1.update(point0.get_x() + t, point0.get_y() + m*t)
+            point1.update(point0.get_x() + (point0.get_x() - self.get_x()) *
+                          r / d,
+                          point0.get_y() + (point0.get_y() - self.get_y()) *
+                          r / d)
 
-            # print "moving B"
+            # print "moving point1"
 
         elif self.point.segmentType == u'curve' and self.point.smooth is True:
             A = self.binding[0]
-            B = self.binding[1]
+            point1 = self.binding[1]
 
-            B.update(B.get_x() + dx, B.get_y() + dy)
+            point1.update(point1.get_x() + dx, point1.get_y() + dy)
             A.update(A.get_x() + dx, A.get_y() + dy)
 
-            # print "moving A and B"
+            # print "moving A and point1"
 
     def _on_point_press(self, widget, event):
 

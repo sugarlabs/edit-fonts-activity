@@ -105,7 +105,7 @@ class BaseFont(Font):
         """
         Add a new *Standard Glyph* to the Font.
 
-        **Standard Glyph** is a Glyph from AGLFN(Adobe Glyph List For New Fonts)  
+        **Standard Glyph** is a Glyph from AGLFN(Adobe Glyph List For New Fonts)
 
         from module [fontTools.agl](https://github.com/behdad/fonttools/blob/master/Lib/fontTools/agl.py)
 
@@ -125,14 +125,14 @@ class BaseFont(Font):
         value U+F8E6. If you do not find an appropriate name for your glyph
         in this list, then please refer to Section 6 of the AGL
         Specification.
-        
+
         Format: three semicolon-delimited fields:
           (1) Standard UV or CUS UV--four uppercase hexadecimal digits
           (2) Glyph name--upper/lowercase letters and digits
           (3) Character names: Unicode character names for standard UVs, and
               descriptive names for CUS UVs--uppercase letters, hyphen, and
               space
-        
+
         The records are sorted by glyph name in increasing ASCII order,
         entries with the same glyph name are sorted in decreasing priority
         order, the UVs and Unicode character names are provided for
@@ -171,7 +171,7 @@ class BaseFont(Font):
     def save_zip(self, ufo_path, zip_path):  # noqa
         """
         Save the font to the ``zip_path`` attribute as zip file containing a UFO font file.  # noqa
-        
+
         ``ufo_path`` is the path where the UFO font file is saved
         This is used as the source for the zip file made
 
@@ -193,7 +193,7 @@ class BaseFont(Font):
                                    os.path.join(relroot, file))
                 zipf.close()
 
-            except:
+            except Exception:
                 return False
 
             else:
@@ -207,7 +207,7 @@ class BaseFont(Font):
         try:
             font = cls()
             extractor.extractUFO(path, font)
-        except:
+        except Exception:
             logging.error("Unable to Import the chosen file")
             return None
         else:
