@@ -71,9 +71,9 @@ def invY(y, id):  # noqa
 # User Info
 # #########
 
+
 client = GConf.Client.get_default()
-color =\
-    XoColor(client.get_string('/desktop/sugar/user/color'))
+color = XoColor(client.get_string('/desktop/sugar/user/color'))
 USER_COLOR = color.to_string().split(',')
 
 # ###########

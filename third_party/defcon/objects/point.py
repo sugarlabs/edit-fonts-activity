@@ -10,12 +10,12 @@ class Point(object):
     __slots__ = ["_x", "_y", "_segmentType", "_smooth", "_name", "_identifier"]
 
     def __init__(self,
-                 xxx_todo_changeme,
+                 point,
                  segmentType=None,
                  smooth=False,
                  name=None,
                  identifier=None):
-        (x, y) = xxx_todo_changeme
+        (x, y) = point
         super(Point, self).__init__()
         self._x = x
         self._y = y

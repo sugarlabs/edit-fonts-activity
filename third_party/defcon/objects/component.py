@@ -222,13 +222,13 @@ class Component(BaseObject):
     # Move
     # ----
 
-    def move(self, xxx_todo_changeme):
+    def move(self, move_by):
         """
         Move the component by **(x, y)**.
 
         This posts *Component.TransformationChanged* and *Component.Changed* notifications.
         """
-        (x, y) = xxx_todo_changeme
+        (x, y) = move_by
         xScale, xyScale, yxScale, yScale, xOffset, yOffset = self._transformation
         xOffset += x
         yOffset += y
@@ -239,12 +239,12 @@ class Component(BaseObject):
     # Point Inside
     # ------------
 
-    def pointInside(self, xxx_todo_changeme1, evenOdd=False):
+    def pointInside(self, point, evenOdd=False):
         """
         Returns a boolean indicating if **(x, y)** is in the
         "black" area of the component.
         """
-        (x, y) = xxx_todo_changeme1
+        (x, y) = point
         from fontTools.pens.pointInsidePen import PointInsidePen
         glyph = self.glyph
         if glyph is None:

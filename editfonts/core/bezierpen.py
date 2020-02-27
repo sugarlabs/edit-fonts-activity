@@ -16,21 +16,25 @@ def distance(x1, y1, x2, y2):
 
 class BezierPenTool(object):
     """
-    The Pen Tool used to Draw Bezier Curves inside a class:`~editfonts.widgets.glyph_box`.
+    The Pen Tool used to Draw Bezier Curves inside a class:
+                                            `~editfonts.widgets.glyph_box`.
 
     Current Status
     ~~~~~~~~~~~~~~~~~
     This tool is not complete and can only be used to draw contours with lines
-    to activate the Bezier Pen Tool right click on the drawing area on the editor page and
-    click any number of times to add a point to a new contour
-    We can close those contours by clicking inside the halo around the starting point of the contour
+    to activate the Bezier Pen Tool right click on the drawing area on the
+    editor page and click any number of times to add a point to a new contour
+    We can close those contours by clicking inside the halo around the starting
+    point of the contour
 
     To be Implemented
     ~~~~~~~~~~~~~~~~~
     Add the Functionality to make Bezier Curves
-    This can be done by monitoring the **drag event** on the Drawing Area inside a **GlyphBox**
-    to implement the above features the following open source code file(s) may be usefull
-    + .. drawingarea.py : https://github.com/GNOME/pygobject/blob/master/demos/gtk-demo/demos/drawingarea.py
+    This can be done by monitoring the **drag event** on the Drawing Area
+    inside a **GlyphBox** to implement the above features the following
+    open source code file(s) may be usefull
+    + .. drawingarea.py : https://github.com/
+    GNOME/pygobject/blob/master/demos/gtk-demo/demos/drawingarea.py
     """
 
     def __init__(self, editorBox):
@@ -139,8 +143,8 @@ class BezierPenTool(object):
     # ZONE_R of the first point of the contour
     def _check_close_contour(self, point):
         """
-        Check if the last click was within a certain distance **globals.ZONE_R** around
-        the starting point of the contour
+        Check if the last click was within a certain distance
+        **globals.ZONE_R** around the starting point of the contour
         """
         if len(self.contour[:]) == 0:
             return False
