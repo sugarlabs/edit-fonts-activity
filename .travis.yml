@@ -5,7 +5,7 @@ language: python
 #  only:
 #    - master
 python:
-  - "2.7"
+  - "3.6"
 # TODO This may help building xo packages
 # cache:
 #  directories:
