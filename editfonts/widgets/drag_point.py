@@ -107,19 +107,19 @@ class DragPoint(Gtk.EventBox):
     def update_connected_points(self, dx, dy):
 
         if self.point.segmentType is None:
-            O = self.binding[0]
+            A = self.binding[0]
             B = self.binding[1]
 
-            r = distance(O, B)
-            d = distance(O, self)
-            # m = slope(self, O)
+            r = distance(A, B)
+            d = distance(A, self)
+            # m = slope(self, A)
 
             # t = r * r / (m * m + 1)
             # t = math.sqrt(t)
 
-            # B.update(O.get_x() + t, O.get_y() + m*t)
-            B.update(O.get_x() + (O.get_x() - self.get_x())
-                     * r / d, O.get_y() + (O.get_y() - self.get_y())
+            # B.update(A.get_x() + t, A.get_y() + m*t)
+            B.update(A.get_x() + (A.get_x() - self.get_x())
+                     * r / d, A.get_y() + (A.get_y() - self.get_y())
                      * r / d)
 
             # print "moving B"

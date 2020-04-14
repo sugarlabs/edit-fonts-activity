@@ -287,7 +287,7 @@ class EditFonts(activity.Activity):
         # check if page already exists
         try:
             # TODO unpack this long line
-            l = next(index for (index, page) in enumerate(page_list)
+            n = next(index for (index, page) in enumerate(page_list)
                      if isinstance(page, PAGE[page_name]))
 
         except StopIteration:
@@ -309,7 +309,7 @@ class EditFonts(activity.Activity):
             # print page_name + " exist, just updating it"
 
             # update the previous instance
-            self.page = page_list[l]
+            self.page = page_list[n]
 
         self.page.set_border_width(10)
 
