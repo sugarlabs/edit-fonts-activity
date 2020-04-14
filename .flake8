@@ -1,0 +1,8 @@
+[flake8]
+
+# E402 module level import not at top of file
+# gi.require_version() is required before later imports
+# W503 line break before binary operator
+# E501 line too long (90 > 79 characters)
+
+ignore = E402 ,W503 ,E501
