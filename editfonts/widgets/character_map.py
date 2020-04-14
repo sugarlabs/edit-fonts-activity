@@ -110,8 +110,8 @@ class CharacterMap(Gtk.Box):
             for j in range(self.GRID_HEIGHT):
 
                 try:
-                    glyphName = self.glyphList[self.marker + j *
-                                               self.GRID_WIDTH + i]
+                    glyphName = self.glyphList[self.marker + j
+                                               * self.GRID_WIDTH + i]
                 except IndexError:
                     glyphName = None
 

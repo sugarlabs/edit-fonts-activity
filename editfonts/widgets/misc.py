@@ -117,8 +117,8 @@ class FontInfoBox(Gtk.VBox):
         fontName = DisplayData("Name", font.info.familyName)
         self.pack_start(fontName, False, False, 5)
 
-        fontVersion = DisplayData("Version", str(font.info.versionMajor) +
-                                  "." + str(font.info.versionMinor))
+        fontVersion = DisplayData("Version", str(font.info.versionMajor)
+                                  + "." + str(font.info.versionMinor))
         self.pack_start(fontVersion, False, False, 5)
 
         fontTrademark = DisplayData("Trademark", font.info.trademark)

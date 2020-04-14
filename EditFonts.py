@@ -287,8 +287,8 @@ class EditFonts(activity.Activity):
         # check if page already exists
         try:
             # TODO unpack this long line
-            index = next(index for (index, page) in enumerate(page_list)
-                         if isinstance(page, PAGE[page_name]))
+            l = next(index for (index, page) in enumerate(page_list)
+                     if isinstance(page, PAGE[page_name]))
 
         except StopIteration:
             logging.debug(page_name + " doesn't exist, let me create one")
@@ -309,7 +309,7 @@ class EditFonts(activity.Activity):
             # print page_name + " exist, just updating it"
 
             # update the previous instance
-            self.page = page_list[index]
+            self.page = page_list[l]
 
         self.page.set_border_width(10)
 
@@ -462,8 +462,8 @@ class EditFonts(activity.Activity):
 
         # print success message
         self._show_alert("Success",
-                         "Sample Font Loaded: " +
-                         str(globals.FONT.info.familyName))
+                         "Sample Font Loaded: "
+                         + str(globals.FONT.info.familyName))
 
     # ##
     # Save UFO

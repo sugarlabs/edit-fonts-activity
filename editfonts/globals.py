@@ -71,6 +71,7 @@ def invY(y, id):  # noqa
 # User Info
 # #########
 
+
 settings = Gio.Settings('org.sugarlabs.user')
 color =\
     XoColor(settings.get_string('color'))
