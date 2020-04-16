@@ -130,9 +130,9 @@ class FontsTreeView(Gtk.TreeView):
         self._query = ''
 
         self.set_headers_visible(False)
-        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.TOUCH_MASK |
-                        Gdk.EventMask.BUTTON_RELEASE_MASK)
+        self.add_events(Gdk.EventMask.BUTTON_PRESS_MASK
+                        | Gdk.EventMask.TOUCH_MASK
+                        | Gdk.EventMask.BUTTON_RELEASE_MASK)
 
         selection = self.get_selection()
         selection.connect('changed', self.on_treeview_selection_changed)
@@ -291,13 +291,13 @@ class FontsTreeView(Gtk.TreeView):
 
         is_activated = model[tree_iter][ListModel.COLUMN_ACTIVATE]
 
-        if is_activated is 1:
+        if is_activated == 1:
             loader = GdkPixbuf.PixbufLoader()
             loader.write(localIcon.activate.encode())
             loader.close()
             cell.props.pixbuf = loader.get_pixbuf()
 
-        elif is_activated is 0:
+        elif is_activated == 0:
             loader = GdkPixbuf.PixbufLoader()
             loader.write(localIcon.deactivate.encode())
             loader.close()
@@ -326,9 +326,9 @@ class FontsTreeView(Gtk.TreeView):
         # font_name = row[ListModel.COLUMN_FONT_NAME]
 
         # change the value in the model
-        if is_activated is 1:
+        if is_activated == 1:
             is_activated = 0
-        elif is_activated is 0:
+        elif is_activated == 0:
             is_activated = 1
         else:
             # print "This font is locked so the state cannot be changed"

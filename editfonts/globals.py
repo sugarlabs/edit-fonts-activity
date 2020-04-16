@@ -5,7 +5,7 @@
 
 import weakref
 from gi.repository import Gdk
-from gi.repository import GConf
+from gi.repository import Gio
 
 from editfonts.core.basefont import BaseFont
 # from defcon import Font
@@ -71,9 +71,10 @@ def invY(y, id):  # noqa
 # User Info
 # #########
 
-client = GConf.Client.get_default()
+
+settings = Gio.Settings('org.sugarlabs.user')
 color =\
-    XoColor(client.get_string('/desktop/sugar/user/color'))
+    XoColor(settings.get_string('color'))
 USER_COLOR = color.to_string().split(',')
 
 # ###########

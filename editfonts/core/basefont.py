@@ -155,11 +155,11 @@ class BaseFont(Font):
             name = glyph.name
             if name in GL2UV:
                 uni = GL2UV[name]
-            elif (name.startswith("uni") and len(name) == 7 and
-                  all(c in hexes for c in name[3:])):
+            elif (name.startswith("uni") and len(name) == 7
+                  and all(c in hexes for c in name[3:])):
                 uni = int(name[3:], 16)
-            elif (name.startswith("u") and len(name) in (5, 7) and
-                  all(c in hexes for c in name[1:])):
+            elif (name.startswith("u") and len(name) in (5, 7)
+                  and all(c in hexes for c in name[1:])):
                 uni = int(name[1:], 16)
             else:
                 return
@@ -193,7 +193,7 @@ class BaseFont(Font):
                                    os.path.join(relroot, file))
                 zipf.close()
 
-            except:
+            except Exception:
                 return False
 
             else:
@@ -207,7 +207,7 @@ class BaseFont(Font):
         try:
             font = cls()
             extractor.extractUFO(path, font)
-        except:
+        except Exception:
             logging.error("Unable to Import the chosen file")
             return None
         else:

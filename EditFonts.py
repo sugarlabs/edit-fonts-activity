@@ -18,6 +18,7 @@
 
 import os
 import sys
+
 # include the path for the third party Libs to the sys path
 sys.path.insert(0, os.path.relpath('./third_party'))
 
@@ -26,6 +27,7 @@ import time
 from gettext import gettext as _
 
 import gi
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -80,7 +82,6 @@ MAX_PAGE_NUM = 1
 
 
 class EditFonts(activity.Activity):
-
     """Edit Fonts"""
 
     def __init__(self, handle=None):
@@ -286,7 +287,7 @@ class EditFonts(activity.Activity):
         # check if page already exists
         try:
             # TODO unpack this long line
-            l = next(index for (index, page) in enumerate(page_list)
+            n = next(index for (index, page) in enumerate(page_list)
                      if isinstance(page, PAGE[page_name]))
 
         except StopIteration:
@@ -308,7 +309,7 @@ class EditFonts(activity.Activity):
             # print page_name + " exist, just updating it"
 
             # update the previous instance
-            self.page = page_list[l]
+            self.page = page_list[n]
 
         self.page.set_border_width(10)
 
@@ -349,12 +350,12 @@ class EditFonts(activity.Activity):
 
     def _create_font_instance(self):
         # save the font as a  ufo in a temp path
-        instance_path =\
+        instance_path = \
             os.path.join(self.get_activity_root(),
                          'instance', '%s.ufo' % (self.get_title()))
         try:
             globals.FONT.save(instance_path)
-        except:
+        except Exception:
             self.welcome()
             return None
         else:
@@ -371,12 +372,12 @@ class EditFonts(activity.Activity):
 
         try:
             zf = zipfile.ZipFile(file_path)
-        except:
+        except Exception:
             logging.error("Cannot Open Zip file at %s", str(file_path))
             return 0
         else:
             # Get the activities Instance folders path
-            instance_path =\
+            instance_path = \
                 os.path.join(self.get_activity_root(),
                              'instance', 'tmp%i' % time.time())
 
@@ -385,7 +386,7 @@ class EditFonts(activity.Activity):
             # now check if the file extracted is a valid UFO file
             try:
                 new_font = Font(instance_path)
-            except:
+            except Exception:
                 logging.error("invalid UFO file %s", str(instance_path))
                 return 0
             else:
@@ -411,7 +412,7 @@ class EditFonts(activity.Activity):
                     parent=self,
                     what_filter=self.get_bundle_id(),
                     filter_type=FILTER_TYPE_MIME_BY_ACTIVITY)
-            except:
+            except Exception:
                 self._show_alert("Error",
                                  "This feature is not Implemented")
                 logging.error("This feature is not Implemented")
@@ -461,8 +462,8 @@ class EditFonts(activity.Activity):
 
         # print success message
         self._show_alert("Success",
-                         "Sample Font Loaded: " +
-                         str(globals.FONT.info.familyName))
+                         "Sample Font Loaded: "
+                         + str(globals.FONT.info.familyName))
 
     # ##
     # Save UFO
@@ -476,7 +477,7 @@ class EditFonts(activity.Activity):
         """
         ufo_path = self._create_font_instance()
         title = self.get_title()
-        zip_path =\
+        zip_path = \
             os.path.join(self.get_activity_root(),
                          'data', '%s_ufo.zip' % (title))
         if globals.FONT.save_zip(ufo_path, zip_path) is True:
@@ -519,7 +520,7 @@ class EditFonts(activity.Activity):
                     parent=self,
                     what_filter=self.get_bundle_id(),
                     filter_type=None)
-            except:
+            except Exception:
                 self._show_alert("Error",
                                  "This feature is not Implemented")
                 logging.error("This feature is not Implemented")
@@ -567,7 +568,7 @@ class EditFonts(activity.Activity):
         """
         # create the file path
 
-        file_path =\
+        file_path = \
             os.path.join(self.get_activity_root(),
                          'data', '%s.otf' % self.get_title)
         # save the otf
@@ -599,7 +600,7 @@ class EditFonts(activity.Activity):
         * Save the otf to home/.fonts
         * Run the command ``fc-cache -f``
         """
-        source =\
+        source = \
             os.path.join(self.get_activity_root(),
                          'instance', '%s.otf' % globals.FONT.info.familyName)
         globals.FONT.export_binary(source)
@@ -628,8 +629,8 @@ class EditFonts(activity.Activity):
 
         # Create an Alert
         success_title = 'Success'
-        success_msg = 'The Font %s was Activated' %\
-            globals.FONT.info.familyName
+        success_msg = 'The Font %s was Activated' % \
+                      globals.FONT.info.familyName
         self._show_alert(_(success_title), _(success_msg))
 
     # ##
@@ -671,6 +672,7 @@ class EditFonts(activity.Activity):
         if response_id is Gtk.ResponseType.APPLY:
             activity.show_object_in_journal(self._object_id)
         self.remove_alert(alert)
+
 
 if __name__ == '__main__':
     win = Gtk.Window(title="Edit Fonts Activity")

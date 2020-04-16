@@ -81,7 +81,7 @@ class RenderGlyph(Gtk.Box):
                             self.Y(point.y), self.X(mid_point_x),
                             self.Y(mid_point_y))
 
-                elif len(segment) is 3 and segment[-1].segmentType == u'curve':
+                elif len(segment) == 3 and segment[-1].segmentType == u'curve':
                     # its a bezier
                     cr.curve_to(
                         self.X(segment[0].x), self.Y(segment[0].y),
@@ -89,7 +89,7 @@ class RenderGlyph(Gtk.Box):
                         self.X(segment[2].x), self.Y(segment[2].y))
 
                 # Adding the support for qcurve
-                elif len(segment) is 2 and segment[
+                elif len(segment) == 2 and segment[
                         -1].segmentType == u'qcurve':
                     # its a qcurve
                     cr.curve_to(
@@ -97,7 +97,7 @@ class RenderGlyph(Gtk.Box):
                         self.X(segment[0].x), self.Y(segment[0].y),
                         self.X(segment[1].x), self.Y(segment[1].y))
 
-                elif len(segment) is 1 and segment[-1].segmentType == u'line':
+                elif len(segment) == 1 and segment[-1].segmentType == u'line':
                     # its a line
                     cr.line_to(self.X(segment[0].x), self.Y(segment[0].y))
 

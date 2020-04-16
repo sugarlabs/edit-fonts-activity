@@ -86,11 +86,11 @@ class DragPoint(Gtk.EventBox):
         self.connect("notify::point", lambda _: logging.debug("Hello"))
         self.connect("motion-notify-event", self._on_motion)
 
-        self.set_events(self.get_events() |
-                        Gdk.EventMask.LEAVE_NOTIFY_MASK |
-                        Gdk.EventMask.BUTTON_PRESS_MASK |
-                        Gdk.EventMask.POINTER_MOTION_MASK |
-                        Gdk.EventMask.POINTER_MOTION_HINT_MASK)
+        self.set_events(self.get_events()
+                        | Gdk.EventMask.LEAVE_NOTIFY_MASK
+                        | Gdk.EventMask.BUTTON_PRESS_MASK
+                        | Gdk.EventMask.POINTER_MOTION_MASK
+                        | Gdk.EventMask.POINTER_MOTION_HINT_MASK)
 
         self.show_all()
 
@@ -107,20 +107,20 @@ class DragPoint(Gtk.EventBox):
     def update_connected_points(self, dx, dy):
 
         if self.point.segmentType is None:
-            O = self.binding[0]
+            A = self.binding[0]
             B = self.binding[1]
 
-            r = distance(O, B)
-            d = distance(O, self)
-            # m = slope(self, O)
+            r = distance(A, B)
+            d = distance(A, self)
+            # m = slope(self, A)
 
             # t = r * r / (m * m + 1)
             # t = math.sqrt(t)
 
-            # B.update(O.get_x() + t, O.get_y() + m*t)
-            B.update(O.get_x() + (O.get_x() - self.get_x()) *
-                     r / d, O.get_y() + (O.get_y() - self.get_y()) *
-                     r / d)
+            # B.update(A.get_x() + t, A.get_y() + m*t)
+            B.update(A.get_x() + (A.get_x() - self.get_x())
+                     * r / d, A.get_y() + (A.get_y() - self.get_y())
+                     * r / d)
 
             # print "moving B"
 
